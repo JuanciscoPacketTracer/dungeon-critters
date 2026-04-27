@@ -1,0 +1,57 @@
+{
+  "klass": "Type",
+  "id": 25,
+  "dbSymbol": "bat",
+  "textId": 24,
+  "damageTo": [
+    {
+      "defensiveType": "normal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dark",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fairy",
+      "factor": 2
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "music",
+      "factor": 2
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 2
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 0.5
+    }
+  ],
+  "color": "#6b4400"
+}

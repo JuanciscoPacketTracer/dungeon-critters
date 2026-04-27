@@ -1,0 +1,45 @@
+{
+  "klass": "Type",
+  "id": 30,
+  "dbSymbol": "magnetism",
+  "textId": 29,
+  "damageTo": [
+    {
+      "defensiveType": "water",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 2
+    },
+    {
+      "defensiveType": "flying",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 2
+    }
+  ],
+  "color": "#ca8c8c"
+}

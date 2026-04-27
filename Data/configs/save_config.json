@@ -1,0 +1,8 @@
+{
+  "klass": "Configs::Project::Save",
+  "maximumSave": 0,
+  "saveKey": 0,
+  "saveHeader": "DUNCR",
+  "baseFilename": "Saves/Critter_Party",
+  "isCanSaveOnAnySave": true
+}

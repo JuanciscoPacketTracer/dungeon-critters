@@ -1,0 +1,86 @@
+{
+  "klass": "Specie",
+  "id": 25,
+  "dbSymbol": "toadli",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 24,
+        "description": 0
+      },
+      "height": 0.09,
+      "weight": 0.2,
+      "type1": "fungi",
+      "type2": "hearth",
+      "baseHp": 65,
+      "baseAtk": 50,
+      "baseDfe": 40,
+      "baseSpd": 40,
+      "baseAts": 65,
+      "baseDfs": 40,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [
+        {
+          "dbSymbol": "toadroll",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 15
+            }
+          ]
+        }
+      ],
+      "experienceType": 1,
+      "baseExperience": 50,
+      "baseLoyalty": 70,
+      "catchRate": 255,
+      "femaleRate": 50,
+      "breedGroups": [
+        5,
+        11
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "toadli",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "tiny_mushroom",
+          "chance": 50
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "anticipation",
+        "anticipation",
+        "anticipation"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "026",
+        "iconShiny": "",
+        "front": "026",
+        "frontShiny": "",
+        "back": "026",
+        "backShiny": "",
+        "footprint": "",
+        "character": "026",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "0755.ogg",
+        "hasFemale": false
+      },
+      "moveSet": []
+    }
+  ]
+}

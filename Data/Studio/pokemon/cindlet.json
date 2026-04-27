@@ -1,0 +1,81 @@
+{
+  "klass": "Specie",
+  "id": 9,
+  "dbSymbol": "cindlet",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 8,
+        "description": 0
+      },
+      "height": 0.12,
+      "weight": 0.3,
+      "type1": "luz",
+      "type2": "fire",
+      "baseHp": 55,
+      "baseAtk": 10,
+      "baseDfe": 30,
+      "baseSpd": 65,
+      "baseAts": 60,
+      "baseDfs": 80,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [],
+      "experienceType": 1,
+      "baseExperience": 50,
+      "baseLoyalty": 70,
+      "catchRate": 90,
+      "femaleRate": 50,
+      "breedGroups": [
+        6,
+        5
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "cindlet",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "illuminate",
+        "illuminate",
+        "illuminate"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "009",
+        "iconShiny": "",
+        "front": "009",
+        "frontShiny": "",
+        "back": "009",
+        "backShiny": "",
+        "footprint": "",
+        "character": "009",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "0607.ogg",
+        "hasFemale": false
+      },
+      "moveSet": [
+        {
+          "klass": "LevelLearnableMove",
+          "move": "ember",
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

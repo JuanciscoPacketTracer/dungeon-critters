@@ -1,0 +1,81 @@
+{
+  "klass": "Type",
+  "id": 3,
+  "dbSymbol": "water",
+  "textId": 10,
+  "damageTo": [
+    {
+      "defensiveType": "fire",
+      "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ice",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "music",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "void",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 2
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 2
+    }
+  ],
+  "color": "#4596ed"
+}

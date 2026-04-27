@@ -1,0 +1,57 @@
+{
+  "klass": "Type",
+  "id": 36,
+  "dbSymbol": "wolf",
+  "textId": 35,
+  "damageTo": [
+    {
+      "defensiveType": "fighting",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dark",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 2
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 2
+    }
+  ],
+  "color": "#a48989"
+}

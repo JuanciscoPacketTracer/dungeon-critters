@@ -1,0 +1,60 @@
+{
+  "categories": [{ "all": 3 }, { "crates": 4 }, { "medicine": 5 }, { "scroll": 6 }],
+  "data": {
+    "poke_ball": {
+      "ingredients": {
+        "pebble": 4,
+        "wooden_root": 2
+      },
+      "result": "poke_ball",
+      "quantity": 1,
+      "category": "crates",
+      "unlock_condition": {
+        "type": "manual",
+        "value": true
+      }
+    },
+
+    "great_ball": {
+      "ingredients": {
+        "poke_ball": 1,
+        "blue_apricorn": 1
+      },
+      "result": "great_ball",
+      "quantity": 1,
+      "category": "crates",
+      "unlock_condition": {
+        "type": "manual",
+        "value": false
+      }
+    },
+
+    "potion": {
+      "ingredients": {
+        "tiny_mushroom": 2,
+        "green_mushroom": 1
+      },
+      "result": "potion",
+      "quantity": 1,
+      "category": "medicine",
+      "unlock_condition": {
+        "type": "manual",
+        "value": true
+      }
+    },
+
+    "super_potion": {
+      "ingredients": {
+        "big_mushroom": 1,
+        "potion": 1
+      },
+      "result": "super_potion",
+      "quantity": 1,
+      "category": "medicine",
+      "unlock_condition": {
+        "type": "manual",
+        "value": false
+      }
+    }
+  }
+}

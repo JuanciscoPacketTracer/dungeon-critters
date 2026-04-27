@@ -1,0 +1,61 @@
+{
+  "klass": "Type",
+  "id": 46,
+  "dbSymbol": "radiation",
+  "textId": 45,
+  "damageTo": [
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "normal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ice",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fairy",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 2
+    }
+  ],
+  "color": "#66ff00"
+}

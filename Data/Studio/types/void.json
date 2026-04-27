@@ -1,0 +1,49 @@
+{
+  "klass": "Type",
+  "id": 29,
+  "dbSymbol": "void",
+  "textId": 28,
+  "damageTo": [
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dark",
+      "factor": 2
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 2
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "void",
+      "factor": 2
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
+    }
+  ],
+  "color": "#110019"
+}

@@ -1,0 +1,113 @@
+{
+  "klass": "Type",
+  "id": 9,
+  "dbSymbol": "ground",
+  "textId": 4,
+  "damageTo": [
+    {
+      "defensiveType": "fire",
+      "factor": 2
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 2
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "poison",
+      "factor": 2
+    },
+    {
+      "defensiveType": "flying",
+      "factor": 0
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ice",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "music",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 0
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "void",
+      "factor": 2
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 0.5
+    }
+  ],
+  "color": "#c99457"
+}

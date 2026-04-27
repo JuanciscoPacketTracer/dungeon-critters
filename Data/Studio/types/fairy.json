@@ -1,0 +1,89 @@
+{
+  "klass": "Type",
+  "id": 18,
+  "dbSymbol": "fairy",
+  "textId": 17,
+  "damageTo": [
+    {
+      "defensiveType": "fire",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fighting",
+      "factor": 2
+    },
+    {
+      "defensiveType": "poison",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dark",
+      "factor": 2
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
+    }
+  ],
+  "color": "#e981a4"
+}

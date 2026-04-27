@@ -1,0 +1,5 @@
+--- !ruby/object:Configs::IdleAnimations
+default_switch: 201
+delay_before_idle: 60
+speed: 3
+frequency: 4

@@ -1,0 +1,81 @@
+{
+  "klass": "Type",
+  "id": 17,
+  "dbSymbol": "dark",
+  "textId": 16,
+  "damageTo": [
+    {
+      "defensiveType": "fighting",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dark",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fairy",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "void",
+      "factor": 2
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
+    }
+  ],
+  "color": "#a7acbe"
+}

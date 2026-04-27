@@ -1,0 +1,97 @@
+{
+  "klass": "Type",
+  "id": 4,
+  "dbSymbol": "electric",
+  "textId": 12,
+  "damageTo": [
+    {
+      "defensiveType": "water",
+      "factor": 2
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0
+    },
+    {
+      "defensiveType": "flying",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fighting",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 2
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 2
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "void",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 2
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 2
+    }
+  ],
+  "color": "#f5ab3d"
+}

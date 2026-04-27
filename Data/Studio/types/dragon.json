@@ -1,0 +1,57 @@
+{
+  "klass": "Type",
+  "id": 15,
+  "dbSymbol": "dragon",
+  "textId": 15,
+  "damageTo": [
+    {
+      "defensiveType": "dragon",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fairy",
+      "factor": 0
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 2
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 2
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 2
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 2
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 2
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 2
+    }
+  ],
+  "color": "#7c88f3"
+}

@@ -1,0 +1,89 @@
+{
+  "klass": "Type",
+  "id": 10,
+  "dbSymbol": "flying",
+  "textId": 2,
+  "damageTo": [
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fighting",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fire",
+      "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ice",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "flying",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "music",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "void",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 2
+    }
+  ],
+  "color": "#83aff1"
+}

@@ -1,0 +1,49 @@
+{
+  "klass": "Type",
+  "id": 37,
+  "dbSymbol": "arachnid",
+  "textId": 36,
+  "damageTo": [
+    {
+      "defensiveType": "fighting",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "poison",
+      "factor": 2
+    },
+    {
+      "defensiveType": "flying",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 0.5
+    }
+  ],
+  "color": "#8e3946"
+}

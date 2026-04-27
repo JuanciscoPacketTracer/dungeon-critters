@@ -1,0 +1,57 @@
+{
+  "klass": "Type",
+  "id": 50,
+  "dbSymbol": "royal",
+  "textId": 49,
+  "damageTo": [
+    {
+      "defensiveType": "normal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 2
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 2
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sweet",
+      "factor": 0.5
+    }
+  ],
+  "color": "#b48e04"
+}

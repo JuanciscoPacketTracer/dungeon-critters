@@ -1,0 +1,16 @@
+{
+  "klass": "Item",
+  "id": 129,
+  "dbSymbol": "wooden_root",
+  "icon": "1154",
+  "price": 40,
+  "socket": 1,
+  "position": 0,
+  "isBattleUsable": false,
+  "isMapUsable": false,
+  "isLimited": false,
+  "isHoldable": false,
+  "isAllowingMega": false,
+  "isBerry": false,
+  "flingPower": 40
+}

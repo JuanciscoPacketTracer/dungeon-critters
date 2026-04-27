@@ -1,0 +1,75 @@
+{
+  "klass": "Specie",
+  "id": 13,
+  "dbSymbol": "wicklet",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 12,
+        "description": 0
+      },
+      "height": 0.24,
+      "weight": 3,
+      "type1": "ghost",
+      "type2": "fire",
+      "baseHp": 65,
+      "baseAtk": 20,
+      "baseDfe": 45,
+      "baseSpd": 85,
+      "baseAts": 95,
+      "baseDfs": 90,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [],
+      "experienceType": 0,
+      "baseExperience": 40,
+      "baseLoyalty": 70,
+      "catchRate": 45,
+      "femaleRate": 50,
+      "breedGroups": [
+        6,
+        5
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "wicklet",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "illuminate",
+        "illuminate",
+        "illuminate"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "011",
+        "iconShiny": "",
+        "front": "013",
+        "frontShiny": "",
+        "back": "",
+        "backShiny": "",
+        "footprint": "",
+        "character": "013",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "",
+        "hasFemale": false
+      },
+      "moveSet": []
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "klass": "Type",
+  "id": 14,
+  "dbSymbol": "ghost",
+  "textId": 7,
+  "damageTo": [
+    {
+      "defensiveType": "normal",
+      "factor": 0
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dark",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fighting",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 0
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rodent",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 2
+    }
+  ],
+  "color": "#9b96ed"
+}

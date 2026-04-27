@@ -1,0 +1,8 @@
+en,fr,it,de,es,ko,kana
+CRITTERS,Pokémon,Pokémon,Pokémon,Critters,포켓몬,ポケモン
+BESTIARY,Pokédex,Pokédex,Pokédex,Bestiario,도감,ずかん
+BAG,Sac,Borsa,Beutel,Mochila,가방,バッグ
+EXPLORER CARD,[VAR TRNAME(0000)],[VAR TRNAME(0000)],[VAR TRNAME(0000)],Identificacion,[VAR TRNAME(0000)],[VAR TRNAME(0000)]
+SAVE,Sauvegarder,Salva,Speichern,Guardar,리포트,レポート
+OPTIONS,Options,Opzioni,Optionen,Opciones,설정,せってい
+CRAFTING,,,,Fabricacion,,

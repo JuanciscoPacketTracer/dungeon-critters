@@ -1,0 +1,86 @@
+{
+  "klass": "Specie",
+  "id": 21,
+  "dbSymbol": "wurmy",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 20,
+        "description": 0
+      },
+      "height": 0.35,
+      "weight": 5,
+      "type1": "worm",
+      "type2": "ground",
+      "baseHp": 65,
+      "baseAtk": 80,
+      "baseDfe": 45,
+      "baseSpd": 60,
+      "baseAts": 15,
+      "baseDfs": 35,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [
+        {
+          "dbSymbol": "wumerd",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 20
+            }
+          ]
+        }
+      ],
+      "experienceType": 1,
+      "baseExperience": 60,
+      "baseLoyalty": 70,
+      "catchRate": 255,
+      "femaleRate": 50,
+      "breedGroups": [
+        1,
+        3
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "wurmy",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "earth_eater",
+        "earth_eater",
+        "earth_eater"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "021",
+        "iconShiny": "",
+        "front": "021",
+        "frontShiny": "",
+        "back": "021",
+        "backShiny": "",
+        "footprint": "",
+        "character": "021",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "",
+        "hasFemale": false
+      },
+      "moveSet": []
+    }
+  ]
+}

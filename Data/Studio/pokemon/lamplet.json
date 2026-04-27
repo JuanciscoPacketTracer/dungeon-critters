@@ -1,0 +1,75 @@
+{
+  "klass": "Specie",
+  "id": 10,
+  "dbSymbol": "lamplet",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 9,
+        "description": 0
+      },
+      "height": 0.22,
+      "weight": 4,
+      "type1": "luz",
+      "type2": "fire",
+      "baseHp": 75,
+      "baseAtk": 50,
+      "baseDfe": 60,
+      "baseSpd": 45,
+      "baseAts": 90,
+      "baseDfs": 80,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [],
+      "experienceType": 3,
+      "baseExperience": 100,
+      "baseLoyalty": 70,
+      "catchRate": 45,
+      "femaleRate": 50,
+      "breedGroups": [
+        6,
+        5
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "lamplet",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "illuminate",
+        "illuminate",
+        "illuminate"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "010",
+        "iconShiny": "",
+        "front": "010",
+        "frontShiny": "",
+        "back": "010",
+        "backShiny": "",
+        "footprint": "",
+        "character": "010",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "",
+        "hasFemale": false
+      },
+      "moveSet": []
+    }
+  ]
+}

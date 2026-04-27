@@ -1,0 +1,36 @@
+{
+  "title": "Dungeon Critters",
+  "studioVersion": "2.9.1",
+  "iconPath": "icon.png",
+  "isTiledMode": true,
+  "languagesTranslation": [
+    {
+      "code": "en",
+      "name": "English"
+    },
+    {
+      "code": "fr",
+      "name": "French"
+    },
+    {
+      "code": "it",
+      "name": "Italian"
+    },
+    {
+      "code": "de",
+      "name": "German"
+    },
+    {
+      "code": "es",
+      "name": "Spanish"
+    },
+    {
+      "code": "ko",
+      "name": "Korean"
+    },
+    {
+      "code": "kana",
+      "name": "Japanese"
+    }
+  ]
+}

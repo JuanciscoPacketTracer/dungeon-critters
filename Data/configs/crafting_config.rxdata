@@ -1,0 +1,8 @@
+o:Configs::Project::Recipes:@categories[	{:alli{:cratesi	{:medicinei
+{:scrolli:
+@data{	:poke_ball{
+:ingredients{:pebblei	:wooden_rooti:resultI"poke_ball:ET:quantityi:categoryI"crates;T:unlock_condition{:	typeI"manual;T:
+valueT:great_ball{
+;{;i:blue_apricorni;I"great_ball;T;i;I"crates;T;{;I"manual;T;F:potion{
+;{:tiny_mushroomi:green_mushroomi;I"potion;T;i;I"medicine;T;{;I"manual;T;T:super_potion{
+;{:big_mushroomi;i;I"super_potion;T;i;I"medicine;T;{;I"manual;T;F

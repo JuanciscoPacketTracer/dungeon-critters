@@ -1,0 +1,16 @@
+{
+  "klass": "Nature",
+  "id": 3,
+  "dbSymbol": "adamant",
+  "stats": {
+    "atk": 125,
+    "dfe": 100,
+    "ats": 75,
+    "dfs": 100,
+    "spd": 100
+  },
+  "flavors": {
+    "liked": "spicy",
+    "disliked": "dry"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "klass": "Specie",
+  "id": 31,
+  "dbSymbol": "toadlux",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 30,
+        "description": 0
+      },
+      "height": 0.18,
+      "weight": 1.5,
+      "type1": "fungi",
+      "type2": "luz",
+      "baseHp": 85,
+      "baseAtk": 50,
+      "baseDfe": 60,
+      "baseSpd": 45,
+      "baseAts": 70,
+      "baseDfs": 90,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [],
+      "experienceType": 3,
+      "baseExperience": 160,
+      "baseLoyalty": 70,
+      "catchRate": 150,
+      "femaleRate": 50,
+      "breedGroups": [
+        5,
+        11
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "toadli",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "illuminate",
+        "illuminate",
+        "illuminate"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "031",
+        "iconShiny": "",
+        "front": "031",
+        "frontShiny": "",
+        "back": "031",
+        "backShiny": "",
+        "footprint": "",
+        "character": "031",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "0756.ogg",
+        "hasFemale": false
+      },
+      "moveSet": []
+    }
+  ]
+}

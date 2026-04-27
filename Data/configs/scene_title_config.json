@@ -1,0 +1,12 @@
+{
+  "klass": "Configs::Project::SceneTitle",
+  "introMovieMapId": 0,
+  "bgmName": "audio/bgm/tittle screen.ogg",
+  "bgmDuration": 4418000,
+  "isLanguageSelectionEnabled": true,
+  "additionalSplashes": [
+    "UAdeO",
+    "dungeoncritters"
+  ],
+  "controlWaitTime": 1
+}

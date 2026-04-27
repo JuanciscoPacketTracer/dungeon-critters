@@ -1,0 +1,16 @@
+{
+  "klass": "Nature",
+  "id": 4,
+  "dbSymbol": "naughty",
+  "stats": {
+    "atk": 125,
+    "dfe": 100,
+    "ats": 100,
+    "dfs": 75,
+    "spd": 100
+  },
+  "flavors": {
+    "liked": "spicy",
+    "disliked": "bitter"
+  }
+}

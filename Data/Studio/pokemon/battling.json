@@ -1,0 +1,81 @@
+{
+  "klass": "Specie",
+  "id": 2,
+  "dbSymbol": "battling",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 1,
+        "description": 0
+      },
+      "height": 0.5,
+      "weight": 8,
+      "type1": "bat",
+      "type2": "rodent",
+      "baseHp": 80,
+      "baseAtk": 30,
+      "baseDfe": 55,
+      "baseSpd": 85,
+      "baseAts": 90,
+      "baseDfs": 60,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [],
+      "experienceType": 3,
+      "baseExperience": 100,
+      "baseLoyalty": 70,
+      "catchRate": 150,
+      "femaleRate": 50,
+      "breedGroups": [
+        1,
+        4
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "battling",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "soundproof",
+        "soundproof",
+        "overcoat"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "002",
+        "iconShiny": "",
+        "front": "002",
+        "frontShiny": "",
+        "back": "002",
+        "backShiny": "",
+        "footprint": "0105",
+        "character": "002",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "0012.ogg",
+        "hasFemale": false
+      },
+      "moveSet": [
+        {
+          "klass": "LevelLearnableMove",
+          "move": "gust",
+          "level": 1
+        }
+      ]
+    }
+  ]
+}
