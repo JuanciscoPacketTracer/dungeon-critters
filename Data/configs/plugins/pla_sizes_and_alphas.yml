@@ -1,0 +1,4 @@
+--- !ruby/object:Configs::PLASizesAndAlphas
+alpha_size_multiplier: 2.25
+wild_alphas: false
+wild_alpha_rate: 100
