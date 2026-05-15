@@ -20,7 +20,7 @@ module DMC
       [:amplet, 0] => :steel,
       [:luxion, 0] => :steel,
       [:wicklet, 0] => :luz,
-      [:wicklabra, 0] => :luz,
+      [:wickelabra, 0] => :luz,
       [:lunaryx, 0] => :luz,
       [:mourndelume, 0] => :dark,
       [:waxy, 0] => :luz,
