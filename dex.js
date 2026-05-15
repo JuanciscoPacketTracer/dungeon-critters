@@ -1,6 +1,7 @@
 (() => {
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
   const OWNER = 'JuanciscoPacketTracer';
-  const REPO = 'dungeon-critters';
+  const REPO = pathParts[0] || 'dungeon-critters';
   const BRANCH = 'main';
   const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
   const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`;
@@ -17,6 +18,14 @@
     .toString()
     .replaceAll('_', ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase());
+  const escapeHtml = (value) => (value || '')
+    .toString()
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+  const sanitizeColor = (value) => (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value || '') ? value : '#607d8b');
 
   async function fetchJson(path) {
     const response = await fetch(path);
@@ -29,7 +38,7 @@
       const local = await fetch(localPath);
       if (local.ok) return local.text();
     } catch (_error) {
-      // ignore and use raw fallback
+      console.warn('Local config fetch failed, using raw fallback:', _error);
     }
     const remote = await fetch(`${RAW_BASE}${localPath}`);
     if (!remote.ok) throw new Error(`Fetch failed: ${localPath}`);
@@ -73,7 +82,7 @@
         const key = `${entry.dbSymbol}#${form.form ?? 0}`;
         const type3 = data.type3Map.get(key);
         const front = form.resources?.front || String(entry.id).padStart(3, '0');
-        const types = [form.type1, form.type2, type3].filter(Boolean).filter((t, i, arr) => arr.indexOf(t) === i);
+        const types = [...new Set([form.type1, form.type2, type3].filter(Boolean))];
         return {
           id: entry.id,
           dbSymbol: entry.dbSymbol,
@@ -127,18 +136,28 @@
   }
 
   function spriteTag(critter, size = 96) {
-    return `<img width="${size}" height="${size}" src="${critter.spriteGif}" alt="${critter.name} sprite" onerror="if(this.dataset.fallback){return;}this.dataset.fallback='1';this.src='${critter.spritePng}';"/>`;
+    return `<img width="${size}" height="${size}" src="${critter.spriteGif}" data-fallback-src="${critter.spritePng}" alt="${escapeHtml(critter.name)} sprite"/>`;
   }
 
   function badge(type, typeMap) {
     const t = typeMap.get(type);
-    const name = t?.name || toTitle(type);
-    const color = t?.color || '#607d8b';
+    const name = escapeHtml(t?.name || toTitle(type));
+    const color = sanitizeColor(t?.color);
     return `<span class="badge" style="background:${color}">${name}</span>`;
   }
 
   function emptyList(el, label = 'None') {
-    el.innerHTML = `<li>${label}</li>`;
+    el.innerHTML = `<li>${escapeHtml(label)}</li>`;
+  }
+
+  function attachFallbackHandlers(scope) {
+    scope.querySelectorAll('img[data-fallback-src]').forEach((img) => {
+      img.onerror = () => {
+        if (img.dataset.fallback) return;
+        img.dataset.fallback = '1';
+        img.src = img.dataset.fallbackSrc;
+      };
+    });
   }
 
   function renderIndex({ critters, typeMap }) {
@@ -171,10 +190,11 @@
       grid.innerHTML = filtered.map((critter) => `
         <a class="card" href="critter.html?id=${encodeURIComponent(critter.dbSymbol)}">
           ${spriteTag(critter)}
-          <h2>${critter.name}</h2>
+          <h2>${escapeHtml(critter.name)}</h2>
           <div class="badges">${critter.types.map((type) => badge(type, typeMap)).join('')}</div>
         </a>
       `).join('');
+      attachFallbackHandlers(grid);
     };
 
     search.addEventListener('input', applyFilters);
@@ -212,12 +232,12 @@
     if (!critter.abilities.length) {
       emptyList(abilities);
     } else {
-      abilities.innerHTML = critter.abilities.map((a) => `<li>${a}</li>`).join('');
+      abilities.innerHTML = critter.abilities.map((a) => `<li>${escapeHtml(a)}</li>`).join('');
     }
 
     const stats = document.getElementById('stats');
     stats.innerHTML = Object.entries(critter.stats)
-      .map(([name, value]) => `<div><strong>${name}</strong><br/>${value}</div>`)
+      .map(([name, value]) => `<div><strong>${escapeHtml(name)}</strong><br/>${escapeHtml(value)}</div>`)
       .join('');
 
     const weak = [];
@@ -235,12 +255,13 @@
     const resistEl = document.getElementById('resistances');
     const immuneEl = document.getElementById('immunities');
 
-    weakEl.innerHTML = weak.length ? weak.map((v) => `<li>${v}</li>`).join('') : '<li>None</li>';
-    resistEl.innerHTML = resist.length ? resist.map((v) => `<li>${v}</li>`).join('') : '<li>None</li>';
-    immuneEl.innerHTML = immune.length ? immune.map((v) => `<li>${v}</li>`).join('') : '<li>None</li>';
+    weakEl.innerHTML = weak.length ? weak.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : '<li>None</li>';
+    resistEl.innerHTML = resist.length ? resist.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : '<li>None</li>';
+    immuneEl.innerHTML = immune.length ? immune.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : '<li>None</li>';
 
     status.hidden = true;
     document.getElementById('detail').hidden = false;
+    attachFallbackHandlers(document);
   }
 
   async function init() {
