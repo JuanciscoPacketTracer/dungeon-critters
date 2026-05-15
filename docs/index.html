@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dungeon Critters Dex</title>
+  <link rel="stylesheet" href="dex.css" />
+</head>
+<body data-page="index">
+  <header>
+    <h1>Dungeon Critters Dex</h1>
+    <p>Browse critters from the game data.</p>
+  </header>
+
+  <section class="controls">
+    <input id="search" type="search" placeholder="Search critter name..." aria-label="Search critter by name" />
+    <select id="typeFilterA" aria-label="Filter by first type">
+      <option value="">Any type</option>
+    </select>
+    <select id="typeFilterB" aria-label="Filter by second type">
+      <option value="">Any second type</option>
+    </select>
+  </section>
+
+  <main>
+    <div id="status">Loading critters...</div>
+    <div id="critterGrid" class="grid" hidden></div>
+  </main>
+
+  <script src="dex.js" defer></script>
+</body>
+</html>
