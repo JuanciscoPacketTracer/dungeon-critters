@@ -3,13 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Critter Detail · Dungeon Critters Dex</title>
+  <title>Critter Detail · Dungeon Critters Bestiary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="dex.css" />
 </head>
 <body data-page="detail">
   <header>
-    <a href="index.html">← Back to Dex</a>
+    <a href="index.html" data-i18n="back">← Back to Bestiary</a>
     <h1 id="critterName">Critter</h1>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+      <button class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
+    </div>
   </header>
 
   <main id="detail" hidden>
@@ -17,37 +24,36 @@
       <img id="critterSprite" alt="Critter sprite" />
       <div>
         <div id="typeBadges" class="badges"></div>
-        <h2>Abilities</h2>
+        <h2 data-i18n="abilities">Abilities</h2>
         <ul id="abilities"></ul>
       </div>
     </section>
 
     <section>
-      <h2>Stats</h2>
+      <h2 data-i18n="stats">Stats</h2>
       <div id="stats" class="stats"></div>
     </section>
 
     <section>
-      <h2>Type Matchups (Triple-Type Logic)</h2>
-      <p class="small">Computed using the same weighted modifier rule as <code>DMC_TripleTypes</code> plugin.</p>
+      <h2 data-i18n="matchups">Type Matchups (Triple-Type Logic)</h2>
       <div class="matchups">
-        <div>
-          <h3>Weaknesses</h3>
+        <div class="matchup-group weak">
+          <h3 data-i18n="weaknesses">Weaknesses</h3>
           <ul id="weaknesses"></ul>
         </div>
-        <div>
-          <h3>Resistances</h3>
+        <div class="matchup-group resist">
+          <h3 data-i18n="resistances">Resistances</h3>
           <ul id="resistances"></ul>
         </div>
-        <div>
-          <h3>Immunities</h3>
+        <div class="matchup-group immune">
+          <h3 data-i18n="immunities">Immunities</h3>
           <ul id="immunities"></ul>
         </div>
       </div>
     </section>
   </main>
 
-  <div id="status">Loading critter...</div>
+  <div id="status" data-i18n="loading_detail">Loading critter…</div>
   <script src="dex.js" defer></script>
 </body>
 </html>

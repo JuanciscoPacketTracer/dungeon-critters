@@ -1,4 +1,94 @@
 (() => {
+  // ── i18n ─────────────────────────────────────────────────
+  const STRINGS = {
+    en: {
+      title:              'Dungeon Critters Bestiary',
+      subtitle:           'Browse critters from the game data.',
+      search_placeholder: 'Search critter name…',
+      any_type:           'Any type',
+      any_type2:          'Any second type',
+      loading:            'Loading critters…',
+      loading_detail:     'Loading critter…',
+      back:               '← Back to Bestiary',
+      abilities:          'Abilities',
+      stats:              'Stats',
+      matchups:           'Type Matchups (Triple-Type Logic)',
+      weaknesses:         'Weaknesses',
+      resistances:        'Resistances',
+      immunities:         'Immunities',
+      none:               'None',
+      not_found:          'Critter not found.',
+      load_error:         'Failed to load bestiary data',
+    },
+    es: {
+      title:              'Bestiario de Dungeon Critters',
+      subtitle:           'Explora criaturas del juego.',
+      search_placeholder: 'Buscar nombre de criatura…',
+      any_type:           'Cualquier tipo',
+      any_type2:          'Cualquier segundo tipo',
+      loading:            'Cargando criaturas…',
+      loading_detail:     'Cargando criatura…',
+      back:               '← Volver al Bestiario',
+      abilities:          'Habilidades',
+      stats:              'Estadísticas',
+      matchups:           'Efectividades de tipo (Triple tipo)',
+      weaknesses:         'Debilidades',
+      resistances:        'Resistencias',
+      immunities:         'Inmunidades',
+      none:               'Ninguna',
+      not_found:          'Criatura no encontrada.',
+      load_error:         'Error al cargar el bestiario',
+    },
+  };
+
+  let lang = localStorage.getItem('dmc-lang') || 'en';
+  if (!STRINGS[lang]) lang = 'en';
+
+  /** Translate a key for the current language. */
+  function t(key) {
+    return (STRINGS[lang] && STRINGS[lang][key]) ?? STRINGS.en[key] ?? key;
+  }
+
+  /** "{n} critter(s)" with locale awareness. */
+  function nCritters(n) {
+    return lang === 'es' ? `${n} criatura(s)` : `${n} critter(s)`;
+  }
+
+  /** Apply current lang to all data-i18n / data-i18n-placeholder elements. */
+  function applyLang() {
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const str = STRINGS[lang]?.[el.dataset.i18n];
+      if (str !== undefined) el.textContent = str;
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const str = STRINGS[lang]?.[el.dataset.i18nPlaceholder];
+      if (str !== undefined) el.placeholder = str;
+    });
+
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
+      const active = btn.dataset.lang === lang;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  /** Wire up the EN / ES toggle buttons. Re-renders the page on switch. */
+  function initLangToggle(renderFn, renderArgs) {
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.lang === lang) return;
+        lang = btn.dataset.lang;
+        localStorage.setItem('dmc-lang', lang);
+        applyLang();
+        if (renderFn && renderArgs) renderFn(renderArgs);
+      });
+    });
+  }
+
+  // ── GitHub API setup ──────────────────────────────────────
   const pathParts = window.location.pathname.split('/').filter(Boolean);
   const OWNER = 'JuanciscoPacketTracer';
   const REPO = pathParts[0] || 'dungeon-critters';
@@ -9,24 +99,28 @@
   const TYPE3_CONFIG_PATH = 'scripts/00000 Plugins/00002 DMC_TripleTypes/00000 Config.rb';
   const TYPE_KEY = ['type1', 'type2', 'type3'];
   const MODIFIER_FROM_SCORE = new Map([
-    [4, 4], [3, 3], [2, 2], [1, 2], [0, 1], [-1, 0.5], [-2, 0.5], [-3, 0.33]
+    [4, 4], [3, 3], [2, 2], [1, 2], [0, 1], [-1, 0.5], [-2, 0.5], [-3, 0.33],
   ]);
 
   const page = document.body.dataset.page;
 
-  const toTitle = (value) => (value || '')
-    .toString()
-    .replaceAll('_', ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-  const escapeHtml = (value) => (value || '')
-    .toString()
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-  const sanitizeColor = (value) => (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value || '') ? value : '#607d8b');
+  // ── Helpers ───────────────────────────────────────────────
+  const toTitle = (value) =>
+    (value || '').toString().replaceAll('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
+  const escapeHtml = (value) =>
+    (value || '')
+      .toString()
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+
+  const sanitizeColor = (value) =>
+    /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value || '') ? value : '#607d8b';
+
+  // ── Data fetching ─────────────────────────────────────────
   async function fetchJson(path) {
     const response = await fetch(path);
     if (!response.ok) throw new Error(`Fetch failed: ${path}`);
@@ -60,20 +154,19 @@
       fetchJson(`${API_BASE}/Data/Studio/pokemon?ref=${BRANCH}`),
       fetchJson(`${API_BASE}/Data/Studio/types?ref=${BRANCH}`),
       fetchTextWithFallback('Data/Text/Dialogs/100003.csv'),
-      fetchTextWithFallback(TYPE3_CONFIG_PATH)
+      fetchTextWithFallback(TYPE3_CONFIG_PATH),
     ]);
 
     const [pokemonData, typeData] = await Promise.all([
-      Promise.all(pokemonEntries.filter((f) => f.name.endsWith('.json')).map((f) => fetchJson(f.download_url))),
-      Promise.all(typeEntries.filter((f) => f.name.endsWith('.json')).map((f) => fetchJson(f.download_url)))
+      Promise.all(
+        pokemonEntries.filter((f) => f.name.endsWith('.json')).map((f) => fetchJson(f.download_url)),
+      ),
+      Promise.all(
+        typeEntries.filter((f) => f.name.endsWith('.json')).map((f) => fetchJson(f.download_url)),
+      ),
     ]);
 
-    return {
-      pokemonData,
-      typeData,
-      typeNamesText,
-      type3Map: parseType3Config(type3ConfigText)
-    };
+    return { pokemonData, typeData, typeNamesText, type3Map: parseType3Config(type3ConfigText) };
   }
 
   function parseTypeNames(csvText) {
@@ -97,15 +190,15 @@
           types,
           abilities: (form.abilities || []).filter(Boolean).map(toTitle),
           stats: {
-            HP: form.baseHp,
-            ATK: form.baseAtk,
-            DEF: form.baseDfe,
-            SPD: form.baseSpd,
+            HP:   form.baseHp,
+            ATK:  form.baseAtk,
+            DEF:  form.baseDfe,
+            SPD:  form.baseSpd,
             SATK: form.baseAts,
-            SDEF: form.baseDfs
+            SDEF: form.baseDfs,
           },
           spriteGif: `${RAW_BASE}graphics/pokedex/pokefront/${front}.gif`,
-          spritePng: `${RAW_BASE}graphics/pokedex/pokefront/${front}.png`
+          spritePng: `${RAW_BASE}graphics/pokedex/pokefront/${front}.png`,
         };
       })
       .filter(Boolean)
@@ -121,7 +214,7 @@
         symbol: type.dbSymbol,
         name: typeNames[type.textId] || toTitle(type.dbSymbol),
         color: type.color || '#607d8b',
-        offensive
+        offensive,
       });
     });
     return bySymbol;
@@ -142,19 +235,20 @@
     return MODIFIER_FROM_SCORE.get(score) ?? 0.25;
   }
 
+  // ── Render helpers ────────────────────────────────────────
   function spriteTag(critter, size = 96) {
     return `<img width="${size}" height="${size}" src="${critter.spriteGif}" data-fallback-src="${critter.spritePng}" alt="${escapeHtml(critter.name)} sprite"/>`;
   }
 
   function badge(type, typeMap) {
-    const t = typeMap.get(type);
-    const name = escapeHtml(t?.name || toTitle(type));
-    const color = sanitizeColor(t?.color);
+    const t2 = typeMap.get(type);
+    const name = escapeHtml(t2?.name || toTitle(type));
+    const color = sanitizeColor(t2?.color);
     return `<span class="badge" style="background:${color}">${name}</span>`;
   }
 
-  function emptyList(el, label = 'None') {
-    el.innerHTML = `<li>${escapeHtml(label)}</li>`;
+  function emptyList(el) {
+    el.innerHTML = `<li>${escapeHtml(t('none'))}</li>`;
   }
 
   function attachFallbackHandlers(scope) {
@@ -167,23 +261,48 @@
     });
   }
 
+  /** Render a visual stat bar. Max base stat treated as 255. */
+  function statBarHtml(name, value) {
+    const num = Number(value) || 0;
+    const pct = Math.min(100, Math.round((num / 255) * 100));
+    const tier = num < 60 ? 'low' : num < 90 ? 'mid' : num < 130 ? 'high' : 'max';
+    return `
+      <div class="stat-row">
+        <span class="stat-name">${escapeHtml(name)}</span>
+        <div class="stat-bar-wrap">
+          <div class="stat-bar" data-tier="${tier}" style="width:${pct}%"></div>
+        </div>
+        <span class="stat-value">${escapeHtml(String(num))}</span>
+      </div>`;
+  }
+
+  // ── Index page ────────────────────────────────────────────
   function renderIndex({ critters, typeMap }) {
-    const status = document.getElementById('status');
-    const grid = document.getElementById('critterGrid');
-    const search = document.getElementById('search');
+    const status     = document.getElementById('status');
+    const grid       = document.getElementById('critterGrid');
+    const search     = document.getElementById('search');
     const typeFilterA = document.getElementById('typeFilterA');
     const typeFilterB = document.getElementById('typeFilterB');
 
-    const typeOptions = [...typeMap.values()].sort((a, b) => a.name.localeCompare(b.name));
-    typeOptions.forEach((type) => {
-      typeFilterA.insertAdjacentHTML('beforeend', `<option value="${type.symbol}">${type.name}</option>`);
-      typeFilterB.insertAdjacentHTML('beforeend', `<option value="${type.symbol}">${type.name}</option>`);
-    });
+    // Populate type dropdowns (first run only)
+    if (typeFilterA.options.length <= 1) {
+      const typeOptions = [...typeMap.values()].sort((a, b) => a.name.localeCompare(b.name));
+      typeOptions.forEach((type) => {
+        typeFilterA.insertAdjacentHTML(
+          'beforeend',
+          `<option value="${type.symbol}">${type.name}</option>`,
+        );
+        typeFilterB.insertAdjacentHTML(
+          'beforeend',
+          `<option value="${type.symbol}">${type.name}</option>`,
+        );
+      });
+    }
 
     const applyFilters = () => {
       const text = search.value.trim().toLowerCase();
-      const a = typeFilterA.value;
-      const b = typeFilterB.value;
+      const a    = typeFilterA.value;
+      const b    = typeFilterB.value;
 
       const filtered = critters.filter((critter) => {
         if (text && !critter.name.toLowerCase().includes(text)) return false;
@@ -192,15 +311,18 @@
         return true;
       });
 
-      status.textContent = `${filtered.length} critter(s)`;
+      status.textContent = nCritters(filtered.length);
       grid.hidden = false;
-      grid.innerHTML = filtered.map((critter) => `
-        <a class="card" href="critter.html?id=${encodeURIComponent(critter.dbSymbol)}">
-          ${spriteTag(critter)}
-          <h2>${escapeHtml(critter.name)}</h2>
-          <div class="badges">${critter.types.map((type) => badge(type, typeMap)).join('')}</div>
-        </a>
-      `).join('');
+      grid.innerHTML = filtered
+        .map(
+          (critter) => `
+          <a class="card" href="critter.html?id=${encodeURIComponent(critter.dbSymbol)}">
+            ${spriteTag(critter)}
+            <h2>${escapeHtml(critter.name)}</h2>
+            <div class="badges">${critter.types.map((type) => badge(type, typeMap)).join('')}</div>
+          </a>`,
+        )
+        .join('');
       attachFallbackHandlers(grid);
     };
 
@@ -210,18 +332,19 @@
     applyFilters();
   }
 
+  // ── Detail page ───────────────────────────────────────────
   function renderDetail({ critters, typeMap }) {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+    const params  = new URLSearchParams(window.location.search);
+    const id      = params.get('id');
     const critter = critters.find((c) => c.dbSymbol === id);
+    const status  = document.getElementById('status');
 
-    const status = document.getElementById('status');
     if (!critter) {
-      status.textContent = 'Critter not found.';
+      status.textContent = t('not_found');
       return;
     }
 
-    document.title = `${critter.name} · Dungeon Critters Dex`;
+    document.title = `${critter.name} · Dungeon Critters Bestiary`;
     document.getElementById('critterName').textContent = critter.name;
 
     const sprite = document.getElementById('critterSprite');
@@ -233,7 +356,9 @@
       sprite.src = critter.spritePng;
     };
 
-    document.getElementById('typeBadges').innerHTML = critter.types.map((type) => badge(type, typeMap)).join('');
+    document.getElementById('typeBadges').innerHTML = critter.types
+      .map((type) => badge(type, typeMap))
+      .join('');
 
     const abilities = document.getElementById('abilities');
     if (!critter.abilities.length) {
@@ -242,47 +367,62 @@
       abilities.innerHTML = critter.abilities.map((a) => `<li>${escapeHtml(a)}</li>`).join('');
     }
 
-    const stats = document.getElementById('stats');
-    stats.innerHTML = Object.entries(critter.stats)
-      .map(([name, value]) => `<div><strong>${escapeHtml(name)}</strong><br/>${escapeHtml(value)}</div>`)
+    // Stat bars
+    document.getElementById('stats').innerHTML = Object.entries(critter.stats)
+      .map(([name, value]) => statBarHtml(name, value))
       .join('');
 
-    const weak = [];
+    // Type matchups
+    const weak   = [];
     const resist = [];
     const immune = [];
+
     for (const [attackType, type] of typeMap.entries()) {
-      const m = calculateModifier(attackType, critter.types, typeMap);
+      const m     = calculateModifier(attackType, critter.types, typeMap);
       const label = `${type.name} ×${m}`;
-      if (m === 0) immune.push(label);
-      else if (m > 1) weak.push(label);
-      else if (m < 1) resist.push(label);
+      if (m === 0)      immune.push(label);
+      else if (m > 1)   weak.push(label);
+      else if (m < 1)   resist.push(label);
     }
 
-    const weakEl = document.getElementById('weaknesses');
-    const resistEl = document.getElementById('resistances');
-    const immuneEl = document.getElementById('immunities');
+    const noneHtml = `<li>${escapeHtml(t('none'))}</li>`;
 
-    weakEl.innerHTML = weak.length ? weak.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : '<li>None</li>';
-    resistEl.innerHTML = resist.length ? resist.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : '<li>None</li>';
-    immuneEl.innerHTML = immune.length ? immune.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : '<li>None</li>';
+    document.getElementById('weaknesses').innerHTML  = weak.length
+      ? weak.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : noneHtml;
+    document.getElementById('resistances').innerHTML = resist.length
+      ? resist.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : noneHtml;
+    document.getElementById('immunities').innerHTML  = immune.length
+      ? immune.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : noneHtml;
 
     status.hidden = true;
     document.getElementById('detail').hidden = false;
     attachFallbackHandlers(document);
   }
 
+  // ── Boot ──────────────────────────────────────────────────
   async function init() {
+    // Apply saved language before data loads
+    applyLang();
+
     try {
-      const data = await loadData();
+      const data     = await loadData();
       const critters = getCritters(data);
       const typeNames = parseTypeNames(data.typeNamesText);
-      const typeMap = getTypeData(data.typeData, typeNames);
+      const typeMap  = getTypeData(data.typeData, typeNames);
+      const renderArgs = { critters, typeMap };
 
-      if (page === 'index') renderIndex({ critters, typeMap });
-      if (page === 'detail') renderDetail({ critters, typeMap });
+      if (page === 'index') {
+        initLangToggle(renderIndex, renderArgs);
+        renderIndex(renderArgs);
+      }
+
+      if (page === 'detail') {
+        initLangToggle(renderDetail, renderArgs);
+        renderDetail(renderArgs);
+      }
     } catch (error) {
       const status = document.getElementById('status');
-      if (status) status.textContent = `Failed to load dex data: ${error.message}`;
+      if (status) status.textContent = `${t('load_error')}: ${error.message}`;
     }
   }
 

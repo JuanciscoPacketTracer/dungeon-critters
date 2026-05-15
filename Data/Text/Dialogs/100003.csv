@@ -1,6 +1,6 @@
 en,fr,it,de,es,ko,kana
 Normal,Normal,Normale,Normal,Normal,노말,ノーマル
-Fighting,Combat,Lotta,Kampf,Pelea,격투,かくとう
+Fighting,Combat,Lotta,Kampf,Lucha,격투,かくとう
 Air,Vol,Volante,Flug,Aire,비행,ひこう
 Poison,Poison,Veleno,Gift,Veneno,독,どく
 Earth,Sol,Terra,Boden,Tierra,땅,じめん
@@ -41,7 +41,7 @@ Demon,Demon,Demon,Demon,Demonio,Demon,Demon
 Explosive,Explosive,Explosive,Explosive,Explosivo,Explosive,Explosive
 Holy,Holy,Holy,Holy,Sagrado,Holy,Holy
 Dream,Dream,Dream,Dream,Sueño,Dream,Dream
-Yarn,Yarn,Yarn,Yarn,Algodón,Yarn,Yarn
+Yarn,Yarn,Yarn,Yarn,Hilo,Yarn,Yarn
 Sweet,Sweet,Sweet,Sweet,Dulce,Sweet,Sweet
 Fruit,Fruit,Fruit,Fruit,Fruta,Fruit,Fruit
 Radiation,Radiation,Radiation,Radiation,Radiación,Radiation,Radiation
