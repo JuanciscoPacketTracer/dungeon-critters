@@ -1,8 +1,8 @@
 o:Configs::CreditsConfig:@project_splashI"
-title:ET:	@bgmI"ending.ogg;T:@line_heighti:@speedf44:@leader_spacingi5:@chief_project_titleI"Main Supporter;T:@chief_project_nameI"Pokémon Workshop;T:@leaders[{:
-titleI"Creator of PSDK;T:	nameI"Nuri Yuri;T{;I"Developer of LiteRGSS2;T;I"Scorbutics;T{;I"Maintainers of PSDK;T;I"%Aerun, Nuri Yuri, Palbolsky, Rey;T{;I""Lead Graphic Designer of PSDK;T;I"SirMalo;T{;I""Developers of Pokémon Studio;T;I"eAerun, HollowGap, karbbone, mentalyaz, Nuri Yuri,
-                Palbolsky, Walven, Waris, Zozo;T{;I")Former Developers of Pokémon Studio;T;I"arki, Badong, Toinane;T{;I"#Consultant for Pokémon Studio;T;I"WatchMeBakinWaffles;T{;I" Active contributors of PSDK;T;I"%invatorzen, Lexio, Matatix, Zozo;T{;I"Occasional contributors;T;I"0Beef, Enigmix, Flo, joeyw, Mud, SoloReprise;T{;I"MacOS Supporter;T;I"Lynn Isip;T{;I"Former Developer of PSDK;T;I"
-Leikt;T:@game_creditsI"B# PSDK related credits
+title:ET:	@bgmI"ending.ogg;T:@line_heighti:@speedi1:@leader_spacingi5:@chief_project_titleI" Creator of Dungeon Critters;T:@chief_project_nameI"Juan Francisco;T:@leaders[{:
+titleI"Creator of PSDK;T:	nameI"Nuri Yuri;T{;I"Developer of LiteRGSS2;T;I"Scorbutics;T{;I"Maintainers of PSDK;T;I"%Aerun, Nuri Yuri, Palbolsky, Rey;T{;I""Lead Graphic Designer of PSDK;T;I"SirMalo;T{;I""Developers of Pokémon Studio;T;I"VAerun, Aelysya, karbbone, mentalyaz,
+                Nuri Yuri, Palbolsky, Walven;T{;I")Former Developers of Pokémon Studio;T;I"2arki, Badong, HollowGap, Toinane, Waris, Zozo;T{;I"#Consultant for Pokémon Studio;T;I"WatchMeBakinWaffles;T{;I" Active contributors of PSDK;T;I",invatorzen, Lexio, ralandel, zhec, Zozo;T{;I"Occasional contributors;T;I"9Beef, Enigmix, Flo, joeyw, Matatix, Mud, SoloReprise;T{;I"MacOS Supporter;T;I"Lynn Isip;T{;I"Former Developer of PSDK;T;I"
+Leikt;T:@game_creditsI"`# PSDK related credits
 
 ## Pokémon Universe
 Game Freak, CREATURES INC. et The Pokémon Company
@@ -58,7 +58,7 @@ joeyw || Mauduss
 Nuri Yuri || Palbolsky
 PokeAPI || RebelIce
 Tokeur || Redder
-Schneitizel || Walven
+Walven
 
 ## Translation
 Aerun || Dax
@@ -234,6 +234,9 @@ Yumekua
 
 ## Animations
 
+### Battle Animations
+ralandel || Sirmalo
+
 ### Gen6 Battle Entry
 Jayzon
 
@@ -243,7 +246,7 @@ Metaiko || Isomir
 KLNOTHINCOMIN ||  
 
 ### Shiny Animations
-Neslug
+ralandel
 
 ## Miscellaneous
 

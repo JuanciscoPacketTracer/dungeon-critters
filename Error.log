@@ -1,25 +1,20 @@
 ================================Erreur de script================================
 Message :
-Current scene is not a GamePlay::Base
+undefined method `has_type?' for #<PFM::GameState:0x1236d3b0>
 
-Type : TypeError
-Script : 4_Systems_000_General.rb (PSDK)
-Ligne : 146
-Date : 25/04/2026 20:19:45
+Type : NoMethodError
+Script : (eval) (RMXP)
+Ligne : 2
+Date : 14/05/2026 15:43:20
 Game Version : 256
 Logiciel : PSDK 26.55
 Script used by eval command : 
-add_rename_pokemon(21, 5, false, 8)
-
+party.has_type?(:fire)
 
 ===================================Backtraces===================================
-[30] : 4_Systems_000_General.rb (PSDK) | ligne 146 current_scene
-[29] : 4_Systems_000_General.rb (PSDK) | ligne 399 open_pokemon_name_input
-[28] : 2_PSDK_Event_Interpreter.rb (PSDK) | ligne 303 rename_pokemon
-[27] : 2_PSDK_Event_Interpreter.rb (PSDK) | ligne 316 add_rename_pokemon
-[26] : (eval) (RMXP) | ligne 2 eval_X6
-[25] : 1_RMXP_Scripts.rb (PSDK) | ligne 2125 eval_script
-[24] : 1_RMXP_Scripts.rb (PSDK) | ligne 2117 command_355
+[26] : (eval) (RMXP) | ligne 2 eval_X7
+[25] : 1_RMXP_Scripts.rb (PSDK) | ligne 1349 eval_condition_script
+[24] : 1_RMXP_Scripts.rb (PSDK) | ligne 1334 command_111
 [23] : 1_RMXP_Scripts.rb (PSDK) | ligne 1101 execute_command
 [22] : 1_RMXP_Scripts.rb (PSDK) | ligne 976 update
 [21] : 1_RMXP_Scripts.rb (PSDK) | ligne 956 loop

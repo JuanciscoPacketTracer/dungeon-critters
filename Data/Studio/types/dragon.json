@@ -51,6 +51,10 @@
     {
       "defensiveType": "royal",
       "factor": 2
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 2
     }
   ],
   "color": "#7c88f3"

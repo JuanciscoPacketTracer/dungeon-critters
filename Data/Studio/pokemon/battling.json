@@ -66,14 +66,34 @@
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",
-        "cry": "0012.ogg",
+        "cry": "002.wav",
         "hasFemale": false
       },
       "moveSet": [
         {
           "klass": "LevelLearnableMove",
-          "move": "gust",
+          "move": "nibble",
           "level": 1
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "growl",
+          "level": 3
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "gust",
+          "level": 6
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "fang_nip",
+          "level": 9
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "blood_scent",
+          "level": 12
         }
       ]
     }

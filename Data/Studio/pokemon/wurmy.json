@@ -77,10 +77,31 @@
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",
-        "cry": "",
+        "cry": "021.mp3",
         "hasFemale": false
       },
-      "moveSet": []
+      "moveSet": [
+        {
+          "klass": "LevelLearnableMove",
+          "move": "dig",
+          "level": 1
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "burrow",
+          "level": 3
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "wiggle_slam",
+          "level": 6
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "bug_bite",
+          "level": 9
+        }
+      ]
     }
   ]
 }

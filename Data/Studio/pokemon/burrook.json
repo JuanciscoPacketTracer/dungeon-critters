@@ -1,0 +1,86 @@
+{
+  "klass": "Specie",
+  "id": 37,
+  "dbSymbol": "burrook",
+  "forms": [
+    {
+      "form": 0,
+      "formTextId": {
+        "name": 36,
+        "description": 0
+      },
+      "height": 0.7,
+      "weight": 60,
+      "type1": "bovine",
+      "type2": "__undef__",
+      "baseHp": 80,
+      "baseAtk": 62,
+      "baseDfe": 48,
+      "baseSpd": 60,
+      "baseAts": 10,
+      "baseDfs": 40,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [
+        {
+          "dbSymbol": "burron",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 18
+            }
+          ]
+        }
+      ],
+      "experienceType": 1,
+      "baseExperience": 60,
+      "baseLoyalty": 70,
+      "catchRate": 255,
+      "femaleRate": 50,
+      "breedGroups": [
+        1,
+        5
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "burrook",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "__undef__",
+        "__undef__",
+        "__undef__"
+      ],
+      "frontOffsetY": 0,
+      "moveSet": [],
+      "resources": {
+        "icon": "037",
+        "iconShiny": "",
+        "front": "037",
+        "frontShiny": "",
+        "back": "037",
+        "backShiny": "",
+        "footprint": "",
+        "character": "037",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "",
+        "hasFemale": false
+      }
+    }
+  ]
+}

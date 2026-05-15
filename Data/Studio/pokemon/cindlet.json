@@ -14,11 +14,11 @@
       "type1": "luz",
       "type2": "fire",
       "baseHp": 55,
-      "baseAtk": 10,
+      "baseAtk": 15,
       "baseDfe": 30,
       "baseSpd": 65,
       "baseAts": 60,
-      "baseDfs": 80,
+      "baseDfs": 75,
       "evHp": 0,
       "evAtk": 0,
       "evDfe": 0,
@@ -72,8 +72,18 @@
       "moveSet": [
         {
           "klass": "LevelLearnableMove",
-          "move": "ember",
+          "move": "shine",
           "level": 1
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "ember",
+          "level": 3
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "kindling",
+          "level": 6
         }
       ]
     }

@@ -6,3 +6,4 @@ EXPLORER CARD,[VAR TRNAME(0000)],[VAR TRNAME(0000)],[VAR TRNAME(0000)],Identific
 SAVE,Sauvegarder,Salva,Speichern,Guardar,리포트,レポート
 OPTIONS,Options,Opzioni,Optionen,Opciones,설정,せってい
 CRAFTING,,,,Fabricacion,,
+QUEST,,,,Objetivos,,

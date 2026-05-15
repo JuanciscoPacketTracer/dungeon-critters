@@ -4,13 +4,13 @@ Index,en,fr,it,de,es,ko,kana
 2,Cancel,Annuler,Cancel,Cancel,Cancel,Cancel,Cancel
 3,Select Search Method,Choix de la méthode de recherche,Select Search Method,Select Search Method,Select Search Method,Select Search Method,Select Search Method
 4,By Wanted,Par critères,By Wanted,By Wanted,By Wanted,By Wanted,By Wanted
-5,By Pokemon,Par Pokémon,By Pokemon,By Pokemon,By Pokemon,By Pokemon,By Pokemon
+5,By Critter,Par Pokémon,By Pokemon,By Pokemon,By Pokemon,By Pokemon,By Pokemon
 6,By OID,Par Online ID,By OID,By OID,By OID,By OID,By OID
 7,Exit,Quitter,Exit,Exit,Exit,Exit,Exit
-8,No Pokemon was found.,Aucun Pokémon n'a été trouvé.,No Pokemon was found.,No Pokemon was found.,No Pokemon was found.,No Pokemon was found.,No Pokemon was found.
-9,Failed to download Pokemon.,Échec du téléchargement des Pokémon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.
-10,Failed to download Pokemon.,Échec du téléchargement du Pokémon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.
-11,Failed to download Wanted Data.,Échec du téléchargement des critères.,Failed to download Wanted Data.,Failed to download Wanted Data.,Failed to download Wanted Data.,Failed to download Wanted Data.,Failed to download Wanted Data.
+8,No Critter was found.,Aucun Pokémon n'a été trouvé.,No Pokemon was found.,No Pokemon was found.,No Pokemon was found.,No Pokemon was found.,No Pokemon was found.
+9,Failed to download Critter.,Échec du téléchargement des Pokémon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.
+10,Failed to download Critter.,Échec du téléchargement du Pokémon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.,Failed to download Pokemon.
+11,Failed to download Wanted Critter.,Échec du téléchargement des critères.,Failed to download Wanted Data.,Failed to download Wanted Data.,Failed to download Wanted Data.,Failed to download Wanted Data.,Failed to download Wanted Data.
 12,The selected pokemon does not match the wanted requirments.,Le Pokémon choisi ne correspond pas aux critères.,The selected pokemon does not match the wanted requirments.,The selected pokemon does not match the wanted requirments.,The selected pokemon does not match the wanted requirments.,The selected pokemon does not match the wanted requirments.,The selected pokemon does not match the wanted requirments.
 13,"To Continue, please select a pokemon of yours, we will match it up with any possible matches and allow you to choose a match.",Choisissez un Pokémon. Nous allons essayer de trouver des Pokémon dont les critères lui correspond.,"To Continue, please select a pokemon of yours, we will match it up with any possible matches and allow you to choose a match.","To Continue, please select a pokemon of yours, we will match it up with any possible matches and allow you to choose a match.","To Continue, please select a pokemon of yours, we will match it up with any possible matches and allow you to choose a match.","To Continue, please select a pokemon of yours, we will match it up with any possible matches and allow you to choose a match.","To Continue, please select a pokemon of yours, we will match it up with any possible matches and allow you to choose a match."
 14,"To confirm, this is the wanted data.","Pour confirmer, voici les critères.","To confirm, this is the wanted data.","To confirm, this is the wanted data.","To confirm, this is the wanted data.","To confirm, this is the wanted data.","To confirm, this is the wanted data."

@@ -2,7 +2,6 @@
   "klass": "Configs::Project::GameOptions",
   "order": [
     "language",
-    "message_speed",
     "message_frame",
     "volume",
     "battle_animation",

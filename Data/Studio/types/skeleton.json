@@ -63,6 +63,10 @@
     {
       "defensiveType": "cosmic",
       "factor": 2
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 0.5
     }
   ],
   "color": "#fdf4f2"

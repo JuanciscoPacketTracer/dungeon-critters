@@ -91,6 +91,10 @@
     {
       "defensiveType": "hearth",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 2
     }
   ],
   "color": "#ea8383"

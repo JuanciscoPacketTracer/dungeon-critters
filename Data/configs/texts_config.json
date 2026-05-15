@@ -17,9 +17,9 @@
       },
       {
         "id": 5,
+        "name": "Unown",
         "size": 13,
-        "lineHeight": 26,
-        "name": "Unown"
+        "lineHeight": 26
       },
       {
         "id": 20,

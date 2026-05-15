@@ -66,7 +66,7 @@
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",
-        "cry": "",
+        "cry": "0608.ogg",
         "hasFemale": false
       },
       "moveSet": []

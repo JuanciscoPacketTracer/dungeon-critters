@@ -55,6 +55,10 @@
     {
       "defensiveType": "rodent",
       "factor": 2
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 2
     }
   ],
   "color": "#66ff00"

@@ -39,6 +39,10 @@
     {
       "defensiveType": "magnetism",
       "factor": 2
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 2
     }
   ],
   "color": "#ca8c8c"

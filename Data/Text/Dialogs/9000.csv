@@ -14,7 +14,7 @@ Yuri,Yuri,Yuri,Yuri,Yuri,ゆり,Yuri
 : cry,: cri,: ruf,: grito,: cry,: cry,: cry
 : cancel,: retour,: zurück,: cancelar,: cancel,: cancel,: cancel
 : infos,: infos,: infos,: infos,: infos,: infos,: infos
-: sw. Pkmn,: éch. Pkmn,: tau. Pkmn,: cmb. Pkmn,: sw. Pkmn,: sw. Pkmn,: sw. Pkmn
+: sw. Crtter,: éch. Pkmn,: tau. Pkmn,: cmb. Crtter,: sw. Pkmn,: sw. Pkmn,: sw. Pkmn
 : sw. item,: éch. objet,: tau. item,: cmb. obj.,: sw. item,: sw. item,: sw. item
 : cancel,: retour,: zurück,: cancelar,: cancel,: cancel,: cancel
 ,,,,,,
@@ -48,7 +48,7 @@ Contests,Concours,Contests,Concursos,Contests,Contests,Contests
 Ribbons,Rubans,Ribbons,Cintas,Ribbons,Ribbons,Ribbons
 ,,,,,,
 Main quests,Quêtes principales,Main quests,Misiones principales,Main quests,Main quests,Main quests
-"Side quests",Quêtes secondaires,Secondary quests,Misiones secundarias,Secondary quests,Secondary quests,Secondary quests
+Side quests,Quêtes secondaires,Secondary quests,Misiones secundarias,Secondary quests,Secondary quests,Secondary quests
 Failed quests,Quêtes échouées,Failed quests,Misiones fallidas,Failed quests,Failed quests,Failed quests
 Cancel,Retour,Cancel,Cancelar,Cancel,Cancel,Cancel
 Find %{amount} %{item_name} (%{found}),Trouver %{amount} %{item_name} (%{found}),Find %{amount} %{item_name} (%{found}),Encuentra %{amount} %{item_name} (%{found}),Find %{amount} %{item_name} (%{found}),Find %{amount} %{item_name} (%{found}),Find %{amount} %{item_name} (%{found})
@@ -62,12 +62,12 @@ Find %{amount} eggs (%{found}),Trouver %{amount}  œufs (%{found}),Find %{amount
 Find an egg,Trouver un œuf,Find an egg,Encuentra un huevo,Find an egg,Find an egg,Find an egg
 Hatch %{amount} eggs (%{found}),Faire éclore %{amount}  œufs (%{found}),Hatch %{amount} eggs (%{found}),Eclosiona %{amount} huevos (%{found}),Hatch %{amount} eggs (%{found}),Hatch %{amount} eggs (%{found}),Hatch %{amount} eggs (%{found})
 Hatch an egg,Faire éclore un œuf,Hatch an egg,Eclosiona un huevo,Hatch an egg,Hatch an egg,Hatch an egg
-" type %s"," de type %s"," type %s"," de tipo %s"," type %s"," type %s"," type %s"
-" nature %s"," ayant la nature %s"," nature %s"," con la naturaleza %s"," nature %s"," nature %s"," nature %s"
-" level %d"," au niveau %d"," level %d"," nivel %d"," level %d"," level %d"," level %d"
-" having minimum level %d"," d'un niveau minimal de %d"," having minimum level %d"," con un nivel mínimo de %d"," having minimum level %d"," having minimum level %d"," having minimum level %d"
-" to maximum level %d"," à un niveau maximal de %d"," to maximum level %d"," hasta un nivel máximo de %d"," to maximum level %d"," to maximum level %d"," to maximum level %d"
-" having maximum level %d"," d'un niveau maximal de %d"," having maximum level %d"," teniendo un máximo de %d"," having maximum level %d"," having maximum level %d"," having maximum level %d"
+ type %s, de type %s, type %s, de tipo %s, type %s, type %s, type %s
+ nature %s, ayant la nature %s, nature %s, con la naturaleza %s, nature %s, nature %s, nature %s
+ level %d, au niveau %d, level %d, nivel %d, level %d, level %d, level %d
+ having minimum level %d, d'un niveau minimal de %d, having minimum level %d, con un nivel mínimo de %d, having minimum level %d, having minimum level %d, having minimum level %d
+ to maximum level %d, à un niveau maximal de %d, to maximum level %d, hasta un nivel máximo de %d, to maximum level %d, to maximum level %d, to maximum level %d
+ having maximum level %d, d'un niveau maximal de %d, having maximum level %d, teniendo un máximo de %d, having maximum level %d, having maximum level %d, having maximum level %d
 ,,,,,,
 Weight: %.2f kg,Poids : %.2f kg,Weight: %.2f kg,Peso: %.2f kg,Weight: %.2f kg,Weight: %.2f kg,Weight: %.2f kg
 Height: %.2f m,Taille : %.2f m,Height: %.2f m,Altura: %.2f m,Height: %.2f m,Height: %.2f m,Height: %.2f m
@@ -77,14 +77,14 @@ Professor's PC,PC du Professeur,Professor's PC,PC del Profesor,Professor's PC,Pr
 Turn off,Déconnexion,Turn off,Apagar,Turn off,Turn off,Turn off
 ,,,,,,
 Organize Boxes,Ranger les Boîtes,Organize Boxes,Organizar Cajas,Organize Boxes,Organize Boxes,Organize Boxes
-Withdraw Pokémon,Retirer des Pokémon,Withdraw Pokémon,Sacar Pokémon,Withdraw Pokémon,Withdraw Pokémon,Withdraw Pokémon
-Deposit Pokémon,Déposer des Pokémon,Deposit Pokémon,Depositar Pokémon,Deposit Pokémon,Deposit Pokémon,Deposit Pokémon
+Withdraw Critter,Retirer des Pokémon,Withdraw Pokémon,Sacar Critter,Withdraw Pokémon,Withdraw Pokémon,Withdraw Pokémon
+Deposit Critter,Déposer des Pokémon,Deposit Pokémon,Depositar Critter,Deposit Pokémon,Deposit Pokémon,Deposit Pokémon
 Manage items,Gérer les objets,Manage items,Administrar objetos,Manage items,Manage items,Manage items
 See ya!,Quitter,See ya!,Salir,See ya!,See ya!,See ya!
 ,,,,,,
 %s booted up the PC.,%s allume le PC.,%s booted up the PC.,%s encendió el PC.,%s booted up the PC.,%s booted up the PC.,%s booted up the PC.
-"Which PC to access ?",A quel PC souhaitez-vous accéder ?,"Which PC to access ?",¿A qué PC quieres acceder?,"Which PC to access ?","Which PC to access ?","Which PC to access ?"
-"What to do ?",Que voulez-vous faire ?,"What to do ?",¿Qué quieres hacer?,"What to do ?","What to do ?","What to do ?"
+Which PC to access ?,A quel PC souhaitez-vous accéder ?,Which PC to access ?,¿A qué PC quieres acceder?,Which PC to access ?,Which PC to access ?,Which PC to access ?
+What to do ?,Que voulez-vous faire ?,What to do ?,¿Qué quieres hacer?,What to do ?,What to do ?,What to do ?
 Professor seems afk...,Le professeur semble absent pour le moment...,Professor seems afk...,Parece que el Profesor está ausente...,Professor seems afk...,Professor seems afk...,Professor seems afk...
 Cancel trade ?,Voulez-vous annuler l'échange ?,Cancel trade ?,¿Cancelar intercambio?,Cancel trade ?,Cancel trade ?,Cancel trade ?
 Choose the theme.\nlUse left and right arrow to switch theme.,Choisissez votre thème.\nl(Flèche gauche et droite pour changer de thème.),Choose the theme.\nlUse left and right arrow to switch theme.,Escoge un tema.\nlUsa la tecla izquierda y derecha para cambiar entre temas.,Choose the theme.\nlUse left and right arrow to switch theme.,Choose the theme.\nlUse left and right arrow to switch theme.,Choose the theme.\nlUse left and right arrow to switch theme.

@@ -14,10 +14,10 @@
       "type1": "bat",
       "type2": "rodent",
       "baseHp": 60,
-      "baseAtk": 20,
+      "baseAtk": 55,
       "baseDfe": 45,
       "baseSpd": 50,
-      "baseAts": 65,
+      "baseAts": 30,
       "baseDfs": 60,
       "evHp": 0,
       "evAtk": 0,
@@ -77,7 +77,7 @@
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",
-        "cry": "0010.ogg",
+        "cry": "001.wav",
         "hasFemale": false
       },
       "moveSet": [
@@ -85,6 +85,26 @@
           "klass": "LevelLearnableMove",
           "move": "nibble",
           "level": 1
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "growl",
+          "level": 3
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "gust",
+          "level": 6
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "fang_nip",
+          "level": 9
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "blood_scent",
+          "level": 12
         }
       ]
     }

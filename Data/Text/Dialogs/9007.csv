@@ -1,25 +1,25 @@
 index,en,fr,de,es,it,kana,ko
-0,What to do with %<box>s?,Que faire avec la boîte %<box>s ?
-1,What to do with %<name>s?,Que faire avec %<name>s ?
-2,What to do with %<count>d Pokémon?,Que faire avec ces %<count>d Pokémon ?
-3,ADD BOX,Ajouter une boîte
-4,How to rename %<box>s?,Quel nom donner à la boîte %<box>s ?
-5,Choose the theme for %<box>s.,Choisissez un thème pour la boite %<box>s.
-6,Choose a name for the new box.,Choisissez un nom pour la nouvelle boîte.
-7,Box %<id>d,Boîte %<id>d
-8,Remove %<box>s?,Retirer la boîte %<box>s ?
-9,Choose where to move %<name>s.,Choisissez où déplacer %<name>s.
-10,Choose where to move %<count>d Pokemon.,Choisissez où déplacer ces %<count>d Pokémon.
-11,Do you want to release %<name>s?,Souhaitez-vous relâcher %<name>s ?
-12,Do you want to release %<count>d Pokemon?,Souhaitez-vous relâcher ces %<count>d Pokémon ?
-13,Choose a Pokémon to trade.,Choisissez un Pokémon à échanger.
-14,: Select,: Sélect.
-15,: Quit,: Quitter
-16,: Details,: Résumé
-17,: Swap,: Échanger
-18,: Previous,: Précédent
-19,: Next,: Suivant
-20,: Clear,: Effacer
-21,: Options,: Options
-22,: Cancel,: Retour
-23,: Move,: Déplacer
+0,What to do with %<box>s?,Que faire avec la boîte %<box>s ?,,Que hacer con %<box>s?,,,
+1,What to do with %<name>s?,Que faire avec %<name>s ?,,Que hacer con %<name>s?,,,
+2,What to do with %<count>d Critter?,Que faire avec ces %<count>d Pokémon ?,,Que hacer con %<count>d  Critters?,,,
+3,ADD BOX,Ajouter une boîte,,AGREGAR CAJA,,,
+4,How to rename %<box>s?,Quel nom donner à la boîte %<box>s ?,,Como renombrar %<box>s?,,,
+5,Choose the theme for %<box>s.,Choisissez un thème pour la boite %<box>s.,,Escoje un fondo para %<box>s.,,,
+6,Choose a name for the new box.,Choisissez un nom pour la nouvelle boîte.,,Escoje un nombre para la nueva caja.,,,
+7,Box %<id>d,Boîte %<id>d,,Caja %<id>d,,,
+8,Remove %<box>s?,Retirer la boîte %<box>s ?,,Eliminar %<box>s?,,,
+9,Choose where to move %<name>s.,Choisissez où déplacer %<name>s.,,,,,
+10,Choose where to move %<count>d Critter.,Choisissez où déplacer ces %<count>d Pokémon.,,Escoje a donde mover %<count>d Critters.,,,
+11,Do you want to release %<name>s?,Souhaitez-vous relâcher %<name>s ?,,Quieres liberar a %<name>s?,,,
+12,Do you want to release %<count>d Critter?,Souhaitez-vous relâcher ces %<count>d Pokémon ?,,Quieres liberar %<count>d Critters?,,,
+13,Choose a Critter to trade.,Choisissez un Pokémon à échanger.,,Escoje un Critter para intercambiar.,,,
+14,: Select,: Sélect.,,:Seleccionar,,,
+15,: Quit,: Quitter,,: Salir,,,
+16,: Details,: Résumé,,: Detalles,,,
+17,: Swap,: Échanger,,: Cambiar,,,
+18,: Previous,: Précédent,,: Anterior,,,
+19,: Next,: Suivant,,: Siguente,,,
+20,: Clear,: Effacer,,: Limpiar,,,
+21,: Options,: Options,,: Opciones,,,
+22,: Cancel,: Retour,,: Cancelar,,,
+23,: Move,: Déplacer,,: Mover,,,

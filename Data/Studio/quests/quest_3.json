@@ -1,0 +1,19 @@
+{
+  "klass": "Quest",
+  "id": 3,
+  "dbSymbol": "quest_3",
+  "isPrimary": true,
+  "resolution": "default",
+  "objectives": [
+    {
+      "objectiveMethodName": "objective_speak_to",
+      "objectiveMethodArgs": [
+        0,
+        "Elder Theodrin"
+      ],
+      "textFormatMethodName": "text_speak_to",
+      "hiddenByDefault": false
+    }
+  ],
+  "earnings": []
+}

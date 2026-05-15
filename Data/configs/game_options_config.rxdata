@@ -1,1 +1,2 @@
-o:"Configs::Project::GameOptions:@order[:language:message_speed:message_frame:volume:battle_animation:screen_scale
+o:"Configs::Project::GameOptions:@order[
+:language:message_frame:volume:battle_animation:screen_scale

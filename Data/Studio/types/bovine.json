@@ -47,6 +47,70 @@
     {
       "defensiveType": "rodent",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 2
+    },
+    {
+      "defensiveType": "music",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 2
+    },
+    {
+      "defensiveType": "void",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 2
+    },
+    {
+      "defensiveType": "wolf",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sweet",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "radiation",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 2
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 0.5
     }
   ],
   "color": "#e6cb9e"

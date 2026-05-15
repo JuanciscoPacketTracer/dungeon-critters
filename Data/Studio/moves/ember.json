@@ -5,9 +5,9 @@
   "mapUse": 0,
   "battleEngineMethod": "s_basic",
   "type": "fire",
-  "power": 40,
+  "power": 60,
   "accuracy": 100,
-  "pp": 25,
+  "pp": 20,
   "category": "special",
   "movecriticalRate": 1,
   "priority": 0,
@@ -43,7 +43,7 @@
       "luckRate": 10
     }
   ],
-  "effectChance": 10,
+  "effectChance": 30,
   "condition": "cute",
   "appeal": 4,
   "jam": 0,

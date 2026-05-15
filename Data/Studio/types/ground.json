@@ -73,10 +73,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "bat",
-      "factor": 0
-    },
-    {
       "defensiveType": "skeleton",
       "factor": 2
     },
@@ -106,6 +102,10 @@
     },
     {
       "defensiveType": "rodent",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bovine",
       "factor": 0.5
     }
   ],

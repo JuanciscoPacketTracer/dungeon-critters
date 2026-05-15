@@ -6,70 +6,14 @@
   "resolution": "default",
   "objectives": [
     {
-      "objectiveMethodName": "objective_speak_to",
+      "objectiveMethodName": "objective_custom",
       "objectiveMethodArgs": [
         0,
-        "SirMalo"
+        0
       ],
-      "textFormatMethodName": "text_speak_to",
+      "textFormatMethodName": "text_custom",
       "hiddenByDefault": false
     }
   ],
-  "earnings": [
-    {
-      "earningMethodName": "earning_money",
-      "earningArgs": [
-        5000
-      ],
-      "textFormatMethodName": "text_earn_money"
-    },
-    {
-      "earningMethodName": "earning_item",
-      "earningArgs": [
-        "poke_ball",
-        10
-      ],
-      "textFormatMethodName": "text_earn_item"
-    },
-    {
-      "earningMethodName": "earning_item",
-      "earningArgs": [
-        "great_ball",
-        5
-      ],
-      "textFormatMethodName": "text_earn_item"
-    },
-    {
-      "earningMethodName": "earning_item",
-      "earningArgs": [
-        "ultra_ball",
-        3
-      ],
-      "textFormatMethodName": "text_earn_item"
-    },
-    {
-      "earningMethodName": "earning_item",
-      "earningArgs": [
-        "potion",
-        10
-      ],
-      "textFormatMethodName": "text_earn_item"
-    },
-    {
-      "earningMethodName": "earning_item",
-      "earningArgs": [
-        "super_potion",
-        5
-      ],
-      "textFormatMethodName": "text_earn_item"
-    },
-    {
-      "earningMethodName": "earning_item",
-      "earningArgs": [
-        "hyper_potion",
-        3
-      ],
-      "textFormatMethodName": "text_earn_item"
-    }
-  ]
+  "earnings": []
 }

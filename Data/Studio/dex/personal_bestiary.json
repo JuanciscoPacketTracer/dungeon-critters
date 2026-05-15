@@ -1,0 +1,188 @@
+{
+  "klass": "Dex",
+  "id": 1,
+  "dbSymbol": "personal_bestiary",
+  "startId": 1,
+  "csv": {
+    "csvFileId": 100063,
+    "csvTextIndex": 1
+  },
+  "creatures": [
+    {
+      "dbSymbol": "cindlet",
+      "form": 0
+    },
+    {
+      "dbSymbol": "lamplet",
+      "form": 0
+    },
+    {
+      "dbSymbol": "amplet",
+      "form": 0
+    },
+    {
+      "dbSymbol": "luxion",
+      "form": 0
+    },
+    {
+      "dbSymbol": "wicklet",
+      "form": 0
+    },
+    {
+      "dbSymbol": "wickelabra",
+      "form": 0
+    },
+    {
+      "dbSymbol": "mourndelume",
+      "form": 0
+    },
+    {
+      "dbSymbol": "lunaryx",
+      "form": 0
+    },
+    {
+      "dbSymbol": "waxy",
+      "form": 0
+    },
+    {
+      "dbSymbol": "hivewax",
+      "form": 0
+    },
+    {
+      "dbSymbol": "meltqueen",
+      "form": 0
+    },
+    {
+      "dbSymbol": "combuxtix",
+      "form": 0
+    },
+    {
+      "dbSymbol": "nibblet",
+      "form": 0
+    },
+    {
+      "dbSymbol": "battling",
+      "form": 0
+    },
+    {
+      "dbSymbol": "echobat",
+      "form": 0
+    },
+    {
+      "dbSymbol": "sonarion",
+      "form": 0
+    },
+    {
+      "dbSymbol": "xenobat",
+      "form": 0
+    },
+    {
+      "dbSymbol": "overseer",
+      "form": 0
+    },
+    {
+      "dbSymbol": "hellbat",
+      "form": 0
+    },
+    {
+      "dbSymbol": "hellwing",
+      "form": 0
+    },
+    {
+      "dbSymbol": "wurmy",
+      "form": 0
+    },
+    {
+      "dbSymbol": "wumerd",
+      "form": 0
+    },
+    {
+      "dbSymbol": "wurmire",
+      "form": 0
+    },
+    {
+      "dbSymbol": "primawurlm",
+      "form": 0
+    },
+    {
+      "dbSymbol": "cragwurm",
+      "form": 0
+    },
+    {
+      "dbSymbol": "crystalisk",
+      "form": 0
+    },
+    {
+      "dbSymbol": "toadli",
+      "form": 0
+    },
+    {
+      "dbSymbol": "toadroll",
+      "form": 0
+    },
+    {
+      "dbSymbol": "toadrum",
+      "form": 0
+    },
+    {
+      "dbSymbol": "toadossal",
+      "form": 0
+    },
+    {
+      "dbSymbol": "toadstrike",
+      "form": 0
+    },
+    {
+      "dbSymbol": "champtoad",
+      "form": 0
+    },
+    {
+      "dbSymbol": "toadlux",
+      "form": 0
+    },
+    {
+      "dbSymbol": "glowshroom",
+      "form": 0
+    },
+    {
+      "dbSymbol": "sunshroom",
+      "form": 0
+    },
+    {
+      "dbSymbol": "glowtoad",
+      "form": 0
+    },
+    {
+      "dbSymbol": "burrook",
+      "form": 0
+    },
+    {
+      "dbSymbol": "burron",
+      "form": 0
+    },
+    {
+      "dbSymbol": "muldera",
+      "form": 0
+    },
+    {
+      "dbSymbol": "ironmula",
+      "form": 0
+    },
+    {
+      "dbSymbol": "donquiburro",
+      "form": 0
+    },
+    {
+      "dbSymbol": "sanchariot",
+      "form": 0
+    },
+    {
+      "dbSymbol": "burrico",
+      "form": 0
+    },
+    {
+      "dbSymbol": "burriesta",
+      "form": 0
+    }
+  ]
+}

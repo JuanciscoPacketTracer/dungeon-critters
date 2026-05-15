@@ -60,8 +60,8 @@
         }
       ],
       "abilities": [
-        "anticipation",
-        "anticipation",
+        "mushroom_power_up",
+        "mushroom_power_up",
         "anticipation"
       ],
       "frontOffsetY": 0,
@@ -80,7 +80,18 @@
         "cry": "0755.ogg",
         "hasFemale": false
       },
-      "moveSet": []
+      "moveSet": [
+        {
+          "klass": "LevelLearnableMove",
+          "move": "spore",
+          "level": 1
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "growl",
+          "level": 3
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "klass": "Quest",
+  "id": 4,
+  "dbSymbol": "quest_4",
+  "isPrimary": true,
+  "resolution": "default",
+  "objectives": [
+    {
+      "objectiveMethodName": "objective_speak_to",
+      "objectiveMethodArgs": [
+        0,
+        "Blacksmith Durgan"
+      ],
+      "textFormatMethodName": "text_speak_to",
+      "hiddenByDefault": false
+    }
+  ],
+  "earnings": []
+}

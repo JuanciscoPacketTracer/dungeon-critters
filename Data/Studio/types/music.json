@@ -75,6 +75,10 @@
     {
       "defensiveType": "amphibian",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 2
     }
   ],
   "color": "#0008ff"
