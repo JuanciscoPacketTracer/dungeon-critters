@@ -29,6 +29,7 @@ module DMC
       [:combuxtix, 0] => :poison,
       [:primawurlm, 0] => :dragon,
       [:toadrum, 0] => :music,
+      [:glowtoad, 0] => :luz,
       [:toadossal, 0] => :music,
       [:sunshroom, 0] => :holy,
       [:ironmula, 0] => :steel,

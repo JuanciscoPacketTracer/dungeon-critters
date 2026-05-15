@@ -56,9 +56,10 @@
   }
 
   async function loadData() {
-    const [pokemonEntries, typeEntries, type3ConfigText] = await Promise.all([
+    const [pokemonEntries, typeEntries, typeNamesText, type3ConfigText] = await Promise.all([
       fetchJson(`${API_BASE}/Data/Studio/pokemon?ref=${BRANCH}`),
       fetchJson(`${API_BASE}/Data/Studio/types?ref=${BRANCH}`),
+      fetchTextWithFallback('Data/Text/Dialogs/100003.csv'),
       fetchTextWithFallback(TYPE3_CONFIG_PATH)
     ]);
 
@@ -70,8 +71,14 @@
     return {
       pokemonData,
       typeData,
+      typeNamesText,
       type3Map: parseType3Config(type3ConfigText)
     };
+  }
+
+  function parseTypeNames(csvText) {
+    const lines = csvText.split(/\r?\n/).filter(Boolean);
+    return lines.slice(1).map((line) => line.split(',')[0]);
   }
 
   function getCritters(data) {
@@ -97,22 +104,22 @@
             SATK: form.baseAts,
             SDEF: form.baseDfs
           },
-          spriteGif: `graphics/pokedex/pokefront/${front}.gif`,
-          spritePng: `graphics/pokedex/pokefront/${front}.png`
+          spriteGif: `${RAW_BASE}graphics/pokedex/pokefront/${front}.gif`,
+          spritePng: `${RAW_BASE}graphics/pokedex/pokefront/${front}.png`
         };
       })
       .filter(Boolean)
       .sort((a, b) => a.id - b.id);
   }
 
-  function getTypeData(typeData) {
+  function getTypeData(typeData, typeNames) {
     const bySymbol = new Map();
     typeData.forEach((type) => {
       const offensive = new Map();
       (type.damageTo || []).forEach((row) => offensive.set(row.defensiveType, row.factor));
       bySymbol.set(type.dbSymbol, {
         symbol: type.dbSymbol,
-        name: toTitle(type.dbSymbol),
+        name: typeNames[type.textId] || toTitle(type.dbSymbol),
         color: type.color || '#607d8b',
         offensive
       });
@@ -268,7 +275,8 @@
     try {
       const data = await loadData();
       const critters = getCritters(data);
-      const typeMap = getTypeData(data.typeData);
+      const typeNames = parseTypeNames(data.typeNamesText);
+      const typeMap = getTypeData(data.typeData, typeNames);
 
       if (page === 'index') renderIndex({ critters, typeMap });
       if (page === 'detail') renderDetail({ critters, typeMap });
