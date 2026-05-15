@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Critter Detail · Dungeon Critters Dex</title>
+  <link rel="stylesheet" href="dex.css" />
+</head>
+<body data-page="detail">
+  <header>
+    <a href="index.html">← Back to Dex</a>
+    <h1 id="critterName">Critter</h1>
+  </header>
+
+  <main id="detail" hidden>
+    <section class="hero">
+      <img id="critterSprite" alt="Critter sprite" />
+      <div>
+        <div id="typeBadges" class="badges"></div>
+        <h2>Abilities</h2>
+        <ul id="abilities"></ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Stats</h2>
+      <div id="stats" class="stats"></div>
+    </section>
+
+    <section>
+      <h2>Type Matchups (Triple-Type Logic)</h2>
+      <p class="small">Computed using the same weighted modifier rule as <code>DMC_TripleTypes</code> plugin.</p>
+      <div class="matchups">
+        <div>
+          <h3>Weaknesses</h3>
+          <ul id="weaknesses"></ul>
+        </div>
+        <div>
+          <h3>Resistances</h3>
+          <ul id="resistances"></ul>
+        </div>
+        <div>
+          <h3>Immunities</h3>
+          <ul id="immunities"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="status">Loading critter...</div>
+  <script src="dex.js" defer></script>
+</body>
+</html>
