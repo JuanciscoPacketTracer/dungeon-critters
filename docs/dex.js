@@ -238,7 +238,7 @@
   }
 
   async function loadData() {
-    const [pokemonEntries, typeEntries, abilityEntries, pokemonNamesText, descriptionsText, typeNamesText, abilityNamesText, type3ConfigText] = await Promise.all([
+    const [pokemonEntries, typeEntries, abilityEntries, pokemonNamesText, descriptionsText, typeNamesText, abilityNamesText, type3ConfigText, personalDexText] = await Promise.all([
       fetchJson(`${API_BASE}/Data/Studio/pokemon?ref=${BRANCH}`),
       fetchJson(`${API_BASE}/Data/Studio/types?ref=${BRANCH}`),
       fetchJson(`${API_BASE}/Data/Studio/abilities?ref=${BRANCH}`),
@@ -247,6 +247,7 @@
       fetchTextWithFallback('Data/Text/Dialogs/100003.csv'),
       fetchTextWithFallback('Data/Text/Dialogs/100004.csv'),
       fetchTextWithFallback(TYPE3_CONFIG_PATH),
+      fetchTextWithFallback('Data/Studio/dex/personal_bestiary.json'),
     ]);
 
     const [pokemonData, typeData, abilityData] = await Promise.all([
@@ -270,10 +271,27 @@
       typeNamesText,
       abilityNamesText,
       type3Map: parseType3Config(type3ConfigText),
+      personalDex: personalDexText ? JSON.parse(personalDexText) : null,
     };
   }
 
   function getCritters(data) {
+    // Build a lookup from dbSymbol#form -> pokedex number using the Personal Bestiary (dex id 1)
+    const pokedexMap = new Map();
+    try {
+      const pd = data.personalDex;
+      if (pd && Array.isArray(pd.creatures)) {
+        const start = Number(pd.startId) || 1;
+        pd.creatures.forEach((c, idx) => {
+          const key = `${c.dbSymbol}#${c.form ?? 0}`;
+          pokedexMap.set(key, start + idx);
+          // also map bare symbol for backward compatibility
+          if (!pokedexMap.has(c.dbSymbol)) pokedexMap.set(c.dbSymbol, start + idx);
+        });
+      }
+    } catch (err) {
+      console.warn('Failed to build pokedex map:', err);
+    }
     return data.pokemonData
       .map((entry) => {
         const form = entry.forms?.[0];
@@ -300,10 +318,16 @@
           },
           spriteGif: `${RAW_BASE}graphics/pokedex/pokefront/${front}.gif`,
           spritePng: `${RAW_BASE}graphics/pokedex/pokefront/${front}.png`,
+          pokedexNumber: pokedexMap.get(`${entry.dbSymbol}#${form.form ?? 0}`) || pokedexMap.get(entry.dbSymbol) || null,
         };
       })
       .filter(Boolean)
-      .sort((a, b) => a.id - b.id);
+      .sort((a, b) => {
+        const pa = a.pokedexNumber ?? Number.MAX_SAFE_INTEGER;
+        const pb = b.pokedexNumber ?? Number.MAX_SAFE_INTEGER;
+        if (pa !== pb) return pa - pb;
+        return a.id - b.id;
+      });
   }
 
   function getTypeData(typeData) {
