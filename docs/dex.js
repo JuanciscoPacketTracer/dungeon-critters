@@ -10,8 +10,24 @@
       loading:            'Loading critters…',
       loading_detail:     'Loading critter…',
       back:               '← Back to Bestiary',
+      description:        'Description',
       abilities:          'Abilities',
       stats:              'Stats',
+      base_stat_total:    'Base Stat Total',
+      evolutions:         'Evolutions',
+      no_evolutions:      'This critter does not evolve.',
+      method_level:       'Level',
+      method_stone:       'Use',
+      method_move:        'Knows',
+      method_maps:        'Map',
+      method_gender:      'Gender',
+      method_time:        'Time',
+      gender_male:        'Male',
+      gender_female:      'Female',
+      gender_unknown:     'Unknown',
+      time_day:           'Day',
+      time_night:         'Night',
+      time_slot:          'Slot',
       matchups:           'Type Matchups (Triple-Type Logic)',
       weaknesses:         'Weaknesses',
       resistances:        'Resistances',
@@ -29,8 +45,24 @@
       loading:            'Cargando criaturas…',
       loading_detail:     'Cargando criatura…',
       back:               '← Volver al Bestiario',
+      description:        'Descripción',
       abilities:          'Habilidades',
       stats:              'Estadísticas',
+      base_stat_total:    'Total de stats base',
+      evolutions:         'Evoluciones',
+      no_evolutions:      'Esta criatura no evoluciona.',
+      method_level:       'Nivel',
+      method_stone:       'Usar',
+      method_move:        'Conoce',
+      method_maps:        'Mapa',
+      method_gender:      'Género',
+      method_time:        'Tiempo',
+      gender_male:        'Macho',
+      gender_female:      'Hembra',
+      gender_unknown:     'Desconocido',
+      time_day:           'Día',
+      time_night:         'Noche',
+      time_slot:          'Franja',
       matchups:           'Efectividades de tipo (Triple tipo)',
       weaknesses:         'Debilidades',
       resistances:        'Resistencias',
@@ -43,6 +75,7 @@
 
   let lang = localStorage.getItem('dmc-lang') || 'en';
   if (!STRINGS[lang]) lang = 'en';
+  const LANG_COLUMN = { en: 0, es: 4 };
 
   /** Translate a key for the current language. */
   function t(key) {
@@ -120,6 +153,61 @@
   const sanitizeColor = (value) =>
     /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value || '') ? value : '#607d8b';
 
+  function parseCsv(csvText) {
+    const rows = [];
+    let row = [];
+    let cell = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < csvText.length; i += 1) {
+      const ch = csvText[i];
+      const next = csvText[i + 1];
+
+      if (ch === '"') {
+        if (inQuotes && next === '"') {
+          cell += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+
+      if (!inQuotes && ch === ',') {
+        row.push(cell);
+        cell = '';
+        continue;
+      }
+
+      if (!inQuotes && (ch === '\n' || ch === '\r')) {
+        if (ch === '\r' && next === '\n') i += 1;
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = '';
+        continue;
+      }
+
+      cell += ch;
+    }
+
+    row.push(cell);
+    rows.push(row);
+    return rows;
+  }
+
+  function parseLocalizedTable(csvText) {
+    const rows = parseCsv(csvText);
+    return rows.slice(1);
+  }
+
+  function getLocalizedCell(rows, id, fallback = '') {
+    const row = rows[id];
+    if (!row) return fallback;
+    const column = LANG_COLUMN[lang] ?? 0;
+    return row[column] || row[0] || fallback;
+  }
+
   // ── Data fetching ─────────────────────────────────────────
   async function fetchJson(path) {
     const response = await fetch(path);
@@ -150,28 +238,39 @@
   }
 
   async function loadData() {
-    const [pokemonEntries, typeEntries, typeNamesText, type3ConfigText] = await Promise.all([
+    const [pokemonEntries, typeEntries, abilityEntries, pokemonNamesText, descriptionsText, typeNamesText, abilityNamesText, type3ConfigText] = await Promise.all([
       fetchJson(`${API_BASE}/Data/Studio/pokemon?ref=${BRANCH}`),
       fetchJson(`${API_BASE}/Data/Studio/types?ref=${BRANCH}`),
+      fetchJson(`${API_BASE}/Data/Studio/abilities?ref=${BRANCH}`),
+      fetchTextWithFallback('Data/Text/Dialogs/100000.csv'),
+      fetchTextWithFallback('Data/Text/Dialogs/100002.csv'),
       fetchTextWithFallback('Data/Text/Dialogs/100003.csv'),
+      fetchTextWithFallback('Data/Text/Dialogs/100004.csv'),
       fetchTextWithFallback(TYPE3_CONFIG_PATH),
     ]);
 
-    const [pokemonData, typeData] = await Promise.all([
+    const [pokemonData, typeData, abilityData] = await Promise.all([
       Promise.all(
         pokemonEntries.filter((f) => f.name.endsWith('.json')).map((f) => fetchJson(f.download_url)),
       ),
       Promise.all(
         typeEntries.filter((f) => f.name.endsWith('.json')).map((f) => fetchJson(f.download_url)),
       ),
+      Promise.all(
+        abilityEntries.filter((f) => f.name.endsWith('.json')).map((f) => fetchJson(f.download_url)),
+      ),
     ]);
 
-    return { pokemonData, typeData, typeNamesText, type3Map: parseType3Config(type3ConfigText) };
-  }
-
-  function parseTypeNames(csvText) {
-    const lines = csvText.split(/\r?\n/).filter(Boolean);
-    return lines.slice(1).map((line) => line.split(',')[0]);
+    return {
+      pokemonData,
+      typeData,
+      abilityData,
+      pokemonNamesText,
+      descriptionsText,
+      typeNamesText,
+      abilityNamesText,
+      type3Map: parseType3Config(type3ConfigText),
+    };
   }
 
   function getCritters(data) {
@@ -186,9 +285,11 @@
         return {
           id: entry.id,
           dbSymbol: entry.dbSymbol,
-          name: toTitle(entry.dbSymbol),
+          fallbackName: toTitle(entry.dbSymbol),
           types,
-          abilities: (form.abilities || []).filter(Boolean).map(toTitle),
+          evolutions: form.evolutions || [],
+          abilitySymbols: (form.abilities || [])
+            .filter((a) => Boolean(a) && a !== '__undef__' && a !== 'none'),
           stats: {
             HP:   form.baseHp,
             ATK:  form.baseAtk,
@@ -205,19 +306,51 @@
       .sort((a, b) => a.id - b.id);
   }
 
-  function getTypeData(typeData, typeNames) {
+  function getTypeData(typeData) {
     const bySymbol = new Map();
     typeData.forEach((type) => {
       const offensive = new Map();
       (type.damageTo || []).forEach((row) => offensive.set(row.defensiveType, row.factor));
       bySymbol.set(type.dbSymbol, {
         symbol: type.dbSymbol,
-        name: typeNames[type.textId] || toTitle(type.dbSymbol),
+        textId: type.textId,
+        fallbackName: toTitle(type.dbSymbol),
         color: type.color || '#607d8b',
         offensive,
       });
     });
     return bySymbol;
+  }
+
+  function getAbilityData(abilityData) {
+    const bySymbol = new Map();
+    abilityData.forEach((ability) => {
+      bySymbol.set(ability.dbSymbol, {
+        textId: ability.textId,
+        fallbackName: toTitle(ability.dbSymbol),
+      });
+    });
+    return bySymbol;
+  }
+
+  function getCritterName(critter, textTables) {
+    return getLocalizedCell(textTables.pokemonNames, critter.id, critter.fallbackName);
+  }
+
+  function getCritterDescription(critter, textTables) {
+    return getLocalizedCell(textTables.descriptions, critter.id, '');
+  }
+
+  function getTypeName(typeSymbol, typeMap, textTables) {
+    const type = typeMap.get(typeSymbol);
+    if (!type) return toTitle(typeSymbol);
+    return getLocalizedCell(textTables.typeNames, type.textId, type.fallbackName);
+  }
+
+  function getAbilityName(abilitySymbol, abilityMap, textTables) {
+    const ability = abilityMap.get(abilitySymbol);
+    if (!ability) return toTitle(abilitySymbol);
+    return getLocalizedCell(textTables.abilityNames, ability.textId, ability.fallbackName);
   }
 
   function calculateModifier(attackType, defenderTypes, typeMap) {
@@ -236,15 +369,76 @@
   }
 
   // ── Render helpers ────────────────────────────────────────
-  function spriteTag(critter, size = 96) {
-    return `<img width="${size}" height="${size}" src="${critter.spriteGif}" data-fallback-src="${critter.spritePng}" alt="${escapeHtml(critter.name)} sprite"/>`;
+  function spriteTag(critter, name, size = 96) {
+    return `<img width="${size}" height="${size}" src="${critter.spriteGif}" data-fallback-src="${critter.spritePng}" alt="${escapeHtml(name)} sprite"/>`;
   }
 
-  function badge(type, typeMap) {
+  function badge(type, typeMap, textTables) {
     const t2 = typeMap.get(type);
-    const name = escapeHtml(t2?.name || toTitle(type));
+    const name = escapeHtml(getTypeName(type, typeMap, textTables));
     const color = sanitizeColor(t2?.color);
     return `<span class="badge" style="background:${color}">${name}</span>`;
+  }
+
+  function multiplierClass(multiplier) {
+    if (multiplier === 4) return 'm4';
+    if (multiplier === 3) return 'm3';
+    if (multiplier === 2) return 'm2';
+    if (multiplier === 1) return 'm1';
+    if (multiplier === 0.5) return 'm05';
+    if (multiplier === 0.33) return 'm033';
+    if (multiplier === 0.25) return 'm025';
+    if (multiplier === 0) return 'm0';
+    return 'm1';
+  }
+
+  function matchupRow(typeSymbol, multiplier, typeMap, textTables) {
+    const displayMultiplier = Number.isInteger(multiplier) ? String(multiplier) : String(multiplier);
+    return `<li class="matchup-row">${badge(typeSymbol, typeMap, textTables)}<span class="mult-chip ${multiplierClass(multiplier)}">x${displayMultiplier}</span></li>`;
+  }
+
+  function formatGender(value) {
+    if (value === 1) return t('gender_male');
+    if (value === 2) return t('gender_female');
+    return t('gender_unknown');
+  }
+
+  function formatTime(value) {
+    if (value === 0) return t('time_day');
+    if (value === 3) return t('time_night');
+    return `${t('time_slot')} ${value}`;
+  }
+
+  function formatEvolutionCondition(condition) {
+    const value = condition?.value;
+    switch (condition?.type) {
+      case 'minLevel':
+        return `${t('method_level')} ${value}`;
+      case 'stone':
+        return `${t('method_stone')} ${toTitle(value)}`;
+      case 'skill1':
+        return `${t('method_move')} ${toTitle(value)}`;
+      case 'maps': {
+        const maps = Array.isArray(value) ? value.map((mapId) => `${t('method_maps')} ${mapId}`).join(', ') : `${t('method_maps')} ${value}`;
+        return maps;
+      }
+      case 'gender':
+        return `${t('method_gender')} ${formatGender(value)}`;
+      case 'dayNight':
+        return `${t('method_time')} ${formatTime(value)}`;
+      default:
+        return `${toTitle(condition?.type || 'condition')} ${Array.isArray(value) ? value.join(', ') : value}`.trim();
+    }
+  }
+
+  function evolutionRow(evo, critterBySymbol, textTables) {
+    const target = critterBySymbol.get(evo.dbSymbol);
+    const targetName = target ? getCritterName(target, textTables) : toTitle(evo.dbSymbol);
+    const methodText = (evo.conditions || []).map((condition) => formatEvolutionCondition(condition)).join(' · ');
+    const sprite = target
+      ? `<img width="64" height="64" src="${target.spriteGif}" data-fallback-src="${target.spritePng}" alt="${escapeHtml(targetName)} sprite"/>`
+      : '';
+    return `<li class="evo-row">${sprite}<div class="evo-content"><a class="evo-name" href="critter.html?id=${encodeURIComponent(evo.dbSymbol)}">${escapeHtml(targetName)}</a><div class="evo-method">${escapeHtml(methodText || t('none'))}</div></div></li>`;
   }
 
   function emptyList(el) {
@@ -277,27 +471,33 @@
   }
 
   // ── Index page ────────────────────────────────────────────
-  function renderIndex({ critters, typeMap }) {
+  function renderIndex({ critters, typeMap, textTables }) {
     const status     = document.getElementById('status');
     const grid       = document.getElementById('critterGrid');
     const search     = document.getElementById('search');
     const typeFilterA = document.getElementById('typeFilterA');
     const typeFilterB = document.getElementById('typeFilterB');
 
-    // Populate type dropdowns (first run only)
-    if (typeFilterA.options.length <= 1) {
-      const typeOptions = [...typeMap.values()].sort((a, b) => a.name.localeCompare(b.name));
-      typeOptions.forEach((type) => {
-        typeFilterA.insertAdjacentHTML(
-          'beforeend',
-          `<option value="${type.symbol}">${type.name}</option>`,
-        );
-        typeFilterB.insertAdjacentHTML(
-          'beforeend',
-          `<option value="${type.symbol}">${type.name}</option>`,
-        );
-      });
-    }
+    const selectedA = typeFilterA.value;
+    const selectedB = typeFilterB.value;
+    const typeOptions = [...typeMap.entries()]
+      .map(([symbol, type]) => ({ symbol, label: getLocalizedCell(textTables.typeNames, type.textId, type.fallbackName) }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+
+    typeFilterA.innerHTML = `<option value="">${escapeHtml(t('any_type'))}</option>`;
+    typeFilterB.innerHTML = `<option value="">${escapeHtml(t('any_type2'))}</option>`;
+    typeOptions.forEach((type) => {
+      typeFilterA.insertAdjacentHTML(
+        'beforeend',
+        `<option value="${type.symbol}">${escapeHtml(type.label)}</option>`,
+      );
+      typeFilterB.insertAdjacentHTML(
+        'beforeend',
+        `<option value="${type.symbol}">${escapeHtml(type.label)}</option>`,
+      );
+    });
+    typeFilterA.value = selectedA;
+    typeFilterB.value = selectedB;
 
     const applyFilters = () => {
       const text = search.value.trim().toLowerCase();
@@ -305,7 +505,8 @@
       const b    = typeFilterB.value;
 
       const filtered = critters.filter((critter) => {
-        if (text && !critter.name.toLowerCase().includes(text)) return false;
+        const localizedName = getCritterName(critter, textTables);
+        if (text && !localizedName.toLowerCase().includes(text)) return false;
         if (a && !critter.types.includes(a)) return false;
         if (b && !critter.types.includes(b)) return false;
         return true;
@@ -315,25 +516,31 @@
       grid.hidden = false;
       grid.innerHTML = filtered
         .map(
-          (critter) => `
+          (critter) => {
+            const localizedName = getCritterName(critter, textTables);
+            return `
           <a class="card" href="critter.html?id=${encodeURIComponent(critter.dbSymbol)}">
-            ${spriteTag(critter)}
-            <h2>${escapeHtml(critter.name)}</h2>
-            <div class="badges">${critter.types.map((type) => badge(type, typeMap)).join('')}</div>
-          </a>`,
+            ${spriteTag(critter, localizedName)}
+            <h2>${escapeHtml(localizedName)}</h2>
+            <div class="badges">${critter.types.map((type) => badge(type, typeMap, textTables)).join('')}</div>
+          </a>`;
+          },
         )
         .join('');
       attachFallbackHandlers(grid);
     };
 
-    search.addEventListener('input', applyFilters);
-    typeFilterA.addEventListener('change', applyFilters);
-    typeFilterB.addEventListener('change', applyFilters);
+    if (!search.dataset.boundFilters) {
+      search.addEventListener('input', applyFilters);
+      typeFilterA.addEventListener('change', applyFilters);
+      typeFilterB.addEventListener('change', applyFilters);
+      search.dataset.boundFilters = '1';
+    }
     applyFilters();
   }
 
   // ── Detail page ───────────────────────────────────────────
-  function renderDetail({ critters, typeMap }) {
+  function renderDetail({ critters, typeMap, abilityMap, textTables, critterBySymbol }) {
     const params  = new URLSearchParams(window.location.search);
     const id      = params.get('id');
     const critter = critters.find((c) => c.dbSymbol === id);
@@ -344,12 +551,15 @@
       return;
     }
 
-    document.title = `${critter.name} · Dungeon Critters Bestiary`;
-    document.getElementById('critterName').textContent = critter.name;
+    const localizedName = getCritterName(critter, textTables);
+    const localizedDescription = getCritterDescription(critter, textTables);
+
+    document.title = `${localizedName} · Dungeon Critters Bestiary`;
+    document.getElementById('critterName').textContent = localizedName;
 
     const sprite = document.getElementById('critterSprite');
     sprite.src = critter.spriteGif;
-    sprite.alt = `${critter.name} sprite`;
+    sprite.alt = `${localizedName} sprite`;
     sprite.onerror = () => {
       if (sprite.dataset.fallback) return;
       sprite.dataset.fallback = '1';
@@ -357,42 +567,59 @@
     };
 
     document.getElementById('typeBadges').innerHTML = critter.types
-      .map((type) => badge(type, typeMap))
+      .map((type) => badge(type, typeMap, textTables))
       .join('');
+
+    document.getElementById('critterDescription').textContent = localizedDescription || t('none');
 
     const abilities = document.getElementById('abilities');
-    if (!critter.abilities.length) {
+    if (!critter.abilitySymbols.length) {
       emptyList(abilities);
     } else {
-      abilities.innerHTML = critter.abilities.map((a) => `<li>${escapeHtml(a)}</li>`).join('');
+      abilities.innerHTML = critter.abilitySymbols
+        .map((abilitySymbol) => getAbilityName(abilitySymbol, abilityMap, textTables))
+        .map((name) => `<li>${escapeHtml(name)}</li>`)
+        .join('');
     }
 
-    // Stat bars
+    const bst = Object.values(critter.stats).reduce((acc, value) => acc + (Number(value) || 0), 0);
     document.getElementById('stats').innerHTML = Object.entries(critter.stats)
       .map(([name, value]) => statBarHtml(name, value))
-      .join('');
+      .join('') + `<div class="bst-total">${escapeHtml(t('base_stat_total'))}: <strong>${bst}</strong></div>`;
+
+    const evolutionsEl = document.getElementById('evolutions');
+    const noEvolutionsEl = document.getElementById('noEvolutions');
+    if (!critter.evolutions.length) {
+      evolutionsEl.innerHTML = '';
+      noEvolutionsEl.hidden = false;
+      noEvolutionsEl.textContent = t('no_evolutions');
+    } else {
+      noEvolutionsEl.hidden = true;
+      evolutionsEl.innerHTML = critter.evolutions
+        .map((evo) => evolutionRow(evo, critterBySymbol, textTables))
+        .join('');
+    }
 
     // Type matchups
     const weak   = [];
     const resist = [];
     const immune = [];
 
-    for (const [attackType, type] of typeMap.entries()) {
+    for (const [attackType] of typeMap.entries()) {
       const m     = calculateModifier(attackType, critter.types, typeMap);
-      const label = `${type.name} ×${m}`;
-      if (m === 0)      immune.push(label);
-      else if (m > 1)   weak.push(label);
-      else if (m < 1)   resist.push(label);
+      if (m === 0)      immune.push({ attackType, multiplier: m });
+      else if (m > 1)   weak.push({ attackType, multiplier: m });
+      else if (m < 1)   resist.push({ attackType, multiplier: m });
     }
 
     const noneHtml = `<li>${escapeHtml(t('none'))}</li>`;
 
     document.getElementById('weaknesses').innerHTML  = weak.length
-      ? weak.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : noneHtml;
+      ? weak.map((v) => matchupRow(v.attackType, v.multiplier, typeMap, textTables)).join('') : noneHtml;
     document.getElementById('resistances').innerHTML = resist.length
-      ? resist.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : noneHtml;
+      ? resist.map((v) => matchupRow(v.attackType, v.multiplier, typeMap, textTables)).join('') : noneHtml;
     document.getElementById('immunities').innerHTML  = immune.length
-      ? immune.map((v) => `<li>${escapeHtml(v)}</li>`).join('') : noneHtml;
+      ? immune.map((v) => matchupRow(v.attackType, v.multiplier, typeMap, textTables)).join('') : noneHtml;
 
     status.hidden = true;
     document.getElementById('detail').hidden = false;
@@ -407,9 +634,16 @@
     try {
       const data     = await loadData();
       const critters = getCritters(data);
-      const typeNames = parseTypeNames(data.typeNamesText);
-      const typeMap  = getTypeData(data.typeData, typeNames);
-      const renderArgs = { critters, typeMap };
+      const critterBySymbol = new Map(critters.map((critter) => [critter.dbSymbol, critter]));
+      const typeMap  = getTypeData(data.typeData);
+      const abilityMap = getAbilityData(data.abilityData);
+      const textTables = {
+        pokemonNames: parseLocalizedTable(data.pokemonNamesText),
+        descriptions: parseLocalizedTable(data.descriptionsText),
+        typeNames: parseLocalizedTable(data.typeNamesText),
+        abilityNames: parseLocalizedTable(data.abilityNamesText),
+      };
+      const renderArgs = { critters, typeMap, abilityMap, textTables, critterBySymbol };
 
       if (page === 'index') {
         initLangToggle(renderIndex, renderArgs);

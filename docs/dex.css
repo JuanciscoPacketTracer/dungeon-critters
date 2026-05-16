@@ -311,6 +311,13 @@ section h2, .hero h2 {
   margin: 0;
 }
 
+.description {
+  margin: 0 0 .9rem;
+  color: var(--text-muted);
+  font-size: .92rem;
+  line-height: 1.45;
+}
+
 /* ── Stat Bars ───────────────────────────────────────────── */
 .stats {
   display: flex;
@@ -358,6 +365,67 @@ section h2, .hero h2 {
   text-align: right;
 }
 
+.bst-total {
+  margin-top: .35rem;
+  padding-top: .5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: .88rem;
+}
+
+.bst-total strong {
+  color: var(--gold);
+  font-size: .95rem;
+}
+
+.evolutions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.evo-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: .65rem;
+  align-items: center;
+  padding: .45rem .55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, .03);
+}
+
+.evo-row img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+}
+
+.evo-content {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.evo-name {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.evo-name:hover {
+  color: var(--accent);
+}
+
+.evo-method {
+  font-size: .8rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
 /* ── Matchups ────────────────────────────────────────────── */
 .matchups {
   display: grid;
@@ -393,9 +461,39 @@ section h2, .hero h2 {
   margin: 0;
 }
 
-.matchup-group.weak   li { background: var(--danger-dim); color: #fca5a5; }
-.matchup-group.resist li { background: var(--resist-dim); color: #86efac; }
-.matchup-group.immune li { background: var(--immune-dim); color: var(--text-muted); }
+.matchup-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .45rem;
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--border);
+}
+
+.matchup-row .badge {
+  font-size: .68rem;
+  padding: .14rem .55rem;
+}
+
+.mult-chip {
+  border-radius: 999px;
+  padding: .14rem .5rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  border: 1px solid rgba(255, 255, 255, .08);
+  min-width: 3.2rem;
+  text-align: center;
+}
+
+.mult-chip.m4   { background: #7f1d1d; color: #fecaca; }
+.mult-chip.m3   { background: #991b1b; color: #fee2e2; }
+.mult-chip.m2   { background: #b91c1c; color: #fee2e2; }
+.mult-chip.m1   { background: #334155; color: #cbd5e1; }
+.mult-chip.m05  { background: #14532d; color: #bbf7d0; }
+.mult-chip.m033 { background: #166534; color: #dcfce7; }
+.mult-chip.m025 { background: #15803d; color: #dcfce7; }
+.mult-chip.m0   { background: #0f172a; color: #e2e8f0; }
 
 /* ── Misc ────────────────────────────────────────────────── */
 .small { opacity: .75; font-size: .88rem; }

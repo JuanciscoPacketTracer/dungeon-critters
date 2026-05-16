@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^\\$results = @\\{\\}; Get-ChildItem -Path \"Data/Studio/pokemon/\\*\\.json\" \\| ForEach-Object \\{ \\$file = \\$_\\.Name; \\$json = Get-Content \\$_\\.FullName \\| ConvertFrom-Json; \\$json\\.forms \\| ForEach-Object \\{ \\$form = \\$_; \\$form\\.evolutions \\| ForEach-Object \\{ \\$evo = \\$_; \\$evo\\.conditions \\| ForEach-Object \\{ \\$cond = \\$_; if \\(-not \\$results\\.ContainsKey\\(\\$cond\\.type\\)\\) \\{ \\$results\\[\\$cond\\.type\\] = @\\(\\) \\}; if \\(\\$results\\[\\$cond\\.type\\]\\.Count -lt 2\\) \\{ \\$isDup = \\$false; foreach\\(\\$seen in \\$results\\[\\$cond\\.type\\]\\) \\{ if \\(\\$seen\\.snippet -eq \\(\\$cond \\| ConvertTo-Json -Compress\\)\\) \\{ \\$isDup = \\$true; break \\} \\}; if \\(-not \\$isDup\\) \\{ \\$results\\[\\$cond\\.type\\] \\+= \\[PSCustomObject\\]@\\{ file = \\$file; snippet = \\(\\$cond \\| ConvertTo-Json -Compress\\) \\} \\} \\} \\} \\} \\} \\}; \\$results\\.GetEnumerator\\(\\) \\| ForEach-Object \\{ Write-Output \"Type: \\$\\(\\$_\\.Key\\)\"; \\$_\\.Value \\| ForEach-Object \\{ Write-Output \"File: \\$\\(\\$_\\.file\\) Snippet: \\$\\(\\$_\\.snippet\\)\" \\}; Write-Output \"\" \\}$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
