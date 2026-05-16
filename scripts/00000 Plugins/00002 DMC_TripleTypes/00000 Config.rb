@@ -13,7 +13,7 @@ module DMC
       [:echobat, 0] => :flying,
       [:sonarion, 0] => :flying,
       [:xenobat, 0] => :flying,
-      [:overseer, 0] => :mind,
+      [:overseer, 0] => :psychic,
       [:hellbat, 0] => :flying,
       [:hellwing, 0] => :fire,
       [:lamplet, 0] => :steel,
@@ -35,14 +35,14 @@ module DMC
       [:ironmula, 0] => :steel,
       [:sanchariot, 0] => :royal,
       [:burriesta, 0] => :dream,
-      [:mellumine, 0] => :light,
-      [:nebuluminous, 0] => :light,
+      [:mellumine, 0] => :luz,
+      [:nebuluminous, 0] => :luz,
       [:jellyvoltious, 0] => :electric,
       [:jellumi, 0] => :sweet,
       [:jellatine, 0] => :sweet,
       [:royalatine, 0] => :royal,
-      [:neurumi, 0] => :mind,
-      [:braindussa, 0] => :mind,
+      [:neurumi, 0] => :psychic,
+      [:braindussa, 0] => :psychic,
     }
     CREATURE_TYPE_3.default = :__undef__
   end
