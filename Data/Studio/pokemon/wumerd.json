@@ -25,7 +25,34 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "wurmire",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            }
+          ]
+        },
+        {
+          "dbSymbol": "cragwurm",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            },
+            {
+              "type": "maps",
+              "value": [
+                15
+              ]
+            }
+          ]
+        }
+      ],
       "experienceType": 3,
       "baseExperience": 160,
       "baseLoyalty": 70,

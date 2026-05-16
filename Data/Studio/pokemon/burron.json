@@ -25,7 +25,48 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "muldera",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            },
+            {
+              "type": "gender",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "dbSymbol": "donquiburro",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "stone",
+              "value": "knights_spur"
+            }
+          ]
+        },
+        {
+          "dbSymbol": "burrico",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            },
+            {
+              "type": "maps",
+              "value": [
+                60
+              ]
+            }
+          ]
+        }
+      ],
       "experienceType": 3,
       "baseExperience": 142,
       "baseLoyalty": 70,
@@ -54,7 +95,6 @@
         "__undef__"
       ],
       "frontOffsetY": 0,
-      "moveSet": [],
       "resources": {
         "icon": "",
         "iconShiny": "",
@@ -69,7 +109,8 @@
         "iconEgg": "",
         "cry": "",
         "hasFemale": false
-      }
+      },
+      "moveSet": []
     }
   ]
 }

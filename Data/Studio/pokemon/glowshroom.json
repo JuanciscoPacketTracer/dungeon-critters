@@ -25,7 +25,28 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "sunshroom",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "stone",
+              "value": "sun_piece"
+            }
+          ]
+        },
+        {
+          "dbSymbol": "glowtoad",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 45
+            }
+          ]
+        }
+      ],
       "experienceType": 0,
       "baseExperience": 40,
       "baseLoyalty": 70,
@@ -54,7 +75,6 @@
         "__undef__"
       ],
       "frontOffsetY": 0,
-      "moveSet": [],
       "resources": {
         "icon": "",
         "iconShiny": "",
@@ -69,7 +89,8 @@
         "iconEgg": "",
         "cry": "",
         "hasFemale": false
-      }
+      },
+      "moveSet": []
     }
   ]
 }

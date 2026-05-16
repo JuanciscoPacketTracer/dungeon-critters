@@ -25,7 +25,18 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "glowshroom",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            }
+          ]
+        }
+      ],
       "experienceType": 3,
       "baseExperience": 160,
       "baseLoyalty": 70,

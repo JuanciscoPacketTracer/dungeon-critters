@@ -25,7 +25,54 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "echobat",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            },
+            {
+              "type": "skill1",
+              "value": "echoed_voice"
+            }
+          ]
+        },
+        {
+          "dbSymbol": "xenobat",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            },
+            {
+              "type": "maps",
+              "value": [
+                24
+              ]
+            }
+          ]
+        },
+        {
+          "dbSymbol": "hellbat",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            },
+            {
+              "type": "maps",
+              "value": [
+                50
+              ]
+            }
+          ]
+        }
+      ],
       "experienceType": 3,
       "baseExperience": 100,
       "baseLoyalty": 70,

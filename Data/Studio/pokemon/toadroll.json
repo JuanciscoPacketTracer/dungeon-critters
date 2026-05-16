@@ -25,7 +25,32 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "toadrum",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            }
+          ]
+        },
+        {
+          "dbSymbol": "toadstrike",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 30
+            },
+            {
+              "type": "skill1",
+              "value": "mega_punch"
+            }
+          ]
+        }
+      ],
       "experienceType": 3,
       "baseExperience": 150,
       "baseLoyalty": 70,

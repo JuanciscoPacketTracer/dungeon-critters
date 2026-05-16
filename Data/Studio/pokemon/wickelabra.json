@@ -25,7 +25,36 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "mourndelume",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 45
+            },
+            {
+              "type": "dayNight",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "dbSymbol": "lunaryx",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 45
+            },
+            {
+              "type": "dayNight",
+              "value": 3
+            }
+          ]
+        }
+      ],
       "experienceType": 0,
       "baseExperience": 40,
       "baseLoyalty": 70,
@@ -54,7 +83,6 @@
         "__undef__"
       ],
       "frontOffsetY": 0,
-      "moveSet": [],
       "resources": {
         "icon": "",
         "iconShiny": "",
@@ -69,7 +97,8 @@
         "iconEgg": "",
         "cry": "",
         "hasFemale": false
-      }
+      },
+      "moveSet": []
     }
   ]
 }

@@ -25,7 +25,50 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "lamplet",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "stone",
+              "value": "forge_lantern"
+            }
+          ]
+        },
+        {
+          "dbSymbol": "wicklet",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 20
+            },
+            {
+              "type": "maps",
+              "value": [
+                20
+              ]
+            }
+          ]
+        },
+        {
+          "dbSymbol": "waxy",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 20
+            },
+            {
+              "type": "maps",
+              "value": [
+                21
+              ]
+            }
+          ]
+        }
+      ],
       "experienceType": 1,
       "baseExperience": 50,
       "baseLoyalty": 70,
