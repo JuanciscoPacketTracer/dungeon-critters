@@ -99,6 +99,14 @@
     {
       "defensiveType": "demon",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
     }
   ],
   "color": "#8eff42"

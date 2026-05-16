@@ -35,6 +35,10 @@
     {
       "defensiveType": "demon",
       "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
     }
   ],
   "color": "#69362b"

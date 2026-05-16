@@ -18,7 +18,7 @@
     },
     {
       "defensiveType": "psychic",
-      "factor": 2
+      "factor": 0.5
     },
     {
       "defensiveType": "bug",

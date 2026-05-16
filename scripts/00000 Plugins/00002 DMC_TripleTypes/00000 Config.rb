@@ -42,7 +42,7 @@ module DMC
       [:jellatine, 0] => :sweet,
       [:royalatine, 0] => :royal,
       [:neurumi, 0] => :psychic,
-      [:braindussa, 0] => :psychic,
+      [:braindussa, 0] => :psychic
     }
     CREATURE_TYPE_3.default = :__undef__
   end

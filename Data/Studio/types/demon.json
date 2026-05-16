@@ -5,10 +5,6 @@
   "textId": 38,
   "damageTo": [
     {
-      "defensiveType": "psychic",
-      "factor": 2
-    },
-    {
       "defensiveType": "bug",
       "factor": 0.5
     },

@@ -45,10 +45,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "slime",
-      "factor": 2
-    },
-    {
       "defensiveType": "bat",
       "factor": 0.5
     },

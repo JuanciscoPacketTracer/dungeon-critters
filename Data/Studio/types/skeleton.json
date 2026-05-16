@@ -41,10 +41,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "slime",
-      "factor": 2
-    },
-    {
       "defensiveType": "thoney",
       "factor": 0.5
     },
@@ -70,6 +66,10 @@
     },
     {
       "defensiveType": "demon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
       "factor": 0.5
     }
   ],

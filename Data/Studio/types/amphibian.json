@@ -67,6 +67,10 @@
     {
       "defensiveType": "bovine",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
     }
   ],
   "color": "#07e49a"

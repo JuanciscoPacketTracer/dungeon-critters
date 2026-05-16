@@ -47,6 +47,10 @@
     {
       "defensiveType": "rodent",
       "factor": 2
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
     }
   ],
   "color": "#ffd70f"

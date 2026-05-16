@@ -25,10 +25,6 @@
       "factor": 2
     },
     {
-      "defensiveType": "slime",
-      "factor": 2
-    },
-    {
       "defensiveType": "skeleton",
       "factor": 2
     },
