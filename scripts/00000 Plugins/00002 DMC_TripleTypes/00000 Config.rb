@@ -35,6 +35,14 @@ module DMC
       [:ironmula, 0] => :steel,
       [:sanchariot, 0] => :royal,
       [:burriesta, 0] => :dream,
+      [:mellumine, 0] => :light,
+      [:nebuluminous, 0] => :light,
+      [:jellyvoltious, 0] => :electric,
+      [:jellumi, 0] => :sweet,
+      [:jellatine, 0] => :sweet,
+      [:royalatine, 0] => :royal,
+      [:neurumi, 0] => :mind,
+      [:braindussa, 0] => :mind,
     }
     CREATURE_TYPE_3.default = :__undef__
   end

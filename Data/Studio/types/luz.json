@@ -9,10 +9,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "water",
-      "factor": 2
-    },
-    {
       "defensiveType": "grass",
       "factor": 0
     },

@@ -5,10 +5,6 @@
   "textId": 31,
   "damageTo": [
     {
-      "defensiveType": "water",
-      "factor": 2
-    },
-    {
       "defensiveType": "ice",
       "factor": 0.5
     },

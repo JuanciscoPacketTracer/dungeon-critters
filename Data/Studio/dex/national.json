@@ -183,6 +183,50 @@
     {
       "dbSymbol": "burriesta",
       "form": 0
+    },
+    {
+      "dbSymbol": "medumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "mellumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "mellumine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "nebuluminous",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jellyvoltious",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jellumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jellatine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "royalatine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "neurumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "cerebelus",
+      "form": 0
+    },
+    {
+      "dbSymbol": "braindussa",
+      "form": 0
     }
   ]
 }
