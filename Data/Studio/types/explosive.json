@@ -69,10 +69,6 @@
       "factor": 2
     },
     {
-      "defensiveType": "cosmic",
-      "factor": 0
-    },
-    {
       "defensiveType": "void",
       "factor": 0.5
     },
@@ -94,6 +90,10 @@
     },
     {
       "defensiveType": "dream",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
       "factor": 2
     }
   ],
