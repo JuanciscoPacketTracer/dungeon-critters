@@ -123,6 +123,10 @@
     {
       "defensiveType": "fungi",
       "factor": 2
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 0.5
     }
   ],
   "color": "#ff7583"

@@ -55,6 +55,10 @@
     {
       "defensiveType": "bovine",
       "factor": 2
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 2
     }
   ],
   "color": "#b48e04"

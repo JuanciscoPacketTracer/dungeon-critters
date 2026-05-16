@@ -103,6 +103,10 @@
     {
       "defensiveType": "holy",
       "factor": 2
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 0.5
     }
   ],
   "color": "#001f52"

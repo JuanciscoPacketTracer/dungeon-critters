@@ -13,31 +13,15 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "ghost",
-      "factor": 2
-    },
-    {
       "defensiveType": "dragon",
-      "factor": 2
-    },
-    {
-      "defensiveType": "dark",
-      "factor": 2
+      "factor": 0.5
     },
     {
       "defensiveType": "fairy",
       "factor": 2
     },
     {
-      "defensiveType": "crystal",
-      "factor": 2
-    },
-    {
       "defensiveType": "slime",
-      "factor": 2
-    },
-    {
-      "defensiveType": "bat",
       "factor": 2
     },
     {
@@ -49,12 +33,8 @@
       "factor": 2
     },
     {
-      "defensiveType": "cosmic",
-      "factor": 2
-    },
-    {
       "defensiveType": "void",
-      "factor": 2
+      "factor": 0.5
     },
     {
       "defensiveType": "reptile",
@@ -71,6 +51,46 @@
     {
       "defensiveType": "holy",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "fire",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 2
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 2
+    },
+    {
+      "defensiveType": "radiation",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 2
     }
   ],
   "color": "#280101"

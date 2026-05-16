@@ -107,6 +107,10 @@
     {
       "defensiveType": "dream",
       "factor": 2
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 2
     }
   ],
   "color": "#8c009e"

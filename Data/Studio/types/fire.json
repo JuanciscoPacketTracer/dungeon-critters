@@ -91,6 +91,10 @@
     {
       "defensiveType": "amphibian",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 0.5
     }
   ],
   "color": "#ee9474"
