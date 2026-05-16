@@ -55,6 +55,14 @@
     {
       "defensiveType": "hearth",
       "factor": 2
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 2
     }
   ],
   "color": "#9b96ed"

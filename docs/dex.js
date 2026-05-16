@@ -137,6 +137,9 @@
 
   const page = document.body.dataset.page;
 
+  // Will be set from the Type3 config (MAINTYPE flag)
+  let TRIPLE_MAIN_TYPE = true;
+
   // ── Helpers ───────────────────────────────────────────────
   const toTitle = (value) =>
     (value || '').toString().replaceAll('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase());
@@ -229,12 +232,18 @@
 
   function parseType3Config(rbText) {
     const mappings = new Map();
+    if (!rbText) return { map: mappings, maintype: true };
+
+    // Extract MAINTYPE flag (true/false)
+    const maintypeMatch = rbText.match(/MAINTYPE\s*=\s*(true|false)/);
+    const maintype = maintypeMatch ? maintypeMatch[1] === 'true' : true;
+
     const matcher = /\[:([A-Za-z0-9_]+)\s*,\s*(\d+)\]\s*=>\s*:([A-Za-z0-9_]+)/g;
     let match;
     while ((match = matcher.exec(rbText)) !== null) {
       mappings.set(`${match[1]}#${match[2]}`, match[3]);
     }
-    return mappings;
+    return { map: mappings, maintype };
   }
 
   async function loadData() {
@@ -262,6 +271,7 @@
       ),
     ]);
 
+    const parsedType3 = parseType3Config(type3ConfigText);
     return {
       pokemonData,
       typeData,
@@ -270,7 +280,8 @@
       descriptionsText,
       typeNamesText,
       abilityNamesText,
-      type3Map: parseType3Config(type3ConfigText),
+      type3Map: parsedType3.map,
+      maintypeFlag: parsedType3.maintype,
       personalDex: personalDexText ? JSON.parse(personalDexText) : null,
     };
   }
@@ -382,7 +393,7 @@
     for (let i = 0; i < TYPE_KEY.length; i += 1) {
       const defensiveType = defenderTypes[i];
       if (!defensiveType) continue;
-      const weight = i === 0 ? 2 : 1;
+      const weight = TRIPLE_MAIN_TYPE ? (i === 0 ? 2 : 1) : 1;
       const offensiveMap = typeMap.get(attackType)?.offensive;
       const factor = offensiveMap?.get(defensiveType) ?? 1;
       if (factor === 0) return 0;
@@ -657,6 +668,7 @@
 
     try {
       const data     = await loadData();
+      TRIPLE_MAIN_TYPE = Boolean(data.maintypeFlag);
       const critters = getCritters(data);
       const critterBySymbol = new Map(critters.map((critter) => [critter.dbSymbol, critter]));
       const typeMap  = getTypeData(data.typeData);

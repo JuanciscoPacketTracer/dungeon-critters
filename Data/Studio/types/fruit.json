@@ -39,6 +39,10 @@
     {
       "defensiveType": "rodent",
       "factor": 2
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 2
     }
   ],
   "color": "#ff2f00"

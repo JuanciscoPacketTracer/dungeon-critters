@@ -47,6 +47,10 @@
     {
       "defensiveType": "bovine",
       "factor": 2
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 2
     }
   ],
   "color": "#110019"

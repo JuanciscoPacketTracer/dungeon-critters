@@ -67,6 +67,10 @@
     {
       "defensiveType": "amphibian",
       "factor": 2
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 0.5
     }
   ],
   "color": "#aa1d1d"

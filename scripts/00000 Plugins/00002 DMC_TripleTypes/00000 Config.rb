@@ -1,7 +1,7 @@
 module DMC
   module TypeRework
     # Constant defining if you are using the rebalanced effectiveness calculation (true) or not (false)
-    MAINTYPE = true
+    MAINTYPE = false
 
 
     # Constant defining the Type3 of a Pokemon by form

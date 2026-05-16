@@ -99,6 +99,10 @@
     {
       "defensiveType": "bovine",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 2
     }
   ],
   "color": "#001f52"

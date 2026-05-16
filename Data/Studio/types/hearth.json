@@ -67,6 +67,62 @@
     {
       "defensiveType": "bovine",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fruit",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sweet",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "wolf",
+      "factor": 2
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 2
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bat",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 2
     }
   ],
   "color": "#ff7583"

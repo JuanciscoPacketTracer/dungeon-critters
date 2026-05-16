@@ -63,6 +63,10 @@
     {
       "defensiveType": "rodent",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "radiation",
+      "factor": 2
     }
   ],
   "color": "#b80000"

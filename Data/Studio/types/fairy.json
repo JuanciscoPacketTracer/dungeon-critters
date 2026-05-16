@@ -83,6 +83,10 @@
     {
       "defensiveType": "hearth",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 0.5
     }
   ],
   "color": "#e981a4"

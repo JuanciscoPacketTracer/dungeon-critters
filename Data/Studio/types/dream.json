@@ -59,6 +59,10 @@
     {
       "defensiveType": "bovine",
       "factor": 2
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 0.5
     }
   ],
   "color": "#fec7ff"

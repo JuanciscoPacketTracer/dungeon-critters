@@ -99,6 +99,14 @@
     {
       "defensiveType": "hearth",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 2
     }
   ],
   "color": "#fffdc2"

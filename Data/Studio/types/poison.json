@@ -87,6 +87,10 @@
     {
       "defensiveType": "hearth",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 2
     }
   ],
   "color": "#b292f7"
