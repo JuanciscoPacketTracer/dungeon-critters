@@ -79,6 +79,10 @@
     {
       "defensiveType": "luz",
       "factor": 2
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 2
     }
   ],
   "color": "#c2c6d1"

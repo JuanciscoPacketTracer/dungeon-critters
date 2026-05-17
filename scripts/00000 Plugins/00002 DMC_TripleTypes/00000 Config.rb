@@ -44,7 +44,10 @@ module DMC
       [:neurumi, 0] => :psychic,
       [:braindussa, 0] => :psychic,
       [:vilevora, 0] => :poison,
-      [:Tyranovine, 0] => :fire
+      [:tyranovine, 0] => :fire,
+      [:bombusk, 0] => :explosive,
+      [:jewelusk, 0] => :crystal,
+      [:magnhusk, 0] => :magnetic,
     }
     CREATURE_TYPE_3.default = :__undef__
   end

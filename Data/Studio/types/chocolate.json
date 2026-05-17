@@ -17,10 +17,6 @@
       "factor": 2
     },
     {
-      "defensiveType": "dragon",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "thoney",
       "factor": 0.5
     },
@@ -43,6 +39,10 @@
     {
       "defensiveType": "hearth",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 2
     }
   ],
   "color": "#69362b"

@@ -185,6 +185,34 @@
       "form": 0
     },
     {
+      "dbSymbol": "rootli",
+      "form": 0
+    },
+    {
+      "dbSymbol": "snaproot",
+      "form": 0
+    },
+    {
+      "dbSymbol": "snapvine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "vineragna",
+      "form": 0
+    },
+    {
+      "dbSymbol": "vilevora",
+      "form": 0
+    },
+    {
+      "dbSymbol": "dracovine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "tyranovine",
+      "form": 0
+    },
+    {
       "dbSymbol": "medumi",
       "form": 0
     },
@@ -229,31 +257,31 @@
       "form": 0
     },
     {
-      "dbSymbol": "rootli",
+      "dbSymbol": "huskli",
       "form": 0
     },
     {
-      "dbSymbol": "snaproot",
+      "dbSymbol": "stalaghusk",
       "form": 0
     },
     {
-      "dbSymbol": "snapvine",
+      "dbSymbol": "grubhusk",
       "form": 0
     },
     {
-      "dbSymbol": "vineragna",
+      "dbSymbol": "armorusk",
       "form": 0
     },
     {
-      "dbSymbol": "vilevora",
+      "dbSymbol": "bombusk",
       "form": 0
     },
     {
-      "dbSymbol": "dracovine",
+      "dbSymbol": "magnehusk",
       "form": 0
     },
     {
-      "dbSymbol": "tyranovine",
+      "dbSymbol": "jewelusk",
       "form": 0
     }
   ]

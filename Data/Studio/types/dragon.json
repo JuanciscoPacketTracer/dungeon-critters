@@ -50,7 +50,7 @@
     },
     {
       "defensiveType": "royal",
-      "factor": 2
+      "factor": 0.5
     },
     {
       "defensiveType": "bovine",
@@ -63,6 +63,10 @@
     {
       "defensiveType": "demon",
       "factor": 2
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 0.5
     }
   ],
   "color": "#7c88f3"
