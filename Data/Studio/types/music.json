@@ -91,6 +91,10 @@
     {
       "defensiveType": "electric",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
     }
   ],
   "color": "#0008ff"

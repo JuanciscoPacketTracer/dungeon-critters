@@ -48,6 +48,12 @@ module DMC
       [:bombusk, 0] => :explosive,
       [:jewelusk, 0] => :crystal,
       [:magnehusk, 0] => :magnetism,
+      [:crochetta, 0] => :hearth,
+      [:crochetress, 0] => :hearth,
+      [:dreamspinner, 0] => :dream,
+      [:dreamweaver, 0] => :dream,
+      [:silkmourne, 0] => :dark,
+      [:widomourne, 0] => :dark,
     }
     CREATURE_TYPE_3.default = :__undef__
   end

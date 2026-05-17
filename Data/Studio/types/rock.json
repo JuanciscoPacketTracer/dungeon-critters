@@ -103,6 +103,10 @@
     {
       "defensiveType": "arachnid",
       "factor": 2
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
     }
   ],
   "color": "#cb8b3e"

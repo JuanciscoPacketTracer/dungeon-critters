@@ -51,6 +51,10 @@
     {
       "defensiveType": "demon",
       "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 2
     }
   ],
   "color": "#110019"

@@ -37,10 +37,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "thoney",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "rodent",
       "factor": 0.5
     },
@@ -59,6 +55,46 @@
     {
       "defensiveType": "arachnid",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "water",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fire",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ice",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 2
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
+    },
+    {
+      "defensiveType": "poison",
+      "factor": 2
     }
   ],
   "color": "#f0e9c7"

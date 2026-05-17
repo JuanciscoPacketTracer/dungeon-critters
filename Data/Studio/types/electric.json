@@ -95,6 +95,10 @@
     {
       "defensiveType": "bovine",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
     }
   ],
   "color": "#f5ab3d"

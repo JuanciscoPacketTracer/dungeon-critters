@@ -95,6 +95,10 @@
     {
       "defensiveType": "dream",
       "factor": 2
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
     }
   ],
   "color": "#fffdc2"

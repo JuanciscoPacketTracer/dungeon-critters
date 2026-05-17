@@ -103,6 +103,10 @@
     {
       "defensiveType": "magnetism",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 0.5
     }
   ],
   "color": "#ea8383"

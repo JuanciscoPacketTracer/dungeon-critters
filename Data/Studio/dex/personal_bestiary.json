@@ -165,11 +165,11 @@
       "form": 0
     },
     {
-      "dbSymbol": "bombusk",
+      "dbSymbol": "armorusk",
       "form": 0
     },
     {
-      "dbSymbol": "armorusk",
+      "dbSymbol": "bombusk",
       "form": 0
     },
     {
@@ -178,6 +178,38 @@
     },
     {
       "dbSymbol": "jewelusk",
+      "form": 0
+    },
+    {
+      "dbSymbol": "silki",
+      "form": 0
+    },
+    {
+      "dbSymbol": "weavli",
+      "form": 0
+    },
+    {
+      "dbSymbol": "crochetta",
+      "form": 0
+    },
+    {
+      "dbSymbol": "crochetress",
+      "form": 0
+    },
+    {
+      "dbSymbol": "dreamspinner",
+      "form": 0
+    },
+    {
+      "dbSymbol": "dreamweaver",
+      "form": 0
+    },
+    {
+      "dbSymbol": "silkmourne",
+      "form": 0
+    },
+    {
+      "dbSymbol": "widomourne",
       "form": 0
     },
     {

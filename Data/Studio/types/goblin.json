@@ -91,6 +91,10 @@
     {
       "defensiveType": "slime",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 2
     }
   ],
   "color": "#339f1d"
