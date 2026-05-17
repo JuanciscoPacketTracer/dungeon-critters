@@ -51,6 +51,10 @@
     {
       "defensiveType": "electric",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
     }
   ],
   "color": "#ffd70f"

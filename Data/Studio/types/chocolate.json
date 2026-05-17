@@ -39,6 +39,10 @@
     {
       "defensiveType": "slime",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
     }
   ],
   "color": "#69362b"

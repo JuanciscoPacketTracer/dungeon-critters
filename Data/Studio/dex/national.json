@@ -227,6 +227,34 @@
     {
       "dbSymbol": "braindussa",
       "form": 0
+    },
+    {
+      "dbSymbol": "rootli",
+      "form": 0
+    },
+    {
+      "dbSymbol": "snaproot",
+      "form": 0
+    },
+    {
+      "dbSymbol": "snapvine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "vineragna",
+      "form": 0
+    },
+    {
+      "dbSymbol": "vilevora",
+      "form": 0
+    },
+    {
+      "dbSymbol": "dracovine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "tyranovine",
+      "form": 0
     }
   ]
 }

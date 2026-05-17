@@ -47,6 +47,14 @@
     {
       "defensiveType": "electric",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fairy",
+      "factor": 2
     }
   ],
   "color": "#8e3946"

@@ -61,10 +61,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "thoney",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "bat",
       "factor": 0.5
     },
@@ -90,6 +86,14 @@
     },
     {
       "defensiveType": "bovine",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
+    },
+    {
+      "defensiveType": "arachnid",
       "factor": 0.5
     }
   ],

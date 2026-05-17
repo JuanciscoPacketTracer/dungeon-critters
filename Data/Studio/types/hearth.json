@@ -45,10 +45,6 @@
       "factor": 2
     },
     {
-      "defensiveType": "thoney",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "goblin",
       "factor": 0.5
     },
@@ -127,6 +123,10 @@
     {
       "defensiveType": "demon",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
     }
   ],
   "color": "#ff7583"

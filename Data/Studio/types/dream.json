@@ -67,6 +67,10 @@
     {
       "defensiveType": "demon",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
     }
   ],
   "color": "#fec7ff"

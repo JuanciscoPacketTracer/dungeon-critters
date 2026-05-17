@@ -99,6 +99,10 @@
     {
       "defensiveType": "bovine",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 2
     }
   ],
   "color": "#cb8b3e"

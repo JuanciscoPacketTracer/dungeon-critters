@@ -91,6 +91,10 @@
     {
       "defensiveType": "holy",
       "factor": 2
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
     }
   ],
   "color": "#b292f7"

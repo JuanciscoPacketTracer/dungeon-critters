@@ -79,6 +79,10 @@
     {
       "defensiveType": "dream",
       "factor": 2
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 2
     }
   ],
   "color": "#4596ed"

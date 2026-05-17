@@ -107,6 +107,10 @@
     {
       "defensiveType": "demon",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
     }
   ],
   "color": "#001f52"

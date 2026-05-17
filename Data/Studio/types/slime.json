@@ -107,6 +107,10 @@
     {
       "defensiveType": "slime",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
     }
   ],
   "color": "#8eff42"
