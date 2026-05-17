@@ -47,7 +47,7 @@ module DMC
       [:tyranovine, 0] => :fire,
       [:bombusk, 0] => :explosive,
       [:jewelusk, 0] => :crystal,
-      [:magnhusk, 0] => :magnetic,
+      [:magnhusk, 0] => :magnetism,
     }
     CREATURE_TYPE_3.default = :__undef__
   end

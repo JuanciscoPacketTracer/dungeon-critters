@@ -47,6 +47,10 @@
     {
       "defensiveType": "royal",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 0.5
     }
   ],
   "color": "#00ffee"

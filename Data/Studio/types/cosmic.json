@@ -111,6 +111,10 @@
     {
       "defensiveType": "arachnid",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 2
     }
   ],
   "color": "#001f52"

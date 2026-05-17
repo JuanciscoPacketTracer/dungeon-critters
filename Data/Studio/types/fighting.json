@@ -99,6 +99,10 @@
     {
       "defensiveType": "dream",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 0.5
     }
   ],
   "color": "#ea8383"

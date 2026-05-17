@@ -77,10 +77,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "magnetism",
-      "factor": 2
-    },
-    {
       "defensiveType": "amphibian",
       "factor": 0.5
     },

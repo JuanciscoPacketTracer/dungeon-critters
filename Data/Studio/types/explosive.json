@@ -95,6 +95,10 @@
     {
       "defensiveType": "cosmic",
       "factor": 2
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 0.5
     }
   ],
   "color": "#ff8800"

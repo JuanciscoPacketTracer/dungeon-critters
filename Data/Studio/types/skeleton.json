@@ -71,6 +71,10 @@
     {
       "defensiveType": "slime",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 0.5
     }
   ],
   "color": "#fdf4f2"
