@@ -310,7 +310,9 @@
         const key = `${entry.dbSymbol}#${form.form ?? 0}`;
         const type3 = data.type3Map.get(key);
         const front = form.resources?.front || String(entry.id).padStart(3, '0');
-        const types = [...new Set([form.type1, form.type2, type3].filter(Boolean))];
+        const types = [...new Set(
+          [form.type1, form.type2, type3].filter((v) => Boolean(v) && v !== 'undefined' && v !== '__undef__' && v !== 'none'),
+        )];
         return {
           id: entry.id,
           dbSymbol: entry.dbSymbol,

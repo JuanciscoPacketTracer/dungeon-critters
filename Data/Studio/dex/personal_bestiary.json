@@ -153,6 +153,34 @@
       "form": 0
     },
     {
+      "dbSymbol": "huskli",
+      "form": 0
+    },
+    {
+      "dbSymbol": "stalaghusk",
+      "form": 0
+    },
+    {
+      "dbSymbol": "grubhusk",
+      "form": 0
+    },
+    {
+      "dbSymbol": "bombusk",
+      "form": 0
+    },
+    {
+      "dbSymbol": "armorusk",
+      "form": 0
+    },
+    {
+      "dbSymbol": "magnehusk",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jewelusk",
+      "form": 0
+    },
+    {
       "dbSymbol": "burrook",
       "form": 0
     },
@@ -182,6 +210,78 @@
     },
     {
       "dbSymbol": "burriesta",
+      "form": 0
+    },
+    {
+      "dbSymbol": "rootli",
+      "form": 0
+    },
+    {
+      "dbSymbol": "snaproot",
+      "form": 0
+    },
+    {
+      "dbSymbol": "snapvine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "vineragna",
+      "form": 0
+    },
+    {
+      "dbSymbol": "vilevora",
+      "form": 0
+    },
+    {
+      "dbSymbol": "dracovine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "tyranovine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "medumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "mellumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "mellumine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "nebuluminous",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jellyvoltious",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jellumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jellatine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "royalatine",
+      "form": 0
+    },
+    {
+      "dbSymbol": "neurumi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "cerebelus",
+      "form": 0
+    },
+    {
+      "dbSymbol": "braindussa",
       "form": 0
     }
   ]
