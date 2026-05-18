@@ -1,18 +1,18 @@
 {
   "klass": "Specie",
-  "id": 103,
-  "dbSymbol": "sulfurion",
+  "id": 122,
+  "dbSymbol": "carolilia",
   "forms": [
     {
       "form": 0,
       "formTextId": {
-        "name": 102,
+        "name": 121,
         "description": 0
       },
       "height": 0.01,
       "weight": 0.01,
-      "type1": "wolf",
-      "type2": "electric",
+      "type1": "fairy",
+      "type2": "music",
       "baseHp": 100,
       "baseAtk": 100,
       "baseDfe": 100,
@@ -36,7 +36,7 @@
         15
       ],
       "hatchSteps": 1024,
-      "babyDbSymbol": "sulfurion",
+      "babyDbSymbol": "carolilia",
       "babyForm": 0,
       "itemHeld": [
         {

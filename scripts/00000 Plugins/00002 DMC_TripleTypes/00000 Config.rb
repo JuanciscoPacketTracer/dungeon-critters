@@ -66,7 +66,12 @@ module DMC
       [:vigilobox, 0] => :guardian,
       [:puffpowolf, 0] => :yarn,
       [:woofwoofer, 0] => :music,
-      [:chihuahualf, 0] => :demon
+      [:chihuahualf, 0] => :demon,
+      [:flutterling, 0] => :luz,
+      [:celestling, 0] => :luz,
+      [:dryadessa, 0] => :guardian,
+      [:lullamae, 0] => :dream,
+      [:carolilia, 0] => :hearth,
     }
     CREATURE_TYPE_3.default = :__undef__
   end
