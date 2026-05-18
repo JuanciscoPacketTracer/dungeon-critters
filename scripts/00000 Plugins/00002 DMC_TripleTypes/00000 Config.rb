@@ -56,7 +56,7 @@ module DMC
       [:widomourne, 0] => :dark,
       [:wonderhops,0] => :dream,
       [:craterhop, 0] => :luz,
-      [:Deathelope, 0] => :luz,
+      [:deathelope, 0] => :luz,
     }
     CREATURE_TYPE_3.default = :__undef__
   end
