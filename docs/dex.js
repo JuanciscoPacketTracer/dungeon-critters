@@ -848,7 +848,7 @@
       activateType(button.dataset.typeSymbol);
     };
 
-    activateType(currentType || currentTypeFallback);
+    activateType(currentTypeFallback);
 
     status.hidden = true;
     main.hidden = false;
