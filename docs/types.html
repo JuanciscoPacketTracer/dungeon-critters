@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Type Information · Dungeon Critters Bestiary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dex.css" />
+</head>
+<body data-page="types">
+  <header>
+    <div class="header-left">
+      <h1 data-i18n="types_title">Type Information</h1>
+      <p data-i18n="types_subtitle">Browse type totals, matchups, and critters by typing.</p>
+    </div>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+      <button class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
+    </div>
+  </header>
+
+  <nav class="page-tabs" aria-label="Sections">
+    <a class="page-tab" href="index.html" data-i18n="tab_bestiary">Bestiary</a>
+    <a class="page-tab active" href="types.html" data-i18n="tab_types">Type Info</a>
+  </nav>
+
+  <main id="types" hidden>
+    <section class="type-hero">
+      <div class="type-hero-copy">
+        <h2 data-i18n="types_title">Type Information</h2>
+        <div class="type-hero-stats">
+          <div class="type-hero-stat">
+            <span data-i18n="total_critters">Total critters</span>
+            <strong id="totalCrittersCount">0</strong>
+          </div>
+          <div class="type-hero-stat">
+            <span data-i18n="available_types">Available types</span>
+            <strong id="totalTypesCount">0</strong>
+          </div>
+        </div>
+      </div>
+      <label class="type-selector">
+        <span data-i18n="select_type">Select a type</span>
+        <select id="typeSelect" aria-label="Select a type"></select>
+      </label>
+    </section>
+
+    <section>
+      <h2 data-i18n="critters_per_type">Critters per type</h2>
+      <div id="typeSummaryGrid" class="type-summary-grid"></div>
+    </section>
+
+    <section>
+      <div class="type-detail-head">
+        <div id="selectedTypeBadge" class="badges"></div>
+        <div>
+          <h2 id="selectedTypeName">Type</h2>
+          <p id="selectedTypeCount" class="small"></p>
+        </div>
+      </div>
+      <h2 data-i18n="type_matchups">Type interactions</h2>
+      <div id="selectedTypeMatchups" class="matchups"></div>
+    </section>
+
+    <section>
+      <h2 data-i18n="critters_with_type">Critters with this type</h2>
+      <div id="selectedTypeCritters" class="grid"></div>
+    </section>
+  </main>
+
+  <div id="status" data-i18n="loading_types">Loading type info…</div>
+  <script src="dex.js" defer></script>
+</body>
+</html>

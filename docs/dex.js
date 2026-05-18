@@ -4,12 +4,25 @@
     en: {
       title:              'Dungeon Critters Bestiary',
       subtitle:           'Browse critters from the game data.',
+      tab_bestiary:       'Bestiary',
+      tab_types:          'Type Info',
       search_placeholder: 'Search critter name…',
       any_type:           'Any type',
       any_type2:          'Any second type',
       loading:            'Loading critters…',
       loading_detail:     'Loading critter…',
+      loading_types:      'Loading type info…',
       back:               '← Back to Bestiary',
+      types_title:        'Type Information',
+      types_subtitle:     'Browse type totals, matchups, and critters by typing.',
+      total_critters:     'Total critters',
+      critters_per_type:  'Critters per type',
+      available_types:    'Available types',
+      select_type:        'Select a type',
+      selected_type:      'Selected type',
+      type_matchups:      'Type interactions',
+      critters_with_type: 'Critters with this type',
+      type_total:         'Type total',
       description:        'Description',
       abilities:          'Abilities',
       stats:              'Stats',
@@ -39,12 +52,25 @@
     es: {
       title:              'Bestiario de Dungeon Critters',
       subtitle:           'Explora criaturas del juego.',
+      tab_bestiary:       'Bestiario',
+      tab_types:          'Tipos',
       search_placeholder: 'Buscar nombre de criatura…',
       any_type:           'Cualquier tipo',
       any_type2:          'Cualquier segundo tipo',
       loading:            'Cargando criaturas…',
       loading_detail:     'Cargando criatura…',
+      loading_types:      'Cargando información de tipos…',
       back:               '← Volver al Bestiario',
+      types_title:        'Información de tipos',
+      types_subtitle:     'Revisa totales de tipos, interacciones y criaturas por tipo.',
+      total_critters:     'Criaturas totales',
+      critters_per_type:  'Criaturas por tipo',
+      available_types:    'Tipos disponibles',
+      select_type:        'Selecciona un tipo',
+      selected_type:      'Tipo seleccionado',
+      type_matchups:      'Interacciones de tipo',
+      critters_with_type: 'Criaturas con este tipo',
+      type_total:         'Total de tipo',
       description:        'Descripción',
       abilities:          'Habilidades',
       stats:              'Estadísticas',
@@ -417,6 +443,26 @@
     return `<span class="badge" style="background:${color}">${name}</span>`;
   }
 
+  function countCrittersByType(critters) {
+    const counts = new Map();
+    critters.forEach((critter) => {
+      critter.types.forEach((type) => {
+        counts.set(type, (counts.get(type) || 0) + 1);
+      });
+    });
+    return counts;
+  }
+
+  function critterCardHtml(critter, typeMap, textTables) {
+    const localizedName = getCritterName(critter, textTables);
+    return `
+      <a class="card" href="critter.html?id=${encodeURIComponent(critter.dbSymbol)}">
+        ${spriteTag(critter, localizedName)}
+        <h2>${escapeHtml(localizedName)}</h2>
+        <div class="badges">${critter.types.map((type) => badge(type, typeMap, textTables)).join('')}</div>
+      </a>`;
+  }
+
   function multiplierClass(multiplier) {
     if (multiplier === 4) return 'm4';
     if (multiplier === 3) return 'm3';
@@ -432,6 +478,21 @@
   function matchupRow(typeSymbol, multiplier, typeMap, textTables) {
     const displayMultiplier = Number.isInteger(multiplier) ? String(multiplier) : String(multiplier);
     return `<li class="matchup-row">${badge(typeSymbol, typeMap, textTables)}<span class="mult-chip ${multiplierClass(multiplier)}">x${displayMultiplier}</span></li>`;
+  }
+
+  function typeMatchupBuckets(attackType, typeMap) {
+    const weak = [];
+    const resist = [];
+    const immune = [];
+
+    for (const [defenseType] of typeMap.entries()) {
+      const multiplier = calculateModifier(attackType, [defenseType], typeMap);
+      if (multiplier === 0) immune.push({ attackType: defenseType, multiplier });
+      else if (multiplier > 1) weak.push({ attackType: defenseType, multiplier });
+      else if (multiplier < 1) resist.push({ attackType: defenseType, multiplier });
+    }
+
+    return { weak, resist, immune };
   }
 
   function formatGender(value) {
@@ -663,6 +724,102 @@
     attachFallbackHandlers(document);
   }
 
+  // ── Types page ────────────────────────────────────────────
+  function renderTypes({ critters, typeMap, textTables }) {
+    const status = document.getElementById('status');
+    const main = document.getElementById('types');
+    const typeSelect = document.getElementById('typeSelect');
+    const typeSummaryGrid = document.getElementById('typeSummaryGrid');
+    const totalCrittersEl = document.getElementById('totalCrittersCount');
+    const totalTypesEl = document.getElementById('totalTypesCount');
+    const selectedTypeBadge = document.getElementById('selectedTypeBadge');
+    const selectedTypeName = document.getElementById('selectedTypeName');
+    const selectedTypeCount = document.getElementById('selectedTypeCount');
+    const selectedTypeMatchups = document.getElementById('selectedTypeMatchups');
+    const selectedTypeCritters = document.getElementById('selectedTypeCritters');
+
+    const typeCounts = countCrittersByType(critters);
+    const typeOptions = [...typeMap.entries()]
+      .map(([symbol, type]) => ({
+        symbol,
+        label: getTypeName(symbol, typeMap, textTables),
+        count: typeCounts.get(symbol) || 0,
+        color: type.color,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+
+    const currentType = typeSelect.value || typeOptions[0]?.symbol || '';
+
+    totalCrittersEl.textContent = nCritters(critters.length);
+    totalTypesEl.textContent = `${typeOptions.length}`;
+
+    typeSelect.innerHTML = typeOptions
+      .map((type) => `<option value="${type.symbol}">${escapeHtml(type.label)} (${nCritters(type.count)})</option>`)
+      .join('');
+
+    typeSummaryGrid.innerHTML = typeOptions
+      .map((type) => `
+        <button class="type-card" type="button" data-type-symbol="${type.symbol}">
+          ${badge(type.symbol, typeMap, textTables)}
+          <strong>${escapeHtml(type.label)}</strong>
+          <span>${nCritters(type.count)}</span>
+        </button>`)
+      .join('');
+
+    function renderSelected(typeSymbol) {
+      const type = typeMap.get(typeSymbol);
+      if (!type) return;
+
+      const label = getTypeName(typeSymbol, typeMap, textTables);
+      const crittersWithType = critters.filter((critter) => critter.types.includes(typeSymbol));
+      const { weak, resist, immune } = typeMatchupBuckets(typeSymbol, typeMap);
+      const noneHtml = `<li>${escapeHtml(t('none'))}</li>`;
+
+      selectedTypeBadge.innerHTML = badge(typeSymbol, typeMap, textTables);
+      selectedTypeName.textContent = label;
+      selectedTypeCount.textContent = nCritters(typeCounts.get(typeSymbol) || 0);
+
+      selectedTypeMatchups.innerHTML = `
+        <div class="matchup-group weak">
+          <h3>${escapeHtml(t('weaknesses'))}</h3>
+          <ul>${weak.length ? weak.map((value) => matchupRow(value.attackType, value.multiplier, typeMap, textTables)).join('') : noneHtml}</ul>
+        </div>
+        <div class="matchup-group resist">
+          <h3>${escapeHtml(t('resistances'))}</h3>
+          <ul>${resist.length ? resist.map((value) => matchupRow(value.attackType, value.multiplier, typeMap, textTables)).join('') : noneHtml}</ul>
+        </div>
+        <div class="matchup-group immune">
+          <h3>${escapeHtml(t('immunities'))}</h3>
+          <ul>${immune.length ? immune.map((value) => matchupRow(value.attackType, value.multiplier, typeMap, textTables)).join('') : noneHtml}</ul>
+        </div>`;
+
+      selectedTypeCritters.innerHTML = crittersWithType.length
+        ? crittersWithType.map((critter) => critterCardHtml(critter, typeMap, textTables)).join('')
+        : `<p class="small">${escapeHtml(t('none'))}</p>`;
+
+      typeSummaryGrid.querySelectorAll('.type-card').forEach((button) => {
+        button.classList.toggle('active', button.dataset.typeSymbol === typeSymbol);
+      });
+
+      typeSelect.value = typeSymbol;
+      document.title = `${label} · ${t('types_title')} · Dungeon Critters Bestiary`;
+    }
+
+    typeSelect.onchange = () => renderSelected(typeSelect.value);
+    typeSummaryGrid.onclick = (event) => {
+      const button = event.target.closest('[data-type-symbol]');
+      if (!button) return;
+      typeSelect.value = button.dataset.typeSymbol;
+      renderSelected(typeSelect.value);
+    };
+
+    renderSelected(currentType);
+
+    status.hidden = true;
+    main.hidden = false;
+    attachFallbackHandlers(document);
+  }
+
   // ── Boot ──────────────────────────────────────────────────
   async function init() {
     // Apply saved language before data loads
@@ -691,6 +848,11 @@
       if (page === 'detail') {
         initLangToggle(renderDetail, renderArgs);
         renderDetail(renderArgs);
+      }
+
+      if (page === 'types') {
+        initLangToggle(renderTypes, renderArgs);
+        renderTypes(renderArgs);
       }
     } catch (error) {
       const status = document.getElementById('status');
