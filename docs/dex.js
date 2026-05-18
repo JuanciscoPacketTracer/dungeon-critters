@@ -52,33 +52,33 @@
     },
     es: {
       title:              'Bestiario de Dungeon Critters',
-      subtitle:           'Explora criaturas del juego.',
+      subtitle:           'Explora Critters del juego.',
       tab_bestiary:       'Bestiario',
       tab_types:          'Tipos',
-      search_placeholder: 'Buscar nombre de criatura…',
+      search_placeholder: 'Buscar nombre de Critter…',
       any_type:           'Cualquier tipo',
       any_type2:          'Cualquier segundo tipo',
-      loading:            'Cargando criaturas…',
-      loading_detail:     'Cargando criatura…',
+      loading:            'Cargando Critters…',
+      loading_detail:     'Cargando critter…',
       loading_types:      'Cargando información de tipos…',
       back:               '← Volver al Bestiario',
       types_title:        'Información de tipos',
-      types_subtitle:     'Revisa totales de tipos, interacciones y criaturas por tipo.',
-      total_critters:     'Criaturas totales',
-      critters_per_type:  'Criaturas por tipo',
+      types_subtitle:     'Revisa totales de tipos, interacciones y Critters por tipo.',
+      total_critters:     'Critters totales',
+      critters_per_type:  'Critters por tipo',
       available_types:    'Tipos disponibles',
       select_type:        'Selecciona un tipo',
       selected_type:      'Tipo seleccionado',
       type_tabs:          'Pestañas de tipo',
       type_matchups:      'Interacciones de tipo',
-      critters_with_type: 'Criaturas con este tipo',
+      critters_with_type: 'Critters con este tipo',
       type_total:         'Total de tipo',
       description:        'Descripción',
       abilities:          'Habilidades',
       stats:              'Estadísticas',
       base_stat_total:    'Total de stats base',
       evolutions:         'Evoluciones',
-      no_evolutions:      'Esta criatura no evoluciona.',
+      no_evolutions:      'Este critter no evoluciona.',
       method_level:       'Nivel',
       method_stone:       'Usar',
       method_move:        'Conoce',
@@ -96,7 +96,7 @@
       resistances:        'Resistencias',
       immunities:         'Inmunidades',
       none:               'Ninguna',
-      not_found:          'Criatura no encontrada.',
+      not_found:          'Critter no encontrado.',
       load_error:         'Error al cargar el bestiario',
     },
   };
@@ -112,7 +112,7 @@
 
   /** "{n} critter(s)" with locale awareness. */
   function nCritters(n) {
-    return lang === 'es' ? `${n} criatura(s)` : `${n} critter(s)`;
+    return lang === 'es' ? `${n} critter(s)` : `${n} critter(s)`;
   }
 
   /** Apply current lang to all data-i18n / data-i18n-placeholder elements. */
