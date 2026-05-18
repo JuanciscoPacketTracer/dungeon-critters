@@ -41,10 +41,6 @@
           </div>
         </div>
       </div>
-      <label class="type-selector">
-        <span data-i18n="select_type">Select a type</span>
-        <select id="typeSelect" aria-label="Select a type"></select>
-      </label>
     </section>
 
     <section>
@@ -52,19 +48,23 @@
       <div id="typeSummaryGrid" class="type-summary-grid"></div>
     </section>
 
-    <section>
+    <section class="type-panel">
+      <div class="type-tabstrip-wrap">
+        <h2 data-i18n="selected_type">Selected type</h2>
+        <div id="typeTabstrip" class="type-tabstrip" role="tablist" aria-label="Types"></div>
+      </div>
+
       <div class="type-detail-head">
         <div id="selectedTypeBadge" class="badges"></div>
         <div>
-          <h2 id="selectedTypeName">Type</h2>
+          <h3 id="selectedTypeName">Type</h3>
           <p id="selectedTypeCount" class="small"></p>
         </div>
       </div>
+
       <h2 data-i18n="type_matchups">Type interactions</h2>
       <div id="selectedTypeMatchups" class="matchups"></div>
-    </section>
 
-    <section>
       <h2 data-i18n="critters_with_type">Critters with this type</h2>
       <div id="selectedTypeCritters" class="grid"></div>
     </section>

@@ -20,6 +20,7 @@
       available_types:    'Available types',
       select_type:        'Select a type',
       selected_type:      'Selected type',
+      type_tabs:          'Type tabs',
       type_matchups:      'Type interactions',
       critters_with_type: 'Critters with this type',
       type_total:         'Type total',
@@ -68,6 +69,7 @@
       available_types:    'Tipos disponibles',
       select_type:        'Selecciona un tipo',
       selected_type:      'Tipo seleccionado',
+      type_tabs:          'Pestañas de tipo',
       type_matchups:      'Interacciones de tipo',
       critters_with_type: 'Criaturas con este tipo',
       type_total:         'Total de tipo',
@@ -244,6 +246,15 @@
     return response.json();
   }
 
+  async function spriteExists(url) {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      return response.ok;
+    } catch (_error) {
+      return false;
+    }
+  }
+
   async function fetchTextWithFallback(localPath) {
     try {
       const local = await fetch(localPath);
@@ -312,7 +323,7 @@
     };
   }
 
-  function getCritters(data) {
+  async function getCritters(data) {
     // Build a lookup from dbSymbol#form -> pokedex number using the Personal Bestiary (dex id 1)
     const pokedexMap = new Map();
     try {
@@ -329,7 +340,7 @@
     } catch (err) {
       console.warn('Failed to build pokedex map:', err);
     }
-    return data.pokemonData
+    const critters = data.pokemonData
       .map((entry) => {
         const form = entry.forms?.[0];
         if (!form) return null;
@@ -367,6 +378,12 @@
         if (pa !== pb) return pa - pb;
         return a.id - b.id;
       });
+
+    await Promise.all(critters.map(async (critter) => {
+      critter.spriteAvailable = await spriteExists(critter.spriteGif) || await spriteExists(critter.spritePng);
+    }));
+
+    return critters;
   }
 
   function getTypeData(typeData) {
@@ -576,6 +593,8 @@
     const typeFilterA = document.getElementById('typeFilterA');
     const typeFilterB = document.getElementById('typeFilterB');
 
+    const visibleCritters = critters.filter((critter) => critter.spriteAvailable !== false);
+
     const selectedA = typeFilterA.value;
     const selectedB = typeFilterB.value;
     const typeOptions = [...typeMap.entries()]
@@ -602,7 +621,7 @@
       const a    = typeFilterA.value;
       const b    = typeFilterB.value;
 
-      const filtered = critters.filter((critter) => {
+      const filtered = visibleCritters.filter((critter) => {
         const localizedName = getCritterName(critter, textTables);
         if (text && !localizedName.toLowerCase().includes(text)) return false;
         if (a && !critter.types.includes(a)) return false;
@@ -728,7 +747,7 @@
   function renderTypes({ critters, typeMap, textTables }) {
     const status = document.getElementById('status');
     const main = document.getElementById('types');
-    const typeSelect = document.getElementById('typeSelect');
+    const typeTabstrip = document.getElementById('typeTabstrip');
     const typeSummaryGrid = document.getElementById('typeSummaryGrid');
     const totalCrittersEl = document.getElementById('totalCrittersCount');
     const totalTypesEl = document.getElementById('totalTypesCount');
@@ -748,13 +767,17 @@
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
 
-    const currentType = typeSelect.value || typeOptions[0]?.symbol || '';
+    const currentTypeFallback = typeOptions[0]?.symbol || '';
 
     totalCrittersEl.textContent = nCritters(critters.length);
     totalTypesEl.textContent = `${typeOptions.length}`;
 
-    typeSelect.innerHTML = typeOptions
-      .map((type) => `<option value="${type.symbol}">${escapeHtml(type.label)} (${nCritters(type.count)})</option>`)
+    typeTabstrip.innerHTML = typeOptions
+      .map((type) => `
+        <button class="type-tab" type="button" role="tab" aria-selected="false" data-type-symbol="${type.symbol}">
+          ${badge(type.symbol, typeMap, textTables)}
+          <span>${nCritters(type.count)}</span>
+        </button>`)
       .join('');
 
     typeSummaryGrid.innerHTML = typeOptions
@@ -801,19 +824,31 @@
         button.classList.toggle('active', button.dataset.typeSymbol === typeSymbol);
       });
 
-      typeSelect.value = typeSymbol;
       document.title = `${label} · ${t('types_title')} · Dungeon Critters Bestiary`;
     }
 
-    typeSelect.onchange = () => renderSelected(typeSelect.value);
+    function activateType(typeSymbol) {
+      renderSelected(typeSymbol);
+      typeTabstrip.querySelectorAll('.type-tab').forEach((button) => {
+        const active = button.dataset.typeSymbol === typeSymbol;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', String(active));
+      });
+    }
+
     typeSummaryGrid.onclick = (event) => {
       const button = event.target.closest('[data-type-symbol]');
       if (!button) return;
-      typeSelect.value = button.dataset.typeSymbol;
-      renderSelected(typeSelect.value);
+      activateType(button.dataset.typeSymbol);
     };
 
-    renderSelected(currentType);
+    typeTabstrip.onclick = (event) => {
+      const button = event.target.closest('[data-type-symbol]');
+      if (!button) return;
+      activateType(button.dataset.typeSymbol);
+    };
+
+    activateType(currentType || currentTypeFallback);
 
     status.hidden = true;
     main.hidden = false;
@@ -828,7 +863,7 @@
     try {
       const data     = await loadData();
       TRIPLE_MAIN_TYPE = Boolean(data.maintypeFlag);
-      const critters = getCritters(data);
+      const critters = await getCritters(data);
       const critterBySymbol = new Map(critters.map((critter) => [critter.dbSymbol, critter]));
       const typeMap  = getTypeData(data.typeData);
       const abilityMap = getAbilityData(data.abilityData);
