@@ -57,6 +57,16 @@ module DMC
       [:wonderhops,0] => :dream,
       [:craterhop, 0] => :luz,
       [:deathelope, 0] => :dark,
+      [:wolfubis, 0] => :spirit,
+      [:tundragnar, 0] => :fighting,
+      [:sorbowolf, 0] => :sweet,
+      [:sulfowox, 0] => :poison,
+      [:sulfurion, 0] => :poison,
+      [:skelberus, 0] => :demon,
+      [:vigilobox, 0] => :guardian,
+      [:puffpowolf, 0] => :yarn,
+      [:woofwoofer, 0] => :music,
+      [:chihuahualf, 0] => :demon
     }
     CREATURE_TYPE_3.default = :__undef__
   end
