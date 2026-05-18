@@ -55,6 +55,10 @@
     {
       "defensiveType": "water",
       "factor": 2
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 2
     }
   ],
   "color": "#110019"

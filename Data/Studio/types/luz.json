@@ -99,6 +99,10 @@
     {
       "defensiveType": "yarn",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 2
     }
   ],
   "color": "#fffdc2"

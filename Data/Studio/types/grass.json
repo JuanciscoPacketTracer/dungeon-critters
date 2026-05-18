@@ -103,6 +103,10 @@
     {
       "defensiveType": "chocolate",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 0.5
     }
   ],
   "color": "#28bc75"

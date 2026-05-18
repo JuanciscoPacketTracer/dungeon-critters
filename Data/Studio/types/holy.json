@@ -83,6 +83,10 @@
     {
       "defensiveType": "cosmic",
       "factor": 2
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 2
     }
   ],
   "color": "#f4ffbd"

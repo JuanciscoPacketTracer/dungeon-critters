@@ -103,6 +103,10 @@
     {
       "defensiveType": "arachnid",
       "factor": 2
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 2
     }
   ],
   "color": "#bde9ff"

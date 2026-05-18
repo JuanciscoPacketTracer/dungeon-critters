@@ -115,6 +115,10 @@
     {
       "defensiveType": "magnetism",
       "factor": 2
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 2
     }
   ],
   "color": "#001f52"

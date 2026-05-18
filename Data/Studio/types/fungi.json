@@ -67,6 +67,10 @@
     {
       "defensiveType": "radiation",
       "factor": 2
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 0.5
     }
   ],
   "color": "#b80000"

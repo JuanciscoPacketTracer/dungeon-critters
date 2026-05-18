@@ -107,6 +107,10 @@
     {
       "defensiveType": "bovine",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 0.5
     }
   ],
   "color": "#c99457"
