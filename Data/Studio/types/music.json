@@ -95,6 +95,10 @@
     {
       "defensiveType": "yarn",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 2
     }
   ],
   "color": "#0008ff"

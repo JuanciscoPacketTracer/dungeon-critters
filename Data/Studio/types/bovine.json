@@ -111,6 +111,10 @@
     {
       "defensiveType": "royal",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 0.5
     }
   ],
   "color": "#e6cb9e"

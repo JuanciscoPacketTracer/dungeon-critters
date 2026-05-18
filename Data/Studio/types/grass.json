@@ -99,6 +99,10 @@
     {
       "defensiveType": "holy",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 0.5
     }
   ],
   "color": "#28bc75"

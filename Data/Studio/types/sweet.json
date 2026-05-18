@@ -63,6 +63,10 @@
     {
       "defensiveType": "demon",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 0.5
     }
   ],
   "color": "#ff05d1"
