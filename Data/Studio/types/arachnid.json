@@ -59,6 +59,10 @@
     {
       "defensiveType": "yarn",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
     }
   ],
   "color": "#8e3946"

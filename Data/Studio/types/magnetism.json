@@ -51,6 +51,10 @@
     {
       "defensiveType": "psychic",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 2
     }
   ],
   "color": "#ca8c8c"

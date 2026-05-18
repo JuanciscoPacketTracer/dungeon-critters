@@ -107,6 +107,10 @@
     {
       "defensiveType": "magic",
       "factor": 2
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 2
     }
   ],
   "color": "#b292f7"

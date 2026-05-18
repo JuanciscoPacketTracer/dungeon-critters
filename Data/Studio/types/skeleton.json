@@ -83,6 +83,10 @@
     {
       "defensiveType": "magic",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
     }
   ],
   "color": "#fdf4f2"

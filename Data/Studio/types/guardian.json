@@ -89,10 +89,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "holy",
-      "factor": 2
-    },
-    {
       "defensiveType": "dream",
       "factor": 0.5
     },
@@ -107,6 +103,10 @@
     {
       "defensiveType": "magic",
       "factor": 2
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 0.5
     }
   ],
   "color": "#bde9ff"

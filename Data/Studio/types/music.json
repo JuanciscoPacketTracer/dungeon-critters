@@ -99,6 +99,10 @@
     {
       "defensiveType": "chocolate",
       "factor": 2
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 2
     }
   ],
   "color": "#0008ff"
