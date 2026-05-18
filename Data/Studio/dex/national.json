@@ -315,6 +315,66 @@
     {
       "dbSymbol": "widomourne",
       "form": 0
+    },
+    {
+      "dbSymbol": "bunli",
+      "form": 0
+    },
+    {
+      "dbSymbol": "bunpi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "rabbunpi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "rabtremor",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jabunpi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "kickbunpi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "magihops",
+      "form": 0
+    },
+    {
+      "dbSymbol": "wonderhops",
+      "form": 0
+    },
+    {
+      "dbSymbol": "moonpi",
+      "form": 0
+    },
+    {
+      "dbSymbol": "craterhop",
+      "form": 0
+    },
+    {
+      "dbSymbol": "jackahops",
+      "form": 0
+    },
+    {
+      "dbSymbol": "deatholope",
+      "form": 0
+    },
+    {
+      "dbSymbol": "chocobun",
+      "form": 0
+    },
+    {
+      "dbSymbol": "chocogildbun",
+      "form": 0
+    },
+    {
+      "dbSymbol": "deathelope",
+      "form": 0
     }
   ]
 }
