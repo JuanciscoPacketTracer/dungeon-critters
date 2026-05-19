@@ -13,12 +13,12 @@
       "weight": 0.01,
       "type1": "bug",
       "type2": "rock",
-      "baseHp": 100,
-      "baseAtk": 100,
-      "baseDfe": 100,
-      "baseSpd": 100,
-      "baseAts": 100,
-      "baseDfs": 100,
+      "baseHp": 75,
+      "baseAtk": 70,
+      "baseDfe": 95,
+      "baseSpd": 50,
+      "baseAts": 45,
+      "baseDfs": 65,
       "evHp": 0,
       "evAtk": 0,
       "evDfe": 0,
@@ -54,7 +54,6 @@
         "__undef__"
       ],
       "frontOffsetY": 0,
-      "moveSet": [],
       "resources": {
         "icon": "",
         "iconShiny": "",
@@ -69,7 +68,8 @@
         "iconEgg": "",
         "cry": "",
         "hasFemale": false
-      }
+      },
+      "moveSet": []
     }
   ]
 }
