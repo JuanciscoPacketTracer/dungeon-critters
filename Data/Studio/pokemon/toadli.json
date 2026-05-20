@@ -112,7 +112,7 @@
       "height": 0.09,
       "weight": 0.2,
       "type1": "fungi",
-      "type2": "__undef__",
+      "type2": "grass",
       "baseHp": 70,
       "baseAtk": 50,
       "baseDfe": 40,
@@ -127,7 +127,7 @@
       "evDfs": 0,
       "evolutions": [
         {
-          "dbSymbol": "toadroll",
+          "dbSymbol": "toadherb",
           "form": 0,
           "conditions": [
             {
