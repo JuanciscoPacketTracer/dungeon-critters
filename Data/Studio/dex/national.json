@@ -499,6 +499,22 @@
     {
       "dbSymbol": "carolilia",
       "form": 0
+    },
+    {
+      "dbSymbol": "toadherb",
+      "form": 0
+    },
+    {
+      "dbSymbol": "medishroom",
+      "form": 0
+    },
+    {
+      "dbSymbol": "healshroom",
+      "form": 0
+    },
+    {
+      "dbSymbol": "sporeshroomie",
+      "form": 0
     }
   ]
 }

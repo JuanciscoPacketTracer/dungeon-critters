@@ -102,6 +102,106 @@
           "level": 3
         }
       ]
+    },
+    {
+      "form": 1,
+      "formTextId": {
+        "name": 122,
+        "description": 1
+      },
+      "height": 0.09,
+      "weight": 0.2,
+      "type1": "fungi",
+      "type2": "__undef__",
+      "baseHp": 70,
+      "baseAtk": 50,
+      "baseDfe": 40,
+      "baseSpd": 40,
+      "baseAts": 55,
+      "baseDfs": 45,
+      "evHp": 0,
+      "evAtk": 0,
+      "evDfe": 0,
+      "evSpd": 0,
+      "evAts": 0,
+      "evDfs": 0,
+      "evolutions": [
+        {
+          "dbSymbol": "toadroll",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 15
+            }
+          ]
+        },
+        {
+          "dbSymbol": "toadlux",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "stone",
+              "value": "sun_piece"
+            }
+          ]
+        }
+      ],
+      "experienceType": 1,
+      "baseExperience": 50,
+      "baseLoyalty": 70,
+      "catchRate": 255,
+      "femaleRate": 50,
+      "breedGroups": [
+        5,
+        11
+      ],
+      "hatchSteps": 1024,
+      "babyDbSymbol": "toadli",
+      "babyForm": 0,
+      "itemHeld": [
+        {
+          "dbSymbol": "tiny_mushroom",
+          "chance": 50
+        },
+        {
+          "dbSymbol": "none",
+          "chance": 0
+        }
+      ],
+      "abilities": [
+        "healer",
+        "healer",
+        "healer"
+      ],
+      "frontOffsetY": 0,
+      "resources": {
+        "icon": "026",
+        "iconShiny": "",
+        "front": "026_01",
+        "frontShiny": "",
+        "back": "026",
+        "backShiny": "",
+        "footprint": "",
+        "character": "026",
+        "characterShiny": "",
+        "egg": "",
+        "iconEgg": "",
+        "cry": "0755.ogg",
+        "hasFemale": false
+      },
+      "moveSet": [
+        {
+          "klass": "LevelLearnableMove",
+          "move": "spore",
+          "level": 1
+        },
+        {
+          "klass": "LevelLearnableMove",
+          "move": "growl",
+          "level": 3
+        }
+      ]
     }
   ]
 }
