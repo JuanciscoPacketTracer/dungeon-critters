@@ -71,6 +71,30 @@
     {
       "defensiveType": "bug",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 2
     }
   ],
   "color": "#66ff00"

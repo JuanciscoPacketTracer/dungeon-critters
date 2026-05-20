@@ -53,10 +53,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "crystal",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "bat",
       "factor": 2
     },
@@ -102,6 +98,30 @@
     },
     {
       "defensiveType": "magic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
       "factor": 2
     }
   ],

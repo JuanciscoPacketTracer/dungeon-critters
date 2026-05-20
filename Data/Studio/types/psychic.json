@@ -17,10 +17,6 @@
       "factor": 0.5
     },
     {
-      "defensiveType": "steel",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "dark",
       "factor": 0
     },
@@ -98,6 +94,30 @@
     },
     {
       "defensiveType": "guardian",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
       "factor": 2
     }
   ],

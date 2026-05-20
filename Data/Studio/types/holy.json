@@ -91,6 +91,18 @@
     {
       "defensiveType": "guardian",
       "factor": 2
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "salt",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
     }
   ],
   "color": "#f4ffbd"

@@ -1,0 +1,109 @@
+{
+  "klass": "Type",
+  "id": 51,
+  "dbSymbol": "copper",
+  "color": "#f4603e",
+  "textId": 50,
+  "damageTo": [
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fire",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "water",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 2
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 2
+    },
+    {
+      "defensiveType": "music",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 2
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 2
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "wolf",
+      "factor": 2
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "radiation",
+      "factor": 0.5
+    }
+  ]
+}

@@ -63,6 +63,14 @@
     {
       "defensiveType": "guardian",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 2
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 2
     }
   ],
   "color": "#110019"

@@ -95,6 +95,34 @@
     {
       "defensiveType": "magic",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
     }
   ],
   "color": "#4596ed"

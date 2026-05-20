@@ -107,6 +107,30 @@
     {
       "defensiveType": "chocolate",
       "factor": 2
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
     }
   ],
   "color": "#b6ab77"

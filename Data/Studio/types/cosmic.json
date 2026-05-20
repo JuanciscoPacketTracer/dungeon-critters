@@ -123,6 +123,26 @@
     {
       "defensiveType": "guardian",
       "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 2
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 2
     }
   ],
   "color": "#001f52"

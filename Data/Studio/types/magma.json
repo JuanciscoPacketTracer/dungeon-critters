@@ -1,0 +1,113 @@
+{
+  "klass": "Type",
+  "id": 56,
+  "dbSymbol": "magma",
+  "color": "#68031c",
+  "textId": 55,
+  "damageTo": [
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "radiation",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fire",
+      "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 2
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "poison",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "void",
+      "factor": 2
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 2
+    },
+    {
+      "defensiveType": "demon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 2
+    }
+  ]
+}

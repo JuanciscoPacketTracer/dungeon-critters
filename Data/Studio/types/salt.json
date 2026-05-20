@@ -1,0 +1,97 @@
+{
+  "klass": "Type",
+  "id": 57,
+  "dbSymbol": "salt",
+  "color": "#cfc6c4",
+  "textId": 56,
+  "damageTo": [
+    {
+      "defensiveType": "chocolate",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sweet",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fruit",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "water",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fighting",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "poison",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 2
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 2
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 2
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 2
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
+    }
+  ]
+}

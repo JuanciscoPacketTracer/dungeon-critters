@@ -12,7 +12,7 @@
       "height": 0.01,
       "weight": 0.01,
       "type1": "bovine",
-      "type2": "steel",
+      "type2": "gold",
       "baseHp": 100,
       "baseAtk": 100,
       "baseDfe": 100,
@@ -54,7 +54,6 @@
         "__undef__"
       ],
       "frontOffsetY": 0,
-      "moveSet": [],
       "resources": {
         "icon": "",
         "iconShiny": "",
@@ -69,7 +68,8 @@
         "iconEgg": "",
         "cry": "",
         "hasFemale": false
-      }
+      },
+      "moveSet": []
     }
   ]
 }

@@ -51,6 +51,10 @@
     {
       "defensiveType": "chocolate",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 0.5
     }
   ],
   "color": "#ff2f00"

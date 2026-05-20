@@ -1,0 +1,77 @@
+{
+  "klass": "Type",
+  "id": 55,
+  "dbSymbol": "amethyst",
+  "color": "#7b1796",
+  "textId": 54,
+  "damageTo": [
+    {
+      "defensiveType": "magic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "music",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 0.5
+    }
+  ]
+}

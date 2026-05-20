@@ -46,7 +46,7 @@
     },
     {
       "defensiveType": "steel",
-      "factor": 2
+      "factor": 0.5
     },
     {
       "defensiveType": "crystal",
@@ -106,6 +106,38 @@
     },
     {
       "defensiveType": "magic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 2
+    },
+    {
+      "defensiveType": "explosive",
       "factor": 0.5
     }
   ],

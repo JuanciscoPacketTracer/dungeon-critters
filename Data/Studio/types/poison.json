@@ -111,6 +111,34 @@
     {
       "defensiveType": "guardian",
       "factor": 2
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sweet",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fruit",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
     }
   ],
   "color": "#b292f7"

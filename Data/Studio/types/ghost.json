@@ -75,6 +75,22 @@
     {
       "defensiveType": "guardian",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "salt",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
     }
   ],
   "color": "#9b96ed"

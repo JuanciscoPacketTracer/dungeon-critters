@@ -29,10 +29,6 @@
       "factor": 2
     },
     {
-      "defensiveType": "crystal",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "cosmic",
       "factor": 0
     },
@@ -55,6 +51,34 @@
     {
       "defensiveType": "guardian",
       "factor": 2
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
     }
   ],
   "color": "#ca8c8c"

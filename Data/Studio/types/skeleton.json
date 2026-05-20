@@ -87,6 +87,18 @@
     {
       "defensiveType": "guardian",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "salt",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 0.5
     }
   ],
   "color": "#fdf4f2"

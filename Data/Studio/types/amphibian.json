@@ -79,6 +79,38 @@
     {
       "defensiveType": "magic",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "salt",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
     }
   ],
   "color": "#07e49a"

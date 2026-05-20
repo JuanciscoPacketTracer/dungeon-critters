@@ -103,6 +103,26 @@
     {
       "defensiveType": "guardian",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 2
     }
   ],
   "color": "#339f1d"

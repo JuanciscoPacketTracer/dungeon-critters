@@ -67,6 +67,18 @@
     {
       "defensiveType": "chocolate",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
     }
   ],
   "color": "#a48989"

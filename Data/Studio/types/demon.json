@@ -87,6 +87,18 @@
     {
       "defensiveType": "royal",
       "factor": 2
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "salt",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
     }
   ],
   "color": "#280101"

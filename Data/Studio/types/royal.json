@@ -67,6 +67,30 @@
     {
       "defensiveType": "chocolate",
       "factor": 2
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 2
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 2
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
     }
   ],
   "color": "#b48e04"

@@ -1,0 +1,137 @@
+{
+  "klass": "Type",
+  "id": 52,
+  "dbSymbol": "gold",
+  "color": "#f4cf15",
+  "textId": 51,
+  "damageTo": [
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 2
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fire",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 2
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 2
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "music",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 2
+    },
+    {
+      "defensiveType": "bovine",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "wolf",
+      "factor": 2
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "holy",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fruit",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "radiation",
+      "factor": 2
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 0.5
+    }
+  ]
+}

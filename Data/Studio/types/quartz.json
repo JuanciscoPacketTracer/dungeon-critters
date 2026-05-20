@@ -1,0 +1,97 @@
+{
+  "klass": "Type",
+  "id": 54,
+  "dbSymbol": "quartz",
+  "color": "#ebd9d5",
+  "textId": 53,
+  "damageTo": [
+    {
+      "defensiveType": "royal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ice",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "flying",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ghost",
+      "factor": 2
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "music",
+      "factor": 2
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 2
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 0.5
+    }
+  ]
+}

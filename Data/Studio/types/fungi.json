@@ -71,6 +71,10 @@
     {
       "defensiveType": "magic",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
     }
   ],
   "color": "#b80000"

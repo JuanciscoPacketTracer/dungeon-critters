@@ -107,6 +107,42 @@
     {
       "defensiveType": "yarn",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "sweet",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fruit",
+      "factor": 2
+    },
+    {
+      "defensiveType": "chocolate",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "salt",
+      "factor": 2
     }
   ],
   "color": "#ea8383"

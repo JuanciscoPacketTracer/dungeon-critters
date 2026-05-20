@@ -79,6 +79,10 @@
     {
       "defensiveType": "guardian",
       "factor": 2
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 2
     }
   ],
   "color": "#fec7ff"

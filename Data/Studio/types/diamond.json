@@ -1,0 +1,109 @@
+{
+  "klass": "Type",
+  "id": 58,
+  "dbSymbol": "diamond",
+  "color": "#33ffe7",
+  "textId": 57,
+  "damageTo": [
+    {
+      "defensiveType": "diamond",
+      "factor": 2
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "copper",
+      "factor": 2
+    },
+    {
+      "defensiveType": "royal",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "psychic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 2
+    },
+    {
+      "defensiveType": "dragon",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "luz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "skeleton",
+      "factor": 2
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "cosmic",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "dream",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "hearth",
+      "factor": 0.5
+    }
+  ]
+}

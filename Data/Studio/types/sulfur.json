@@ -1,0 +1,137 @@
+{
+  "klass": "Type",
+  "id": 53,
+  "dbSymbol": "sulfur",
+  "color": "#cdfd49",
+  "textId": 52,
+  "damageTo": [
+    {
+      "defensiveType": "copper",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "steel",
+      "factor": 2
+    },
+    {
+      "defensiveType": "gold",
+      "factor": 2
+    },
+    {
+      "defensiveType": "sulfur",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "amethyst",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "magma",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "diamond",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "fire",
+      "factor": 2
+    },
+    {
+      "defensiveType": "water",
+      "factor": 2
+    },
+    {
+      "defensiveType": "electric",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "grass",
+      "factor": 2
+    },
+    {
+      "defensiveType": "ice",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fighting",
+      "factor": 2
+    },
+    {
+      "defensiveType": "poison",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "ground",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "rock",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "crystal",
+      "factor": 2
+    },
+    {
+      "defensiveType": "fungi",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "slime",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "thoney",
+      "factor": 2
+    },
+    {
+      "defensiveType": "goblin",
+      "factor": 2
+    },
+    {
+      "defensiveType": "magnetism",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "worm",
+      "factor": 2
+    },
+    {
+      "defensiveType": "reptile",
+      "factor": 2
+    },
+    {
+      "defensiveType": "amphibian",
+      "factor": 2
+    },
+    {
+      "defensiveType": "arachnid",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "guardian",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "explosive",
+      "factor": 0.5
+    },
+    {
+      "defensiveType": "yarn",
+      "factor": 2
+    },
+    {
+      "defensiveType": "radiation",
+      "factor": 0.5
+    }
+  ]
+}

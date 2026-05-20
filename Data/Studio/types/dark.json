@@ -37,10 +37,6 @@
       "factor": 2
     },
     {
-      "defensiveType": "crystal",
-      "factor": 0.5
-    },
-    {
       "defensiveType": "fungi",
       "factor": 0.5
     },
@@ -86,6 +82,10 @@
     },
     {
       "defensiveType": "magic",
+      "factor": 2
+    },
+    {
+      "defensiveType": "quartz",
       "factor": 2
     }
   ],
