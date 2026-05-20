@@ -9,8 +9,8 @@
         "name": 64,
         "description": 0
       },
-      "height": 0.01,
-      "weight": 0.01,
+      "height": 1.1,
+      "weight": 64.2,
       "type1": "bug",
       "type2": "ground",
       "baseHp": 100,
@@ -54,7 +54,6 @@
         "__undef__"
       ],
       "frontOffsetY": 0,
-      "moveSet": [],
       "resources": {
         "icon": "",
         "iconShiny": "",
@@ -69,7 +68,8 @@
         "iconEgg": "",
         "cry": "",
         "hasFemale": false
-      }
+      },
+      "moveSet": []
     }
   ]
 }

@@ -9,8 +9,8 @@
         "name": 65,
         "description": 0
       },
-      "height": 0.01,
-      "weight": 0.01,
+      "height": 1.6,
+      "weight": 241.3,
       "type1": "bug",
       "type2": "steel",
       "baseHp": 100,
@@ -54,7 +54,6 @@
         "__undef__"
       ],
       "frontOffsetY": 0,
-      "moveSet": [],
       "resources": {
         "icon": "",
         "iconShiny": "",
@@ -69,7 +68,8 @@
         "iconEgg": "",
         "cry": "",
         "hasFemale": false
-      }
+      },
+      "moveSet": []
     }
   ]
 }

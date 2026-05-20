@@ -47,6 +47,10 @@
     {
       "defensiveType": "chocolate",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 0.5
     }
   ],
   "color": "#69362b"

@@ -9,8 +9,8 @@
         "name": 62,
         "description": 0
       },
-      "height": 0.01,
-      "weight": 0.01,
+      "height": 0.2,
+      "weight": 2.8,
       "type1": "bug",
       "type2": "__undef__",
       "baseHp": 60,
@@ -25,7 +25,18 @@
       "evSpd": 0,
       "evAts": 0,
       "evDfs": 0,
-      "evolutions": [],
+      "evolutions": [
+        {
+          "dbSymbol": "stalaghusk",
+          "form": 0,
+          "conditions": [
+            {
+              "type": "minLevel",
+              "value": 14
+            }
+          ]
+        }
+      ],
       "experienceType": 1,
       "baseExperience": 55,
       "baseLoyalty": 70,
@@ -55,14 +66,14 @@
       ],
       "frontOffsetY": 0,
       "resources": {
-        "icon": "",
+        "icon": "063",
         "iconShiny": "",
-        "front": "",
+        "front": "063",
         "frontShiny": "",
-        "back": "",
+        "back": "063",
         "backShiny": "",
         "footprint": "",
-        "character": "",
+        "character": "063",
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",

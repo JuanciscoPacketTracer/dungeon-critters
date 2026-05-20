@@ -67,6 +67,10 @@
     {
       "defensiveType": "slime",
       "factor": 0.5
+    },
+    {
+      "defensiveType": "bug",
+      "factor": 0.5
     }
   ],
   "color": "#66ff00"
