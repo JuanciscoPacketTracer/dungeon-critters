@@ -67,6 +67,17 @@ header {
 
 .header-left { display: flex; flex-direction: column; gap: .1rem; }
 
+.detail-title-wrap {
+  align-items: flex-start;
+}
+
+.detail-meta {
+  color: var(--gold);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
 header h1 {
   margin: 0;
   font-size: 1.55rem;
@@ -287,6 +298,29 @@ select option { background: var(--surface); }
   text-shadow: 0 1px 3px rgba(0, 0, 0, .55);
   border: 1px solid rgba(255, 255, 255, .08);
 }
+
+.meta-badge {
+  background: linear-gradient(135deg, rgba(194, 149, 42, .35), rgba(139, 92, 246, .22));
+  color: #fff;
+}
+
+/* Form badge for alternative forms on cards */
+.form-badge {
+  position: absolute;
+  top: .5rem;
+  right: .6rem;
+  background: rgba(0,0,0,0.35);
+  color: var(--text);
+  padding: .12rem .5rem;
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Form selector on detail page */
+.form-select { margin: .5rem 0 .75rem; }
+.form-select select { max-width: 240px; }
 
 /* ── Detail Page ─────────────────────────────────────────── */
 .hero {

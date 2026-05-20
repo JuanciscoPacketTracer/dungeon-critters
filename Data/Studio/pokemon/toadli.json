@@ -135,16 +135,6 @@
               "value": 15
             }
           ]
-        },
-        {
-          "dbSymbol": "toadlux",
-          "form": 0,
-          "conditions": [
-            {
-              "type": "stone",
-              "value": "sun_piece"
-            }
-          ]
         }
       ],
       "experienceType": 1,
@@ -176,14 +166,14 @@
       ],
       "frontOffsetY": 0,
       "resources": {
-        "icon": "026",
+        "icon": "026_01",
         "iconShiny": "",
         "front": "026_01",
         "frontShiny": "",
-        "back": "026",
+        "back": "026_01",
         "backShiny": "",
         "footprint": "",
-        "character": "026",
+        "character": "026_01",
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",

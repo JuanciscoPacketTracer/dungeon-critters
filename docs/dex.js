@@ -59,9 +59,8 @@
   const LANG_COLUMN = { en: 0, es: 4 };
   function t(key) { return (STRINGS[lang] && STRINGS[lang][key]) ?? STRINGS.en[key] ?? key; }
 
-  const pathParts = window.location.pathname.split('/').filter(Boolean);
   const OWNER = 'JuanciscoPacketTracer';
-  const REPO = pathParts[0] || 'dungeon-critters';
+  const REPO = 'dungeon-critters';
   const BRANCH = 'main';
   const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
   const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`;
@@ -172,13 +171,15 @@
         const types = [...new Set([form.type1, form.type2, type3].filter(Boolean))];
         const routeId = (form.form||fi) ? `${entry.dbSymbol}:${form.form ?? fi}` : entry.dbSymbol;
         list.push({ id: entry.id, dbSymbol: entry.dbSymbol, formIndex: form.form ?? fi, routeId, fallbackName: toTitle(entry.dbSymbol), types, evolutions: form.evolutions||[], abilitySymbols: (form.abilities||[]).filter(a=>a && a!=='__undef__' && a!=='none'), stats: { HP: form.baseHp, ATK: form.baseAtk, DEF: form.baseDfe, SPD: form.baseSpd, SATK: form.baseAts, SDEF: form.baseDfs }, spriteGif: `${RAW_BASE}graphics/pokedex/pokefront/${front}.gif`, spritePng: `${RAW_BASE}graphics/pokedex/pokefront/${front}.png`, pokedexNumber: pokedexMap.get(key) || pokedexMap.get(entry.dbSymbol) || null });
+          // attach a human-friendly form name if provided by the data
+          const last = list[list.length-1];
+          const fName = form.name || form.formName || form.label || form.formSymbol || (form.form ? `Form ${form.form}` : (fi ? `Form ${fi}` : ''));
+          if (last) last.formName = fName;
       });
     });
 
-    // Optionally check sprite availability (fast HEAD requests)
-    await Promise.all(list.map(async (c) => {
-      try { const r = await fetch(c.spriteGif, { method: 'HEAD' }); c.spriteAvailable = r.ok; if (!r.ok) { const r2 = await fetch(c.spritePng, { method: 'HEAD' }); c.spriteAvailable = r2.ok; } } catch (_){ c.spriteAvailable = true; }
-    }));
+    // Avoid a blocking per-sprite HEAD probe; rely on image fallback handling instead.
+    list.forEach((c) => { c.spriteAvailable = true; });
 
     return list.sort((a,b)=>{ const pa = a.pokedexNumber ?? Number.MAX_SAFE_INTEGER; const pb = b.pokedexNumber ?? Number.MAX_SAFE_INTEGER; if (pa!==pb) return pa-pb; if (a.id!==b.id) return a.id-b.id; return (a.formIndex||0)-(b.formIndex||0); });
   }
@@ -206,14 +207,29 @@
     const visible = critters.filter(c=>c.spriteAvailable!==false);
     const selectedA = typeFilterA.value; const selectedB = typeFilterB.value;
     const typeOptions = [...typeMap.entries()].map(([sym,t])=>({symbol:sym,label:getLocalizedCell(tables.typeNames, t.textId, t.fallbackName)})).sort((a,b)=>a.label.localeCompare(b.label));
-    typeFilterA.innerHTML = `<option value="">${escapeHtml(t('any_type'))}</option>`; typeFilterB.innerHTML = `<option value="">${escapeHtml(t('any_type2'))}</option>`;
+    typeFilterA.innerHTML = `<option value="">${escapeHtml(t('any_type'))}</option>`; 
+    typeFilterB.innerHTML = `<option value="">${escapeHtml(t('any_type2'))}</option>`;
     typeOptions.forEach(tp=>{ typeFilterA.insertAdjacentHTML('beforeend', `<option value="${tp.symbol}">${escapeHtml(tp.label)}</option>`); typeFilterB.insertAdjacentHTML('beforeend', `<option value="${tp.symbol}">${escapeHtml(tp.label)}</option>`); });
     typeFilterA.value=selectedA; typeFilterB.value=selectedB;
-    const applyFilters = ()=>{
-      const text = search.value.trim().toLowerCase(); const a=typeFilterA.value; const b=typeFilterB.value;
-      const filtered = visible.filter(cr=>{ const name = getCritterName(cr,tables); if (text && !name.toLowerCase().includes(text)) return false; if (a && !cr.types.includes(a)) return false; if (b && !cr.types.includes(b)) return false; return true; });
-      status.textContent = `${filtered.length} critter(s)`; grid.hidden = false; grid.innerHTML = filtered.map(cr=>{ const name = getCritterName(cr,tables); return `\n            <a class="card" href="critter.html?id=${encodeURIComponent(cr.routeId)}">\n              ${spriteTag(cr,name)}\n              <h2>${escapeHtml(name)}</h2>\n              <div class="badges">${cr.types.map(type=>badge(type,typeMap,tables)).join('')}</div>\n            </a>`; }).join(''); attachFallbackHandlers(grid);
-    };
+      const applyFilters = ()=>{
+        const text = search.value.trim().toLowerCase(); const a=typeFilterA.value; const b=typeFilterB.value;
+        const filtered = visible.filter(cr=>{ const name = getCritterName(cr,tables); if (text && !name.toLowerCase().includes(text)) return false; if (a && !cr.types.includes(a)) return false; if (b && !cr.types.includes(b)) return false; return true; });
+        status.textContent = `${filtered.length} critter(s)`;
+        grid.hidden = false;
+        grid.innerHTML = filtered.map(cr=>{
+          const name = getCritterName(cr,tables);
+          const bestiaryNumber = `No. ${String(cr.pokedexNumber ?? cr.id).padStart(3, '0')}`;
+          const formLabel = cr.formName ? ` · ${escapeHtml(cr.formName)}` : '';
+          const metaBadge = `<span class="badge meta-badge">${escapeHtml(bestiaryNumber)}${formLabel}</span>`;
+          return `
+              <a class="card" href="critter.html?id=${encodeURIComponent(cr.routeId)}">
+                ${spriteTag(cr,name)}
+                <h2>${escapeHtml(name)}</h2>
+                  <div class="badges">${metaBadge}${cr.types.map(type=>badge(type,typeMap,tables)).join('')}</div>
+              </a>`;
+        }).join('');
+        attachFallbackHandlers(grid);
+      };
     if (!search.dataset.boundFilters){ search.addEventListener('input', applyFilters); typeFilterA.addEventListener('change', applyFilters); typeFilterB.addEventListener('change', applyFilters); search.dataset.boundFilters='1'; }
     applyFilters();
   }
@@ -223,8 +239,30 @@
     const params = new URLSearchParams(window.location.search); const idParam = params.get('id')||''; let base=idParam; let formIndex=0; if (idParam.includes(':')){ const p=idParam.split(':'); base=p[0]; formIndex=Number(p[1])||0; }
     const critter = critterBySymbol.get(`${base}#${formIndex}`) || critterBySymbol.get(base);
     const status = document.getElementById('status'); if (!critter){ if (status) status.textContent = t('not_found'); return; }
+    // Form selector: show when multiple forms exist for this species
+    const forms = critters.filter(c=>c.dbSymbol===base).sort((a,b)=>(a.formIndex||0)-(b.formIndex||0));
+    const formContainer = document.getElementById('formSelectContainer');
+    if (formContainer) {
+      if (forms.length > 1) {
+        formContainer.innerHTML = `<select id="formSelect">${forms.map(f=>`<option value="${encodeURIComponent(f.routeId)}"${(f.formIndex===formIndex)?' selected':''}>${escapeHtml(f.formName||`Form ${f.formIndex}`)}</option>`).join('')}</select>`;
+        const select = formContainer.querySelector('#formSelect');
+        select.addEventListener('change', () => {
+          const val = decodeURIComponent(select.value);
+          params.set('id', val);
+          history.replaceState(null, '', `${location.pathname}?${params.toString()}`);
+          // re-render detail for the selected form
+          renderDetail({ critters, typeMap, abilityMap, tables, critterBySymbol });
+        });
+      } else {
+        formContainer.innerHTML = '';
+      }
+    }
     const name = getCritterName(critter,tables); const description = getCritterDescription(critter,tables);
+    const bestiaryNumber = `No. ${String(critter.pokedexNumber ?? critter.id).padStart(3, '0')}`;
+    const formLabel = critter.formName ? ` · ${critter.formName}` : '';
     document.title = `${name} · Dungeon Critters Bestiary`; document.getElementById('critterName').textContent = name;
+    const detailMeta = document.getElementById('detailMeta');
+    if (detailMeta) detailMeta.textContent = `${bestiaryNumber}${formLabel}`;
     const sprite = document.getElementById('critterSprite'); sprite.src = critter.spriteGif; sprite.alt = `${name} sprite`; sprite.onerror = ()=>{ if (sprite.dataset.fallback) return; sprite.dataset.fallback='1'; sprite.src = critter.spritePng; };
     document.getElementById('typeBadges').innerHTML = critter.types.map(t=>badge(t,typeMap,tables)).join('');
     document.getElementById('critterDescription').textContent = description || t('none');
@@ -259,7 +297,7 @@
       const typeMap = getTypeData(data.typeData);
       const abilityMap = getAbilityData(data.abilityData);
       const textTables = { pokemonNames: parseLocalizedTable(data.pokemonNamesText), descriptions: parseLocalizedTable(data.descriptionsText), typeNames: parseLocalizedTable(data.typeNamesText), abilityNames: parseLocalizedTable(data.abilityNamesText) };
-      const renderArgs = { critters, typeMap, abilityMap, textTables, critterBySymbol };
+      const renderArgs = { critters, typeMap, abilityMap, tables: textTables, critterBySymbol };
       const page = document.body.dataset.page;
       if (page==='index'){ initLangToggle(renderIndex, renderArgs); renderIndex(renderArgs); }
       if (page==='detail'){ initLangToggle(renderDetail, renderArgs); renderDetail(renderArgs); }
