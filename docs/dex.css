@@ -78,6 +78,10 @@ header {
   letter-spacing: .04em;
 }
 
+.hero-meta {
+  margin-bottom: .6rem;
+}
+
 header h1 {
   margin: 0;
   font-size: 1.55rem;

@@ -100,10 +100,11 @@
   }
 
   async function loadData() {
-    const [pokemonEntries, typeEntries, abilityEntries, namesText, descText, typeNamesText, abilityNamesText, type3ConfigText, personalDexText] = await Promise.all([
+    const [pokemonEntries, typeEntries, abilityEntries, spriteEntries, namesText, descText, typeNamesText, abilityNamesText, type3ConfigText, personalDexText] = await Promise.all([
       fetchJson(`${API_BASE}/Data/Studio/pokemon?ref=${BRANCH}`),
       fetchJson(`${API_BASE}/Data/Studio/types?ref=${BRANCH}`),
       fetchJson(`${API_BASE}/Data/Studio/abilities?ref=${BRANCH}`),
+      fetchJson(`${API_BASE}/graphics/pokedex/pokefront?ref=${BRANCH}`),
       fetchTextWithFallback('Data/Text/Dialogs/100000.csv'),
       fetchTextWithFallback('Data/Text/Dialogs/100002.csv'),
       fetchTextWithFallback('Data/Text/Dialogs/100003.csv'),
@@ -121,6 +122,7 @@
     const parsedType3 = parseType3Config(type3ConfigText);
     return {
       pokemonData, typeData, abilityData,
+      spriteEntries,
       pokemonNamesText: namesText, descriptionsText: descText, typeNamesText, abilityNamesText,
       type3Map: parsedType3.map, maintypeFlag: parsedType3.maintype,
       personalDex: personalDexText ? JSON.parse(personalDexText) : null,
@@ -157,9 +159,16 @@
 
   async function getCritters(data) {
     const pokedexMap = new Map();
+    const spriteFiles = new Set();
     try {
       const pd = data.personalDex; if (pd && Array.isArray(pd.creatures)) { const start = Number(pd.startId)||1; pd.creatures.forEach((c,idx)=>{ pokedexMap.set(`${c.dbSymbol}#${c.form??0}`, start+idx); if (!pokedexMap.has(c.dbSymbol)) pokedexMap.set(c.dbSymbol, start+idx); }); }
     } catch (e) { console.warn('pokedex parse', e); }
+
+    try {
+      (data.spriteEntries || []).forEach((file) => {
+        if (file?.name) spriteFiles.add(file.name.toLowerCase());
+      });
+    } catch (e) { console.warn('sprite list parse', e); }
 
     const list = [];
     data.pokemonData.forEach((entry) => {
@@ -170,16 +179,16 @@
         const front = form.resources?.front || String(entry.id).padStart(3,'0');
         const types = [...new Set([form.type1, form.type2, type3].filter(Boolean))];
         const routeId = (form.form||fi) ? `${entry.dbSymbol}:${form.form ?? fi}` : entry.dbSymbol;
-        list.push({ id: entry.id, dbSymbol: entry.dbSymbol, formIndex: form.form ?? fi, routeId, fallbackName: toTitle(entry.dbSymbol), types, evolutions: form.evolutions||[], abilitySymbols: (form.abilities||[]).filter(a=>a && a!=='__undef__' && a!=='none'), stats: { HP: form.baseHp, ATK: form.baseAtk, DEF: form.baseDfe, SPD: form.baseSpd, SATK: form.baseAts, SDEF: form.baseDfs }, spriteGif: `${RAW_BASE}graphics/pokedex/pokefront/${front}.gif`, spritePng: `${RAW_BASE}graphics/pokedex/pokefront/${front}.png`, pokedexNumber: pokedexMap.get(key) || pokedexMap.get(entry.dbSymbol) || null });
+        const spriteGifName = `${front}.gif`.toLowerCase();
+        const spritePngName = `${front}.png`.toLowerCase();
+        const spriteAvailable = spriteFiles.has(spriteGifName) || spriteFiles.has(spritePngName);
+        list.push({ id: entry.id, dbSymbol: entry.dbSymbol, formIndex: form.form ?? fi, routeId, fallbackName: toTitle(entry.dbSymbol), types, evolutions: form.evolutions||[], abilitySymbols: (form.abilities||[]).filter(a=>a && a!=='__undef__' && a!=='none'), stats: { HP: form.baseHp, ATK: form.baseAtk, DEF: form.baseDfe, SPD: form.baseSpd, SATK: form.baseAts, SDEF: form.baseDfs }, spriteGif: `${RAW_BASE}graphics/pokedex/pokefront/${front}.gif`, spritePng: `${RAW_BASE}graphics/pokedex/pokefront/${front}.png`, spriteAvailable, pokedexNumber: pokedexMap.get(key) || pokedexMap.get(entry.dbSymbol) || null });
           // attach a human-friendly form name if provided by the data
           const last = list[list.length-1];
           const fName = form.name || form.formName || form.label || form.formSymbol || (form.form ? `Form ${form.form}` : (fi ? `Form ${fi}` : ''));
           if (last) last.formName = fName;
       });
     });
-
-    // Avoid a blocking per-sprite HEAD probe; rely on image fallback handling instead.
-    list.forEach((c) => { c.spriteAvailable = true; });
 
     return list.sort((a,b)=>{ const pa = a.pokedexNumber ?? Number.MAX_SAFE_INTEGER; const pb = b.pokedexNumber ?? Number.MAX_SAFE_INTEGER; if (pa!==pb) return pa-pb; if (a.id!==b.id) return a.id-b.id; return (a.formIndex||0)-(b.formIndex||0); });
   }
@@ -204,7 +213,7 @@
   // Index
   function renderIndex({ critters, typeMap, tables }){
     const status = document.getElementById('status'); const grid = document.getElementById('critterGrid'); const search = document.getElementById('search'); const typeFilterA = document.getElementById('typeFilterA'); const typeFilterB = document.getElementById('typeFilterB');
-    const visible = critters.filter(c=>c.spriteAvailable!==false);
+    const visible = critters.filter(c=>c.spriteAvailable !== false);
     const selectedA = typeFilterA.value; const selectedB = typeFilterB.value;
     const typeOptions = [...typeMap.entries()].map(([sym,t])=>({symbol:sym,label:getLocalizedCell(tables.typeNames, t.textId, t.fallbackName)})).sort((a,b)=>a.label.localeCompare(b.label));
     typeFilterA.innerHTML = `<option value="">${escapeHtml(t('any_type'))}</option>`; 
@@ -223,9 +232,10 @@
           const metaBadge = `<span class="badge meta-badge">${escapeHtml(bestiaryNumber)}${formLabel}</span>`;
           return `
               <a class="card" href="critter.html?id=${encodeURIComponent(cr.routeId)}">
+                  ${metaBadge}
                 ${spriteTag(cr,name)}
                 <h2>${escapeHtml(name)}</h2>
-                  <div class="badges">${metaBadge}${cr.types.map(type=>badge(type,typeMap,tables)).join('')}</div>
+                    <div class="badges">${cr.types.map(type=>badge(type,typeMap,tables)).join('')}</div>
               </a>`;
         }).join('');
         attachFallbackHandlers(grid);
@@ -263,6 +273,8 @@
     document.title = `${name} · Dungeon Critters Bestiary`; document.getElementById('critterName').textContent = name;
     const detailMeta = document.getElementById('detailMeta');
     if (detailMeta) detailMeta.textContent = `${bestiaryNumber}${formLabel}`;
+    const heroMeta = document.getElementById('heroMeta');
+    if (heroMeta) heroMeta.textContent = `${bestiaryNumber}${formLabel}`;
     const sprite = document.getElementById('critterSprite'); sprite.src = critter.spriteGif; sprite.alt = `${name} sprite`; sprite.onerror = ()=>{ if (sprite.dataset.fallback) return; sprite.dataset.fallback='1'; sprite.src = critter.spritePng; };
     document.getElementById('typeBadges').innerHTML = critter.types.map(t=>badge(t,typeMap,tables)).join('');
     document.getElementById('critterDescription').textContent = description || t('none');
