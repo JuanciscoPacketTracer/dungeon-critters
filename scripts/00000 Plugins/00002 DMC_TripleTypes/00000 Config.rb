@@ -28,6 +28,7 @@ module DMC
       [:meltqueen, 0] => :royal,
       [:combuxtix, 0] => :poison,
       [:primawurlm, 0] => :dragon,
+      [:cragwurm, 0] => :crystal,
       [:toadrum, 0] => :music,
       [:glowtoad, 0] => :luz,
       [:toadossal, 0] => :music,
