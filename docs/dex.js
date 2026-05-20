@@ -177,7 +177,14 @@
         const key = `${entry.dbSymbol}#${form.form ?? fi}`;
         const type3 = data.type3Map.get(key);
         const front = form.resources?.front || String(entry.id).padStart(3,'0');
-        const types = [...new Set([form.type1, form.type2, type3].filter(Boolean))];
+        const rawTypes = [form.type1, form.type2, type3].filter(t=>{
+          if (!t) return false;
+          const s = String(t).trim().toLowerCase();
+          if (!s) return false;
+          if (s === 'undefined' || s === 'none' || s === '__undef__') return false;
+          return true;
+        });
+        const types = [...new Set(rawTypes)];
         const routeId = (form.form||fi) ? `${entry.dbSymbol}:${form.form ?? fi}` : entry.dbSymbol;
         const spriteGifName = `${front}.gif`.toLowerCase();
         const spritePngName = `${front}.png`.toLowerCase();
