@@ -2,7 +2,6 @@
   "klass": "Type",
   "id": 57,
   "dbSymbol": "salt",
-  "color": "#cfc6c4",
   "textId": 56,
   "damageTo": [
     {
@@ -31,7 +30,7 @@
     },
     {
       "defensiveType": "grass",
-      "factor": 2
+      "factor": 0.5
     },
     {
       "defensiveType": "fighting",
@@ -93,5 +92,6 @@
       "defensiveType": "hearth",
       "factor": 0.5
     }
-  ]
+  ],
+  "color": "#cfc6c4"
 }

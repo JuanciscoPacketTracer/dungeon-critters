@@ -50,7 +50,7 @@
     },
     {
       "defensiveType": "fungi",
-      "factor": 2
+      "factor": 0.5
     },
     {
       "defensiveType": "cosmic",

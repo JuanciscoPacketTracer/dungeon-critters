@@ -15,8 +15,8 @@
       "type2": "rock",
       "baseHp": 75,
       "baseAtk": 70,
-      "baseDfe": 95,
-      "baseSpd": 50,
+      "baseDfe": 100,
+      "baseSpd": 45,
       "baseAts": 45,
       "baseDfs": 65,
       "evHp": 0,
@@ -32,8 +32,8 @@
       "catchRate": 45,
       "femaleRate": 50,
       "breedGroups": [
-        15,
-        15
+        3,
+        10
       ],
       "hatchSteps": 1024,
       "babyDbSymbol": "stalaghusk",
@@ -49,17 +49,17 @@
         }
       ],
       "abilities": [
-        "__undef__",
-        "__undef__",
-        "__undef__"
+        "sturdy",
+        "sturdy",
+        "sturdy"
       ],
       "frontOffsetY": 0,
       "resources": {
-        "icon": "",
+        "icon": "064",
         "iconShiny": "",
-        "front": "",
+        "front": "064_01",
         "frontShiny": "",
-        "back": "",
+        "back": "064_01",
         "backShiny": "",
         "footprint": "",
         "character": "",
