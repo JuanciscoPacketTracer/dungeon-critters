@@ -14,8 +14,8 @@
     },
     {
       "type": "mapId",
-      "relationWithPreviousCondition": "OR",
-      "value": 25
+      "value": 25,
+      "relationWithPreviousCondition": "OR"
     }
   ],
   "encounters": [
@@ -104,5 +104,5 @@
       ]
     }
   ],
-  "stepsAverage": 30
+  "stepsAverage": 999
 }
