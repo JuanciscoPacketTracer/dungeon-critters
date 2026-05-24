@@ -77,7 +77,7 @@
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",
-        "cry": "",
+        "cry": "003.wav",
         "hasFemale": false
       },
       "moveSet": []

@@ -6,7 +6,8 @@ module UI
     end
 
     def data=(pokemon)
-      self.sy = pokemon.send(*data_source) if (self.visible = (pokemon ? true : false))
+      self.visible = !!pokemon
+      self.sy = pokemon.send(data_source) if pokemon
     end
 
     private
@@ -26,6 +27,13 @@ module UI
 
     def data_source
       :type2
+    end
+  end
+    class BattleType3Sprite < BattleType1Sprite
+    private
+
+    def data_source
+      :type3
     end
   end
 
