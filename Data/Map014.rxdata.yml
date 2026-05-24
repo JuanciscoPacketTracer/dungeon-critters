@@ -554,12 +554,12 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 14, 8 I know the names of your Pokémon as well!
+        - 14, 8 I know the names of your Critter as well!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
-        - 14, 9 For instance, the first Pokémon of your Party is \c[27]\p[1]\c[0].
+        - 14, 9 For instance, the first Critter of your Party is \c[27]\p[1]\c[0].
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 0
@@ -1405,7 +1405,7 @@ events:
         code: 401
         indent: 1
         parameters:
-        - Which Pokémon is mentioned in a tongue twister sentence?
+        - Which Critter is mentioned in a tongue twister sentence?
       - !ruby/object:RPG::EventCommand
         code: 111
         indent: 1
@@ -2461,7 +2461,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 14, 57 The shelves are filled with books about Pokémon.
+        - 14, 57 The shelves are filled with books about Critter.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -2527,7 +2527,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 14, 58 The shelves are filled with books about Pokémon.
+        - 14, 58 The shelves are filled with books about Critter.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -2586,7 +2586,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 14, 59 The shelves are filled with books about Pokémon.
+        - 14, 59 The shelves are filled with books about Critter.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 0
@@ -2644,7 +2644,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 14, 60 The shelves are filled with books about Pokémon.
+        - 14, 60 The shelves are filled with books about Critter.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -2703,7 +2703,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 14, 61 It's PokémonSDK's documentation!
+        - 14, 61 It's CritterSDK's documentation!
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 0
@@ -3356,7 +3356,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 14, 69 The shelves are filled with books about Pokémon.
+        - 14, 69 The shelves are filled with books about Critter.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -3422,7 +3422,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 14, 70 The shelves are filled with books about Pokémon.
+        - 14, 70 The shelves are filled with books about Critter.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -4084,7 +4084,7 @@ events:
         indent: 0
         parameters:
         - 14, 92 I know SirMalo often uses it, especially when he gives their starter
-          Pokémon to newcomers.
+          Critter to newcomers.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0

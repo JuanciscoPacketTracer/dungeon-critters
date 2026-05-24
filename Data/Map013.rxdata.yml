@@ -353,7 +353,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 1 :[name=Professor Elm]:My dear friend, Mr. Pokémon, just sent me this
+        - 13, 1 :[name=Professor Elm]:My dear friend, Mr. Critter, just sent me this
           Egg.
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -456,19 +456,19 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 13, 6 :[name=Professor Elm]:To give a Pokémon Egg, just use the \c[5]"add_egg({...})"\c[0]
+        - 13, 6 :[name=Professor Elm]:To give a Critter Egg, just use the \c[5]"add_egg({...})"\c[0]
           command.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
         - 13, 7 :[name=Professor Elm]:You can enter a lot of informations in braces,
-          like the ID of the Pokémon, its stats, its moves...
+          like the ID of the Critter, its stats, its moves...
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
-        - 13, 8 :[name=Professor Elm]:Pokémon Eggs are fascinating, aren't they?
+        - 13, 8 :[name=Professor Elm]:Critter Eggs are fascinating, aren't they?
       - !ruby/object:RPG::EventCommand
         code: 106
         indent: 1
@@ -494,7 +494,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 13, 9 :[name=Professor Elm]:What a shame... It could contain a rare Pokémon,
+        - 13, 9 :[name=Professor Elm]:What a shame... It could contain a rare Critter,
           you know!
       - !ruby/object:RPG::EventCommand
         code: 0
@@ -592,7 +592,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 13, 14 :[name=Professor Elm]:It can evolve into a strong Pokémon.
+        - 13, 14 :[name=Professor Elm]:It can evolve into a strong Critter.
       - !ruby/object:RPG::EventCommand
         code: 123
         indent: 1
@@ -651,7 +651,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 15 :[name=Professor Elm]:Pokémon Eggs are fascinating, aren't they?
+        - 13, 15 :[name=Professor Elm]:Critter Eggs are fascinating, aren't they?
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 0
@@ -712,7 +712,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 18 Want me to rate the nicknames of your Pokémon?
+        - 13, 18 Want me to rate the nicknames of your Critter?
       - !ruby/object:RPG::EventCommand
         code: 102
         indent: 0
@@ -730,7 +730,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 13, 19 Which Pokémon's nickname should I critique?
+        - 13, 19 Which Critter's nickname should I critique?
       - !ruby/object:RPG::EventCommand
         code: 223
         indent: 1
@@ -1014,7 +1014,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 25 I’ll tell you what type your Pokémon’s Hidden Power will be.
+        - 13, 25 I’ll tell you what type your Critter’s Hidden Power will be.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -1124,7 +1124,7 @@ events:
         code: 101
         indent: 2
         parameters:
-        - 13, 27 If this Pokémon were to learn [MOVE], the move’s type would be [POWER].
+        - 13, 27 If this Critter were to learn [MOVE], the move’s type would be [POWER].
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 2
@@ -1246,7 +1246,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 30 I can mimic any Pokémon's cry!
+        - 13, 30 I can mimic any Critter's cry!
       - !ruby/object:RPG::EventCommand
         code: 401
         indent: 0
@@ -1324,7 +1324,7 @@ events:
         code: 101
         indent: 2
         parameters:
-        - 13, 31 You'll have to wait a bit more before I can mimic this Pokémon's
+        - 13, 31 You'll have to wait a bit more before I can mimic this Critter's
           cry...
       - !ruby/object:RPG::EventCommand
         code: 119
@@ -1819,7 +1819,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '13, 37 You must have seen a whole variety of Pokémon.:[name=Professor Birch]:'
+        - '13, 37 You must have seen a whole variety of Critter.:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -1903,7 +1903,7 @@ events:
         indent: 0
         parameters:
         - '13, 41 It''s a high-tech tool that automatically collects a bunch of data
-          on Pokémon you''ve seen or caught.:[name=Professor Birch]:'
+          on Critter you''ve seen or caught.:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -2660,7 +2660,7 @@ events:
         code: 101
         indent: 4
         parameters:
-        - 13, 57 That Pokémon can’t enter a motor.
+        - 13, 57 That Critter can’t enter a motor.
       - !ruby/object:RPG::EventCommand
         code: 119
         indent: 4
@@ -3395,7 +3395,7 @@ events:
         code: 101
         indent: 4
         parameters:
-        - 13, 71 That Pokémon can’t enter a motor.
+        - 13, 71 That Critter can’t enter a motor.
       - !ruby/object:RPG::EventCommand
         code: 119
         indent: 4
@@ -4125,7 +4125,7 @@ events:
         code: 101
         indent: 4
         parameters:
-        - 13, 85 That Pokémon can’t enter a motor.
+        - 13, 85 That Critter can’t enter a motor.
       - !ruby/object:RPG::EventCommand
         code: 119
         indent: 4
@@ -4860,7 +4860,7 @@ events:
         code: 101
         indent: 4
         parameters:
-        - 13, 99 That Pokémon can’t enter a motor.
+        - 13, 99 That Critter can’t enter a motor.
       - !ruby/object:RPG::EventCommand
         code: 119
         indent: 4
@@ -5630,7 +5630,7 @@ events:
         code: 101
         indent: 4
         parameters:
-        - 13, 113 That Pokémon can’t enter a motor.
+        - 13, 113 That Critter can’t enter a motor.
       - !ruby/object:RPG::EventCommand
         code: 119
         indent: 4
@@ -6214,7 +6214,7 @@ events:
         indent: 2
         parameters:
         - 13, 118 It looks like you master everything there is to know about this
-          wonderful Pokémon.
+          wonderful Critter.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 2
@@ -6429,7 +6429,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 128 You know, shiny Pokémon have an unusual coloration.
+        - 13, 128 You know, shiny Critter have an unusual coloration.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -6579,7 +6579,7 @@ events:
         code: 101
         indent: 3
         parameters:
-        - 13, 135 Hmm... I know a lot about shiny Pokémon and your [POKE] isn't one
+        - 13, 135 Hmm... I know a lot about shiny Critter and your [POKE] isn't one
           of them.
       - !ruby/object:RPG::EventCommand
         code: 0
@@ -6629,7 +6629,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 13, 136 These Pokémon are quite rare, indeed...
+        - 13, 136 These Critter are quite rare, indeed...
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
@@ -6640,8 +6640,8 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 13, 138 If you chain-fish Pokémon, without moving from your spot, chances
-          to catch a shiny Pokémon will progressively increase.
+        - 13, 138 If you chain-fish Critter, without moving from your spot, chances
+          to catch a shiny Critter will progressively increase.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -6721,7 +6721,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '13, 140 I can easily check the number of Pokémon you''ve seen or caught
+        - '13, 140 I can easily check the number of Critter you''ve seen or caught
           with the \c[5]variables 2 and 3\c[0].:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -6732,7 +6732,7 @@ events:
         code: 401
         indent: 0
         parameters:
-        - 'You''ve seen \v[2] Pokémon, and you''ve caught \v[3] Pokémon!:[name=Professor
+        - 'You''ve seen \v[2] Critter, and you''ve caught \v[3] Critter!:[name=Professor
           Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 108
@@ -6772,13 +6772,13 @@ events:
         code: 101
         indent: 1
         parameters:
-        - '13, 142 Excellent! You''ve seen more than 40 Pokémon on the Island![WAIT
+        - '13, 142 Excellent! You''ve seen more than 40 Critter on the Island![WAIT
           400]:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
-        - '13, 143 You seem to be good at collecting Pokémon!:[name=Professor Birch]:'
+        - '13, 143 You seem to be good at collecting Critter!:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
@@ -6851,7 +6851,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - '13, 147 When you''ve seen at least 40 different Pokémon, I''ll give you
+        - '13, 147 When you''ve seen at least 40 different Critter, I''ll give you
           an Intriguing Stone!:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 119
@@ -6898,7 +6898,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - '13, 149 Don''t forget some Trainers have rare Pokémon, too!:[name=Professor
+        - '13, 149 Don''t forget some Trainers have rare Critter, too!:[name=Professor
           Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 119
@@ -6945,7 +6945,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - '13, 151 You know some Pokémon can evolve, but also lay Eggs!:[name=Professor
+        - '13, 151 You know some Critter can evolve, but also lay Eggs!:[name=Professor
           Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 119
@@ -6983,13 +6983,13 @@ events:
         code: 101
         indent: 1
         parameters:
-        - '13, 152 Look for Pokémon in grassy areas![WAIT 200]:[name=Professor Birch]:'
+        - '13, 152 Look for Critter in grassy areas![WAIT 200]:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
         - '13, 153 The Island is filled with a variety of environments, you''ll encounter
-          tons of Pokémon species.:[name=Professor Birch]:'
+          tons of Critter species.:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 119
         indent: 1
@@ -7073,7 +7073,7 @@ events:
         code: 401
         indent: 0
         parameters:
-        - 'You''ve seen \v[2] Pokémon, and you''ve caught \v[3] Pokémon!:[name=Professor
+        - 'You''ve seen \v[2] Critter, and you''ve caught \v[3] Critter!:[name=Professor
           Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 108
@@ -7113,7 +7113,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - '13, 156 Discovering new Pokémon is getting harder, isn''t it?[WAIT 200]:[name=Professor
+        - '13, 156 Discovering new Critter is getting harder, isn''t it?[WAIT 200]:[name=Professor
           Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 0
@@ -7260,7 +7260,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '13, 161 You''ve seen all the Pokémon on the Island...:[name=Professor Birch]:'
+        - '13, 161 You''ve seen all the Critter on the Island...:[name=Professor Birch]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -7423,7 +7423,7 @@ events:
         indent: 1
         parameters:
         - 13, 169 I cheated a bit by using the command \c[5]"add_specific_pokemon"\c[5],
-          which allows me to create a Pokémon with a lot of parameters.
+          which allows me to create a Critter with a lot of parameters.
       - !ruby/object:RPG::EventCommand
         code: 123
         indent: 1
@@ -7503,7 +7503,7 @@ events:
         indent: 0
         parameters:
         - 13, 172 I cheated a bit by using the command \c[5]"add_specific_pokemon"\c[5],
-          which allows me to create a Pokémon with a lot of parameters.
+          which allows me to create a Critter with a lot of parameters.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 0
@@ -7646,7 +7646,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '13, 175 Each one contains a special Pokémon.:[name=Professor Rowan]:'
+        - '13, 175 Each one contains a special Critter.:[name=Professor Rowan]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -8423,7 +8423,7 @@ events:
         code: 101
         indent: 3
         parameters:
-        - 13, 178 Do you want Dratini, the Dragon Pokémon?
+        - 13, 178 Do you want Dratini, the Dragon Critter?
       - !ruby/object:RPG::EventCommand
         code: 102
         indent: 3
@@ -8650,7 +8650,7 @@ events:
         code: 101
         indent: 3
         parameters:
-        - 13, 179 Do you want Larvitar, the Rock Skin Pokémon?
+        - 13, 179 Do you want Larvitar, the Rock Skin Critter?
       - !ruby/object:RPG::EventCommand
         code: 102
         indent: 3
@@ -8877,7 +8877,7 @@ events:
         code: 101
         indent: 3
         parameters:
-        - 13, 180 Do you want Ralts, the Feeling Pokémon?
+        - 13, 180 Do you want Ralts, the Feeling Critter?
       - !ruby/object:RPG::EventCommand
         code: 102
         indent: 3
@@ -9907,7 +9907,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '13, 186 Each one contains a special Pokémon.:[name=Professor Rowan]:'
+        - '13, 186 Each one contains a special Critter.:[name=Professor Rowan]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -10014,7 +10014,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '13, 189 I hope the Pokémon you chose will become a true partner.:[name=Professor
+        - '13, 189 I hope the Critter you chose will become a true partner.:[name=Professor
           Rowan]:'
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -10027,7 +10027,7 @@ events:
         indent: 0
         parameters:
         - 13, 191 First of all, the animations are played using \c[5]gif\c[0] files,
-          which PokémonSDK supports.
+          which CritterSDK supports.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -10092,7 +10092,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '13, 194 I found this funny Pokémon in the Rocky Cavern.:[name=Bill]:'
+        - '13, 194 I found this funny Critter in the Rocky Cavern.:[name=Bill]:'
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -10349,7 +10349,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 200 The Laboratory staff called me to get rid of all those Bug Pokémon
+        - 13, 200 The Laboratory staff called me to get rid of all those Bug Critter
           nibbling the power cables.
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -10365,7 +10365,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 202 Would you like a free Bug Pokémon?
+        - 13, 202 Would you like a free Bug Critter?
       - !ruby/object:RPG::EventCommand
         code: 102
         indent: 0
@@ -10430,12 +10430,12 @@ events:
         indent: 1
         parameters:
         - 13, 204 I used the command \c[5]"add_pokemon"\c[0], which simply adds a
-          Pokémon to your party, without asking you if you want to rename it.
+          Critter to your party, without asking you if you want to rename it.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
-        - 13, 205 But I think there's an old man who can rename your Pokémon in the
+        - 13, 205 But I think there's an old man who can rename your Critter in the
           middle of this room.
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -10745,7 +10745,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 213 Welcome to the world of Pokémon!
+        - 13, 213 Welcome to the world of Critter!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -10755,13 +10755,13 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 215 But everyone calls me the Pokémon Professor.
+        - 13, 215 But everyone calls me the Critter Professor.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
         - 13, 216 This world.[WAIT 10].[WAIT 10].[WAIT 30] is widely inhabited by
-          creatures known as Pokémon.
+          creatures known as Critter.
       - !ruby/object:RPG::EventCommand
         code: 106
         indent: 0
@@ -10966,7 +10966,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 217 We humans live alongside Pokémon as friends.
+        - 13, 217 We humans live alongside Critter as friends.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -10976,7 +10976,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 219 Some people use their Pokémon to battle and develop closer bonds
+        - 13, 219 Some people use their Critter to battle and develop closer bonds
           with them.
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -10987,7 +10987,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 13, 221 I study Pokémon as a profession.
+        - 13, 221 I study Critter as a profession.
       - !ruby/object:RPG::EventCommand
         code: 232
         indent: 0

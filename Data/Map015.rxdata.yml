@@ -344,7 +344,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 15, 0 I can teach a little trick to following Pokémon.
+              - 15, 0 I can teach a little trick to following Critter.
           - !ruby/object:RPG::EventCommand
             code: 108
             indent: 0
@@ -416,13 +416,13 @@ events:
             code: 101
             indent: 2
             parameters:
-              - 15, 1 But only one Pokémon would have to follow you...
+              - 15, 1 But only one Critter would have to follow you...
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 2
             parameters:
               - 15, 2 You can ask the Pokéfan seated on the right to change the number of
-                following Pokémon and come back!
+                following Critter and come back!
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 2
@@ -747,7 +747,7 @@ events:
             indent: 2
             parameters:
               - 15, 10 By changing the \c[5]variable 21\c[0], you can apply the move routes
-                of the player to the selected Pokémon.
+                of the player to the selected Critter.
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 2
@@ -768,7 +768,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 15, 11 Oh, I see you prefer to keep your Pokémon inside their Poké Balls...
+              - 15, 11 Oh, I see you prefer to keep your Critter inside their Poké Balls...
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 1
@@ -1173,7 +1173,7 @@ events:
             code: 401
             indent: 1
             parameters:
-              - If you want, I can make it so the Pokémon that follows you isn't necessarily
+              - If you want, I can make it so the Critter that follows you isn't necessarily
                 the first in your Party.
           - !ruby/object:RPG::EventCommand
             code: 101
@@ -1230,7 +1230,7 @@ events:
             code: 101
             indent: 2
             parameters:
-              - 15, 25 Now, you can simply select the Pokémon you want in your Party menu.
+              - 15, 25 Now, you can simply select the Critter you want in your Party menu.
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 2
@@ -1443,7 +1443,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 15, 33 Would you like to keep your Pokémon outside or recall them?
+              - 15, 33 Would you like to keep your Critter outside or recall them?
           - !ruby/object:RPG::EventCommand
             code: 102
             indent: 1
@@ -4246,7 +4246,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 15, 115 I asked my Ghost Pokémon to make me half-transparent like him!
+              - 15, 115 I asked my Ghost Critter to make me half-transparent like him!
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -4419,7 +4419,7 @@ events:
             code: 101
             indent: 2
             parameters:
-              - 15, 122 So, do your Pokémon enjoy the walk?
+              - 15, 122 So, do your Critter enjoy the walk?
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 2
@@ -4484,7 +4484,7 @@ events:
             code: 101
             indent: 3
             parameters:
-              - 15, 130 How many following Pokémon would you like?
+              - 15, 130 How many following Critter would you like?
           - !ruby/object:RPG::EventCommand
             code: 102
             indent: 3
@@ -4604,7 +4604,7 @@ events:
             code: 101
             indent: 2
             parameters:
-              - 15, 135 I notice you keep your Pokémon in their Poké Balls...
+              - 15, 135 I notice you keep your Critter in their Poké Balls...
           - !ruby/object:RPG::EventCommand
             code: 118
             indent: 2
@@ -4614,7 +4614,7 @@ events:
             code: 101
             indent: 2
             parameters:
-              - 15, 136 Would you like to be followed by the first Pokémon in your Party?
+              - 15, 136 Would you like to be followed by the first Critter in your Party?
           - !ruby/object:RPG::EventCommand
             code: 102
             indent: 2

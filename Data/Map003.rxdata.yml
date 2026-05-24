@@ -3591,18 +3591,18 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 3, 21 :[name=SirMalo]:Here is the Pokémon Center counter.
+              - 3, 21 :[name=SirMalo]:Here is the Critter Center counter.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
             parameters:
-              - 3, 22 :[name=SirMalo]:You can heal your Pokémon for free!
+              - 3, 22 :[name=SirMalo]:You can heal your Critter for free!
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
             parameters:
               - 3, 23 :[name=SirMalo]:The event is \c[5]dynamic\c[0] and displays as many
-                Poké Balls as Pokémon in your party.
+                Poké Balls as Critter in your party.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
@@ -3644,7 +3644,7 @@ events:
             indent: 1
             parameters:
               - 3, 25 :[name=SirMalo]:You also have the PC just right there which allows
-                you to access the Pokémon \c[5]storage system\c[0],
+                you to access the Critter \c[5]storage system\c[0],
           - !ruby/object:RPG::EventCommand
             code: 106
             indent: 1
@@ -3751,7 +3751,7 @@ events:
             indent: 1
             parameters:
               - 3, 27 :[name=SirMalo]:This place allows you to \c[5]setup every type of
-                battle\c[0] permitted by PokémonSDK.
+                battle\c[0] permitted by CritterSDK.
           - !ruby/object:RPG::EventCommand
             code: 106
             indent: 1
@@ -3818,7 +3818,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 3, 28 :[name=SirMalo]:This part is the Pokémon Shop.
+              - 3, 28 :[name=SirMalo]:This part is the Critter Shop.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
@@ -3829,7 +3829,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 3, 30 :[name=SirMalo]:PokémonSDK allows you to setup a lot of different
+              - 3, 30 :[name=SirMalo]:CritterSDK allows you to setup a lot of different
                 \c[5]shop types\c[0], with limited stocks or not.
           - !ruby/object:RPG::EventCommand
             code: 106
@@ -3982,7 +3982,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 3, 34 :[name=SirMalo]:You can leave there up to two Pokémon to have them
+              - 3, 34 :[name=SirMalo]:You can leave there up to two Critter to have them
                 train on their side.
           - !ruby/object:RPG::EventCommand
             code: 101
@@ -4103,7 +4103,7 @@ events:
             indent: 1
             parameters:
               - 3, 39 :[name=SirMalo]:These maps showcase all the environments you can create
-                with PokémonSDK, and their associated features.
+                with CritterSDK, and their associated features.
           - !ruby/object:RPG::EventCommand
             code: 106
             indent: 1
@@ -4206,7 +4206,7 @@ events:
             indent: 1
             parameters:
               - 3, 41 :[name=SirMalo]:Those are different maps which contain most features
-                permitted inside events by PokémonSDK.
+                permitted inside events by CritterSDK.
           - !ruby/object:RPG::EventCommand
             code: 246
             indent: 1
@@ -4324,7 +4324,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 3, 43 :[name=SirMalo]:Oh, I see you still don't have any Pokémon!
+              - 3, 43 :[name=SirMalo]:Oh, I see you still don't have any Critter!
           - !ruby/object:RPG::EventCommand
             code: 401
             indent: 0
@@ -4951,7 +4951,7 @@ events:
             code: 401
             indent: 0
             parameters:
-              - I know everything about the moves a Pokémon can learn when growing.
+              - I know everything about the moves a Critter can learn when growing.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -5066,7 +5066,7 @@ events:
             code: 101
             indent: 2
             parameters:
-              - 3, 59 I'm sure your Pokémon will be stronger this way!
+              - 3, 59 I'm sure your Critter will be stronger this way!
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 2
@@ -5094,7 +5094,7 @@ events:
             code: 101
             indent: 2
             parameters:
-              - 3, 60 Unfortunately, there is nothing to teach to your Pokémon...
+              - 3, 60 Unfortunately, there is nothing to teach to your Critter...
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 2
@@ -5176,7 +5176,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 3, 62 I can teach a very useful move to help you catch Pokémon.
+              - 3, 62 I can teach a very useful move to help you catch Critter.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -5199,7 +5199,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 3, 64 To which Pokémon do you want to teach it?
+              - 3, 64 To which Critter do you want to teach it?
           - !ruby/object:RPG::EventCommand
             code: 223
             indent: 1
@@ -5326,7 +5326,7 @@ events:
             code: 101
             indent: 3
             parameters:
-              - 3, 67 Unfortunately, I can't teach this move to your Pokémon...
+              - 3, 67 Unfortunately, I can't teach this move to your Critter...
           - !ruby/object:RPG::EventCommand
             code: 119
             indent: 3
@@ -6344,7 +6344,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 3, 99 My Rockruff is very strong, and it intimidates every Pokémon we're
+              - 3, 99 My Rockruff is very strong, and it intimidates every Critter we're
                 battling!
           - !ruby/object:RPG::EventCommand
             code: 0
@@ -6676,7 +6676,7 @@ events:
             indent: 0
             parameters:
               - 3, 107 :[name=Jules]:But well, revenants don't exist, the only ghosts are
-                the Pokémon, right..?
+                the Critter, right..?
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 0
@@ -8827,7 +8827,7 @@ events:
             indent: 0
             parameters:
               - 3, 125 :[name=SirMalo]:Here we are, with the whole team and your very first
-                Pokémon!
+                Critter!
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -9020,7 +9020,7 @@ events:
             indent: 0
             parameters:
               - "3, 133 :[name=SirMalo]:We would love if you could share this screen and
-                your reactions about the demo on the Pokémon Workshop Discord server, in
+                your reactions about the demo on the Critter Workshop Discord server, in
                 the channel #psdk-talk!"
           - !ruby/object:RPG::EventCommand
             code: 401
@@ -9239,7 +9239,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 3, 137 Here, we encourage young Trainers to catch lots and lots of Pokémon!
+              - 3, 137 Here, we encourage young Trainers to catch lots and lots of Critter!
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -9255,7 +9255,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 3, 139 The Tower brims with a great variety of Pokémon to catch.
+              - 3, 139 The Tower brims with a great variety of Critter to catch.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -9314,7 +9314,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 3, 141 The Tower brims with a great variety of Pokémon to catch.
+              - 3, 141 The Tower brims with a great variety of Critter to catch.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0

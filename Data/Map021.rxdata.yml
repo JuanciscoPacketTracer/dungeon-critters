@@ -976,7 +976,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 21, 8 :[name=Scor]:It's a very cool feature of PokémonSDK that lets you
+              - 21, 8 :[name=Scor]:It's a very cool feature of CritterSDK that lets you
                 create dynamic "lighting", as indicated by its name.
           - !ruby/object:RPG::EventCommand
             code: 101
@@ -1513,7 +1513,7 @@ events:
             indent: 1
             parameters:
               - 21, 22 :[name=Scor]:Thanks for the helping hand, alone it would have been
-                a much harder task, with all the wild Pokémon that tried to enter the room!
+                a much harder task, with all the wild Critter that tried to enter the room!
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
@@ -1588,7 +1588,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 21, 26 The Pokémon returns to the television to gain back its strength.
+              - 21, 26 The Critter returns to the television to gain back its strength.
           - !ruby/object:RPG::EventCommand
             code: 108
             indent: 1
@@ -1964,7 +1964,7 @@ events:
             indent: 1
             parameters:
               - 21, 36 :[name=Scor]:Thanks for the helping hand, alone it would have been
-                a much harder task, with all the wild Pokémon that tried to enter the room!
+                a much harder task, with all the wild Critter that tried to enter the room!
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
@@ -2039,7 +2039,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 21, 40 The Pokémon returns to the television to gain back its strength.
+              - 21, 40 The Critter returns to the television to gain back its strength.
           - !ruby/object:RPG::EventCommand
             code: 108
             indent: 1
@@ -2442,14 +2442,14 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 21, 57 :[name=Scor]:The only sure thing is, it must be an Electric Pokémon.
+              - 21, 57 :[name=Scor]:The only sure thing is, it must be an Electric Critter.
                 It would explain why the main generator is down and why the television is
                 still working.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
             parameters:
-              - 21, 58 :[name=Scor]:I'm covering you, you take care of this Pokémon.
+              - 21, 58 :[name=Scor]:I'm covering you, you take care of this Critter.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -2460,7 +2460,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 21, 60 :[name=Scor]:And, well, it's certainly a good Pokémon, a rare one
+              - 21, 60 :[name=Scor]:And, well, it's certainly a good Critter, a rare one
                 at that.
           - !ruby/object:RPG::EventCommand
             code: 101
@@ -2472,7 +2472,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 21, 62 :[name=Scor]:I'll stand over there to deal with the wild Pokémon
+              - 21, 62 :[name=Scor]:I'll stand over there to deal with the wild Critter
                 attracted by the noise.
           - !ruby/object:RPG::EventCommand
             code: 123
@@ -2629,7 +2629,7 @@ events:
             indent: 0
             parameters:
               - 21, 63 :[name=Scor]:Talk to the television when you feel ready to catch
-                this Pokémon, I've got your back!
+                this Critter, I've got your back!
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 0

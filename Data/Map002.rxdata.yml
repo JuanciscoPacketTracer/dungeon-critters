@@ -349,7 +349,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 2, 0 :[name=???]:Hello Maker, and welcome to the PokémonSDK Technical Demo!
+        - 2, 0 :[name=???]:Hello Maker, and welcome to the CritterSDK Technical Demo!
       - !ruby/object:RPG::EventCommand
         code: 355
         indent: 0
@@ -367,24 +367,24 @@ events:
         indent: 0
         parameters:
         - 2, 2 :[name=SirMalo]:This technical demo is the result of our continued
-          collaboration and shows how far we've come since the first release of PokémonSDK.
+          collaboration and shows how far we've come since the first release of CritterSDK.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
-        - 2, 3 :[name=SirMalo]:Of course, PokémonSDK would never have reached this
+        - 2, 3 :[name=SirMalo]:Of course, CritterSDK would never have reached this
           level without all the contributors who played their part!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
         - 2, 4 :[name=SirMalo]:As far as this demo is concerned, it will let you test
-          the different systems we offer with PokémonSDK ingame.
+          the different systems we offer with CritterSDK ingame.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
-        - 2, 5 :[name=SirMalo]:But it is also connected with Pokémon Studio, and it
+        - 2, 5 :[name=SirMalo]:But it is also connected with Critter Studio, and it
           will let you see how these features are implemented.
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -844,7 +844,7 @@ events:
         indent: 0
         parameters:
         - 2, 20 :[name=SirMalo]:You can now experiment with this demo and discover
-          the features of PokémonSDK!
+          the features of CritterSDK!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0

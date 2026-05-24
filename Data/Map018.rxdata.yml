@@ -834,7 +834,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 18, 4 Hey! I caught a weird Pokémon that was hiding behind the servers of
+        - 18, 4 Hey! I caught a weird Critter that was hiding behind the servers of
           the Laboratory, but I don't really trust it...
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -1126,7 +1126,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 18, 15 But I don't want this Pokémon!
+        - 18, 15 But I don't want this Critter!
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -1179,18 +1179,18 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 18, 16 It's fairly easy to setup an \c[5]internal trade\c[0] with PokémonSDK.
+        - 18, 16 It's fairly easy to setup an \c[5]internal trade\c[0] with CritterSDK.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
         - 18, 17 You just need to \c[5]call the party menu\c[0] and to check that
-          the selected Pokémon is the one needed for the trade.
+          the selected Critter is the one needed for the trade.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
-        - 18, 18 Then, you enter the parameters of the traded Pokémon, and then use
+        - 18, 18 Then, you enter the parameters of the traded Critter, and then use
           the \c[5]"npc_trade_sequence"\c[0] command.
       - !ruby/object:RPG::EventCommand
         code: 0
@@ -1572,7 +1572,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 18, 20 This state-of-the-art system will allow you to trade any Pokémon
+        - 18, 20 This state-of-the-art system will allow you to trade any Critter
           with any user of this demo!
       - !ruby/object:RPG::EventCommand
         code: 111
@@ -1858,7 +1858,7 @@ events:
         indent: 0
         parameters:
         - 18, 26 I'll trick my friend by sending him a Haunter holding an Everstone
-          for his Machoke, this way I'll be the only one with a powerful Pokémon!
+          for his Machoke, this way I'll be the only one with a powerful Critter!
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 0

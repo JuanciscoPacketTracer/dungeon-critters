@@ -861,7 +861,7 @@ events:
         code: 101
         indent: 2
         parameters:
-        - 17, 5 \c[18]But before, please select the two Pokémon you will be fighting
+        - 17, 5 \c[18]But before, please select the two Critter you will be fighting
           with.
       - !ruby/object:RPG::EventCommand
         code: 108
@@ -1268,7 +1268,7 @@ events:
         indent: 0
         parameters:
         - 17, 10 :[name=Palbolsky]:This battle will be a solo battle, with no limit
-          in the number of usable Pokémon!
+          in the number of usable Critter!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -1558,8 +1558,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 26 :[name=Palbolsky]:Challengers, I'll heal your Pokémon so you don't
-          have to go to the Pokémon Center.
+        - 17, 26 :[name=Palbolsky]:Challengers, I'll heal your Critter so you don't
+          have to go to the Critter Center.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -1862,7 +1862,7 @@ events:
         indent: 0
         parameters:
         - 17, 30 :[name=Palbolsky]:This battle will be a solo battle, with a limit
-          of two usable Pokémon!
+          of two usable Critter!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -2158,8 +2158,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 45 :[name=Palbolsky]:Challengers, I'll heal your Pokémon so you don't
-          have to go to the Pokémon Center.
+        - 17, 45 :[name=Palbolsky]:Challengers, I'll heal your Critter so you don't
+          have to go to the Critter Center.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -2468,7 +2468,7 @@ events:
         indent: 0
         parameters:
         - 17, 49 :[name=Palbolsky]:This battle will be a duo battle, with no limit
-          in the number of usable Pokémon!
+          in the number of usable Critter!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -2743,8 +2743,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 64 :[name=Palbolsky]:Challengers, I'll heal your Pokémon so you don't
-          have to go to the Pokémon Center.
+        - 17, 64 :[name=Palbolsky]:Challengers, I'll heal your Critter so you don't
+          have to go to the Critter Center.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -3090,7 +3090,7 @@ events:
         indent: 0
         parameters:
         - 17, 68 :[name=Palbolsky]:This battle will be a one versus two, with no limit
-          in the number of usable Pokémon!
+          in the number of usable Critter!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -3133,7 +3133,7 @@ events:
         indent: 0
         parameters:
         - 17, 75 :[name=[NAME2]]:My dream is that everyone admit the splendor of the
-          Fairy Pokémon!
+          Fairy Critter!
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -3388,8 +3388,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 85 :[name=Palbolsky]:Challengers, I'll heal your Pokémon so you don't
-          have to go to the Pokémon Center.
+        - 17, 85 :[name=Palbolsky]:Challengers, I'll heal your Critter so you don't
+          have to go to the Critter Center.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -3735,7 +3735,7 @@ events:
         indent: 0
         parameters:
         - 17, 89 :[name=Palbolsky]:This battle will be a two versus one, with no limit
-          in the number of usable Pokémon!
+          in the number of usable Critter!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -4034,8 +4034,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 106 :[name=Palbolsky]:Challengers, I'll heal your Pokémon so you don't
-          have to go to the Pokémon Center.
+        - 17, 106 :[name=Palbolsky]:Challengers, I'll heal your Critter so you don't
+          have to go to the Critter Center.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -4448,7 +4448,7 @@ events:
         indent: 0
         parameters:
         - 17, 110 :[name=Palbolsky]:This battle will be a two versus two, with no
-          limit in the number of usable Pokémon!
+          limit in the number of usable Critter!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -4466,7 +4466,7 @@ events:
         indent: 0
         parameters:
         - 17, 113 :[name=Palbolsky]:For this battle, the victory will belong to the
-          team with at least one Pokémon still able to fight!
+          team with at least one Critter still able to fight!
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -4769,8 +4769,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 128 :[name=Palbolsky]:Challengers, I'll heal your Pokémon so you don't
-          have to go to the Pokémon Center.
+        - 17, 128 :[name=Palbolsky]:Challengers, I'll heal your Critter so you don't
+          have to go to the Critter Center.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -5414,8 +5414,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 147 :[name=Palbolsky]:Challengers, I'll heal your Pokémon so you don't
-          have to go to the Pokémon Center.
+        - 17, 147 :[name=Palbolsky]:Challengers, I'll heal your Critter so you don't
+          have to go to the Critter Center.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -6443,8 +6443,8 @@ events:
         code: 101
         indent: 2
         parameters:
-        - 17, 169 :[name=Palbolsky]:It's one of the Eon Pokémon. You fought it during
-          the battle, and I feel it'll be fine with you. The other Eon Pokémon was
+        - 17, 169 :[name=Palbolsky]:It's one of the Eon Critter. You fought it during
+          the battle, and I feel it'll be fine with you. The other Eon Critter was
           sighted on the Island, apparently, maybe you already encountered it?
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -6499,7 +6499,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 173 :[name=[NAME]]:I will heal your Pokémon so you won't have to.
+        - 17, 173 :[name=[NAME]]:I will heal your Critter so you won't have to.
       - !ruby/object:RPG::EventCommand
         code: 108
         indent: 0
@@ -7606,8 +7606,8 @@ events:
         code: 101
         indent: 0
         parameters:
-        - '17, 177 :[name=???,3]:Ooooooooh! The challenger''s Pokémon is KO! He only
-          has one Pokémon left, and his opponent is already on her last Pokémon! '
+        - '17, 177 :[name=???,3]:Ooooooooh! The challenger''s Critter is KO! He only
+          has one Critter left, and his opponent is already on her last Critter! '
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -9583,7 +9583,7 @@ events:
         indent: 0
         parameters:
         - 17, 197 :[name=Palbolsky]:I'm the manager of the Battle Arena, a room dedicated
-          to learning Pokémon battles and the diverse ways to setup one.
+          to learning Critter battles and the diverse ways to setup one.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -9623,7 +9623,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 17, 203 :[name=Palbolsky]:If you have a Pokémon to Mega Evolve, you'll be
+        - 17, 203 :[name=Palbolsky]:If you have a Critter to Mega Evolve, you'll be
           able to with this item!
       - !ruby/object:RPG::EventCommand
         code: 101

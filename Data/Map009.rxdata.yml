@@ -1690,7 +1690,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 9, 8 A certain species of Pokémon could \c[5]evolve around it\c[0].
+              - 9, 8 A certain species of Critter could \c[5]evolve around it\c[0].
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -1773,7 +1773,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 9, 11 A certain species of Pokémon could \c[5]evolve around it\c[0].
+              - 9, 11 A certain species of Critter could \c[5]evolve around it\c[0].
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0

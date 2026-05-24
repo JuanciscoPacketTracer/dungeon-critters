@@ -615,7 +615,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 20, 1 You've awakened the Bug Pokémon!
+              - 20, 1 You've awakened the Bug Critter!
           - !ruby/object:RPG::EventCommand
             code: 106
             indent: 0
@@ -814,7 +814,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 20, 3 You've awakened the Bug Pokémon!
+              - 20, 3 You've awakened the Bug Critter!
           - !ruby/object:RPG::EventCommand
             code: 106
             indent: 0
@@ -1342,7 +1342,7 @@ events:
             indent: 1
             parameters:
               - 20, 14 :[name=Rey]:Did you catch it? Good job! It's really not easy to find
-                an Eon Pokémon with their abilities.
+                an Eon Critter with their abilities.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
@@ -1485,7 +1485,7 @@ events:
             indent: 2
             parameters:
               - 20, 21 :[name=Rey]:Hey \N[1]! So, hopefully not having too much trouble
-                with this little runaway Pokémon hunt?
+                with this little runaway Critter hunt?
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 2
@@ -2434,7 +2434,7 @@ events:
             indent: 1
             parameters:
               - 20, 30 By the way, despite the fact I beat you, I will heal your team to
-                save you the trip to the Pokémon Center.
+                save you the trip to the Critter Center.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 1
@@ -2575,7 +2575,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 20, 34 In the end, what became of the legendary Pokémon?
+              - 20, 34 In the end, what became of the legendary Critter?
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 0
@@ -3030,7 +3030,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 20, 40 In the end, what became of the legendary Pokémon?
+              - 20, 40 In the end, what became of the legendary Critter?
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 0
@@ -3964,7 +3964,7 @@ events:
             indent: 0
             parameters:
               - "20, 53 :[name=Rey]:Honestly, you are winning on every point: you add a
-                super rare Pokémon to your team and you get the Stone."
+                super rare Critter to your team and you get the Stone."
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
@@ -3976,7 +3976,7 @@ events:
             indent: 0
             parameters:
               - 20, 55 :[name=Rey]:Finally, if you take a look at the \c[5]Map\c[0], you'll
-                be able to easily see where the roaming Pokémon are.
+                be able to easily see where the roaming Critter are.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0

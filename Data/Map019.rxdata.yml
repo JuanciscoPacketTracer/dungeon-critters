@@ -757,7 +757,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 19, 0 I'm planning to sell some of my farm's Pokémon as I have too many,
+        - 19, 0 I'm planning to sell some of my farm's Critter as I have too many,
           but the Tower's Staff has yet to give me the official approval...
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -822,7 +822,7 @@ events:
         indent: 1
         parameters:
         - 19, 2 I finally got the approval from the Tower's Staff to sell my extra
-          Pokémon!
+          Critter!
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -863,7 +863,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 4 ... I would have liked to help you, but I don't have any Pokémon left
+        - 19, 4 ... I would have liked to help you, but I don't have any Critter left
           to sell.
       - !ruby/object:RPG::EventCommand
         code: 0
@@ -883,7 +883,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 5 Want to have a look at the Pokémon I'm selling away?
+        - 19, 5 Want to have a look at the Critter I'm selling away?
       - !ruby/object:RPG::EventCommand
         code: 102
         indent: 1
@@ -960,7 +960,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 7 Don't hesitate to come back, my Pokémon only wait for you!
+        - 19, 7 Don't hesitate to come back, my Critter only wait for you!
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -1079,7 +1079,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 19, 11 You see, PokémonSDK is capable of \c[5]directly managing Berries
+        - 19, 11 You see, CritterSDK is capable of \c[5]directly managing Berries
           and their growth\c[0].
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -1937,7 +1937,7 @@ events:
         indent: 1
         parameters:
         - 19, 34 Concretely, I sell TMs which allow you to teach new moves to your
-          Pokémon, as long as they are able to learn it.
+          Critter, as long as they are able to learn it.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 1
@@ -3322,7 +3322,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 86 :[name=Marissa]:And finally, I would like you to catch a Ghost Pokémon.
+        - 19, 86 :[name=Marissa]:And finally, I would like you to catch a Ghost Critter.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
@@ -3333,13 +3333,13 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 88 :[name=Marissa]:And if it's a Ghost Pokémon, there's a huge chance
+        - 19, 88 :[name=Marissa]:And if it's a Ghost Critter, there's a huge chance
           it will be able to follow me to the other side, so I won't be alone then.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
-        - '19, 89 :[name=Marissa]:According to hearsay, there is a Ghost Pokémon haunting
+        - '19, 89 :[name=Marissa]:According to hearsay, there is a Ghost Critter haunting
           the Toundra floor: I want this one.'
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -3350,7 +3350,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 91 :[name=Marissa]:I don't know what it looks like, but you're a Pokémon
+        - 19, 91 :[name=Marissa]:I don't know what it looks like, but you're a Critter
           Trainer, so it shouldn't cause you any problem.
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -3825,7 +3825,7 @@ events:
         code: 401
         indent: 1
         parameters:
-        - It's the Pokémon that was haunting the Tundra floor?
+        - It's the Critter that was haunting the Tundra floor?
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
@@ -3840,7 +3840,7 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 111 :[name=Marissa]:Honestly, I'd rather die than take this Pokémon
+        - 19, 111 :[name=Marissa]:Honestly, I'd rather die than take this Critter
           with me, and it's good because I'm already dead.
       - !ruby/object:RPG::EventCommand
         code: 101
@@ -7298,20 +7298,20 @@ events:
         code: 101
         indent: 1
         parameters:
-        - 19, 139 See, PokémonSDK won't raise any error if you don't have any Pokémon
+        - 19, 139 See, CritterSDK won't raise any error if you don't have any Critter
           on you, but it won't launch any battle either.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
-        - 19, 140 So it's your job to give a Pokémon to your player before they can
+        - 19, 140 So it's your job to give a Critter to your player before they can
           gain access to trainer battles or to tall grass.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
         - 19, 141 I could let you pass, but for the sake of this demo, you should
-          retrieve one or more Pokémon.
+          retrieve one or more Critter.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
@@ -7447,13 +7447,13 @@ events:
         indent: 1
         parameters:
         - 19, 144 As you can see, I stand guard to make sure that anyone \c[5]who
-          doesn't have a Pokémon\c[0] can't get through.
+          doesn't have a Critter\c[0] can't get through.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 1
         parameters:
         - 19, 145 I will have to stop you if you try to head to the Route without
-          a Pokémon!
+          a Critter!
       - !ruby/object:RPG::EventCommand
         code: 209
         indent: 1
@@ -7532,7 +7532,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 19, 146 Oh, I see you have Pokémon with you.
+        - 19, 146 Oh, I see you have Critter with you.
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
@@ -8380,7 +8380,7 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 19, 167 I'm fishing a lot, so I'll never run out of Pokémon to sell you.
+        - 19, 167 I'm fishing a lot, so I'll never run out of Critter to sell you.
       - !ruby/object:RPG::EventCommand
         code: 0
         indent: 0

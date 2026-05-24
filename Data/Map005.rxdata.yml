@@ -349,7 +349,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 5, 1 By the way, this patch of grass is particular as the Pokémon in it
+              - 5, 1 By the way, this patch of grass is particular as the Critter in it
                 always attack in groups of two!
           - !ruby/object:RPG::EventCommand
             code: 101

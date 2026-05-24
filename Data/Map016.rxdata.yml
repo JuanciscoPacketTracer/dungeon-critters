@@ -7450,13 +7450,13 @@ events:
         code: 101
         indent: 0
         parameters:
-        - 16, 241 We exchange Coins for remarkable Pokémon, trained with love and
+        - 16, 241 We exchange Coins for remarkable Critter, trained with love and
           in compliance with international law...
       - !ruby/object:RPG::EventCommand
         code: 101
         indent: 0
         parameters:
-        - 16, 242 Which Pokémon would you like?
+        - 16, 242 Which Critter would you like?
       - !ruby/object:RPG::EventCommand
         code: 102
         indent: 0

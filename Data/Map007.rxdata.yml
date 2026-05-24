@@ -4092,13 +4092,13 @@ events:
             indent: 0
             parameters:
               - 7, 25 I wish to share my wisdom with you, or at the very least, to one of
-                your Pokémon.
+                your Critter.
           - !ruby/object:RPG::EventCommand
             code: 101
             indent: 0
             parameters:
               - 7, 26 Would you be interested in having me teach Rock Climb to one of your
-                Pokémon?
+                Critter?
           - !ruby/object:RPG::EventCommand
             code: 102
             indent: 0
@@ -4116,7 +4116,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 7, 27 To which Pokémon should I teach it?
+              - 7, 27 To which Critter should I teach it?
           - !ruby/object:RPG::EventCommand
             code: 223
             indent: 1

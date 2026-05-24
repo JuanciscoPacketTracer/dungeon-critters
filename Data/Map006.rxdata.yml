@@ -2397,7 +2397,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 6, 16 But this sand is infested with wild Pokémon hiding in it...
+              - 6, 16 But this sand is infested with wild Critter hiding in it...
           - !ruby/object:RPG::EventCommand
             code: 0
             indent: 0
@@ -2461,7 +2461,7 @@ events:
             code: 101
             indent: 0
             parameters:
-              - 6, 19 Do you want me to teach the move Whirlpool to one of your Pokémon?
+              - 6, 19 Do you want me to teach the move Whirlpool to one of your Critter?
           - !ruby/object:RPG::EventCommand
             code: 102
             indent: 0
@@ -2479,7 +2479,7 @@ events:
             code: 101
             indent: 1
             parameters:
-              - 6, 20 To which Pokémon should I teach it?
+              - 6, 20 To which Critter should I teach it?
           - !ruby/object:RPG::EventCommand
             code: 223
             indent: 1
@@ -2681,7 +2681,7 @@ events:
             code: 101
             indent: 3
             parameters:
-              - 6, 25 You can find certain Pokémon species that can learn Whirlpool in the
+              - 6, 25 You can find certain Critter species that can learn Whirlpool in the
                 sea around us, or in the river in the floor below.
           - !ruby/object:RPG::EventCommand
             code: 119

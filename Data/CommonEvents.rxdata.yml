@@ -829,7 +829,7 @@
     code: 108
     indent: 0
     parameters:
-    - "?Bonjour?! Bienvenue au Centre Pokémon, où nous soignons les Pokémon. Voulez-vous
+    - "?Bonjour?! Bienvenue au Centre Critter, où nous soignons les Critter. Voulez-vous
       que nous nous occupions de votre équipe ?"
   - !ruby/object:RPG::EventCommand
     code: 101
@@ -1688,7 +1688,7 @@
     code: 108
     indent: 1
     parameters:
-    - Si un Pokémon suiveur
+    - Si un Critter suiveur
   - !ruby/object:RPG::EventCommand
     code: 111
     indent: 1
@@ -3296,7 +3296,7 @@
     code: 108
     indent: 1
     parameters:
-    - Veux-tu me confier un Pokémon??
+    - Veux-tu me confier un Critter??
   - !ruby/object:RPG::EventCommand
     code: 108
     indent: 1
@@ -3535,7 +3535,7 @@
     code: 408
     indent: 0
     parameters:
-    - "#> Récupérer Pokémon"
+    - "#> Récupérer Critter"
   - !ruby/object:RPG::EventCommand
     code: 408
     indent: 0
@@ -3886,7 +3886,7 @@
     code: 408
     indent: 0
     parameters:
-    - "#> Confier Pokémon"
+    - "#> Confier Critter"
   - !ruby/object:RPG::EventCommand
     code: 408
     indent: 0
@@ -4125,8 +4125,8 @@
     code: 108
     indent: 1
     parameters:
-    - Je travaille à la Pension Pokémon. Ici, nous nous occupons des précieux Pokémon
-      de nos amis Dresseurs. Si tu veux nous confier un ou plusieurs Pokémon, adresse-toi
+    - Je travaille à la Pension Critter. Ici, nous nous occupons des précieux Critter
+      de nos amis Dresseurs. Si tu veux nous confier un ou plusieurs Critter, adresse-toi
       à la patronne.
   - !ruby/object:RPG::EventCommand
     code: 101
@@ -4292,7 +4292,7 @@
     code: 408
     indent: 3
     parameters:
-    - "#> 2 Pokémon, on dit s'ils s'entendent ou pas"
+    - "#> 2 Critter, on dit s'ils s'entendent ou pas"
   - !ruby/object:RPG::EventCommand
     code: 408
     indent: 3
@@ -4440,7 +4440,7 @@
     code: 408
     indent: 3
     parameters:
-    - "#> 1 Pokémon, on sort la phrase par défaut"
+    - "#> 1 Critter, on sort la phrase par défaut"
   - !ruby/object:RPG::EventCommand
     code: 408
     indent: 3

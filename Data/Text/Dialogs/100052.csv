@@ -3,7 +3,7 @@ en,fr,it,de,es,ko,kana
 [VAR TRNAME(0000)],[VAR TRNAME(0000)],[VAR TRNAME(0000)],[VAR TRNAME(0000)],[VAR TRNAME(0000)],[VAR TRNAME(0000)],[VAR TRNAME(0000)]
 Battle,Attaque,Lotta,Kampf,Luchar,싸운다,たたかう
 Bag,Sac,Borsa,Beutel,Mochila,가방,バッグ
-Critter,Équipe,Pokémon,Pokémon,Critter,포켓몬,ポケモン
+Critter,Équipe,Critter,Critter,Critter,포켓몬,ポケモン
 Critter Cell,Poké Balls,Poké Ball,Pokébälle,Cápsula Critter,볼,ボール
 Run,Fuite,Fuga,Flucht,Correr,도망간다,にげる
 Lv.,N.,L.,Lv. ,Nv. ,Lv.,Lv.
@@ -54,9 +54,9 @@ Melee Defense,Défense,Difesa,Vert.,Defensa Melee,방어,ぼうぎょ
 Ranged Attack,Atq. Spé.,Att. Sp.,Sp.-Ang.,At. de Rango,특수공격,とくこう
 Ranged Defense,Déf. Spé.,Dif. Sp.,Sp.-Vert.,Def. de Rango,특수방어,とくぼう
 Speed,Vitesse,Velocità,Initiative,Velocidad,스피드,すばやさ
-Switch Critter,Changer de Pokémon,Cambia Pokémon,Pokémon wechseln,Cambiar Critter,포켓몬을 교체한다,ポケモンを　いれかえる
+Switch Critter,Changer de Critter,Cambia Critter,Critter wechseln,Cambiar Critter,포켓몬을 교체한다,ポケモンを　いれかえる
 Keep current Critter,Continuer sans changer,Continua a lottare,Weiterkämpfen,Seguir peleando,그대로 싸운다,そのまま　たたかう
-Use next Critter,Envoyer un autre Pokémon,Manda in campo un altro Pokémon,Nächstes Pokémon rufen,Sacar a otro Critter,다음 포켓몬을 쓴다,つぎの　ポケモンを　つかう
+Use next Critter,Envoyer un autre Critter,Manda in campo un altro Critter,Nächstes Critter rufen,Sacar a otro Critter,다음 포켓몬을 쓴다,つぎの　ポケモンを　つかう
 Run,Fuir,Fuga,Flucht,Correr,도망간다,にげる
 Forget an old move,Oublier une capacité,Fai dimenticare,Ja,Sustituir un movimiento,잊게 한다!,わすれさせる！
 Keep old moves,Garder les anciennes capacités,Non far dimenticare,Nein,Conservar movimientos,잊게 하지 않는다,わすれさせない
