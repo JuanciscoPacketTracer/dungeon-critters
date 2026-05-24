@@ -5,16 +5,22 @@
   "systemTag": "Cave",
   "terrainTag": 0,
   "tool": null,
+  "vsType": "simple",
   "customConditions": [
     {
       "type": "mapId",
       "value": 7,
       "relationWithPreviousCondition": "AND"
+    },
+    {
+      "type": "mapId",
+      "relationWithPreviousCondition": "OR",
+      "value": 25
     }
   ],
   "encounters": [
     {
-      "specie": "zubat",
+      "specie": "wurmy",
       "form": 0,
       "shinySetup": {
         "kind": "automatic",
@@ -23,11 +29,11 @@
       "levelSetup": {
         "kind": "minmax",
         "level": {
-          "minimumLevel": 18,
-          "maximumLevel": 26
+          "minimumLevel": 2,
+          "maximumLevel": 5
         }
       },
-      "randomEncounterChance": 1,
+      "randomEncounterChance": 50,
       "expandPokemonSetup": [
         {
           "type": "evs",
@@ -56,7 +62,7 @@
       ]
     },
     {
-      "specie": "roggenrola",
+      "specie": "huskli",
       "form": 0,
       "shinySetup": {
         "kind": "automatic",
@@ -65,179 +71,11 @@
       "levelSetup": {
         "kind": "minmax",
         "level": {
-          "minimumLevel": 24,
-          "maximumLevel": 27
+          "minimumLevel": 1,
+          "maximumLevel": 5
         }
       },
-      "randomEncounterChance": 1,
-      "expandPokemonSetup": [
-        {
-          "type": "evs",
-          "value": {
-            "hp": 0,
-            "atk": 0,
-            "dfe": 0,
-            "spd": 0,
-            "ats": 0,
-            "dfs": 0
-          }
-        },
-        {
-          "type": "loyalty",
-          "value": 70
-        },
-        {
-          "type": "moves",
-          "value": [
-            "__undef__",
-            "__undef__",
-            "__undef__",
-            "__undef__"
-          ]
-        }
-      ]
-    },
-    {
-      "specie": "klang",
-      "form": 0,
-      "shinySetup": {
-        "kind": "automatic",
-        "rate": -1
-      },
-      "levelSetup": {
-        "kind": "minmax",
-        "level": {
-          "minimumLevel": 24,
-          "maximumLevel": 27
-        }
-      },
-      "randomEncounterChance": 1,
-      "expandPokemonSetup": [
-        {
-          "type": "evs",
-          "value": {
-            "hp": 0,
-            "atk": 0,
-            "dfe": 0,
-            "spd": 0,
-            "ats": 0,
-            "dfs": 0
-          }
-        },
-        {
-          "type": "loyalty",
-          "value": 70
-        },
-        {
-          "type": "moves",
-          "value": [
-            "__undef__",
-            "__undef__",
-            "__undef__",
-            "__undef__"
-          ]
-        }
-      ]
-    },
-    {
-      "specie": "noibat",
-      "form": 0,
-      "shinySetup": {
-        "kind": "automatic",
-        "rate": -1
-      },
-      "levelSetup": {
-        "kind": "minmax",
-        "level": {
-          "minimumLevel": 24,
-          "maximumLevel": 27
-        }
-      },
-      "randomEncounterChance": 1,
-      "expandPokemonSetup": [
-        {
-          "type": "evs",
-          "value": {
-            "hp": 0,
-            "atk": 0,
-            "dfe": 0,
-            "spd": 0,
-            "ats": 0,
-            "dfs": 0
-          }
-        },
-        {
-          "type": "loyalty",
-          "value": 70
-        },
-        {
-          "type": "moves",
-          "value": [
-            "__undef__",
-            "__undef__",
-            "__undef__",
-            "__undef__"
-          ]
-        }
-      ]
-    },
-    {
-      "specie": "drilbur",
-      "form": 0,
-      "shinySetup": {
-        "kind": "automatic",
-        "rate": -1
-      },
-      "levelSetup": {
-        "kind": "minmax",
-        "level": {
-          "minimumLevel": 24,
-          "maximumLevel": 27
-        }
-      },
-      "randomEncounterChance": 1,
-      "expandPokemonSetup": [
-        {
-          "type": "evs",
-          "value": {
-            "hp": 0,
-            "atk": 0,
-            "dfe": 0,
-            "spd": 0,
-            "ats": 0,
-            "dfs": 0
-          }
-        },
-        {
-          "type": "loyalty",
-          "value": 70
-        },
-        {
-          "type": "moves",
-          "value": [
-            "__undef__",
-            "__undef__",
-            "__undef__",
-            "__undef__"
-          ]
-        }
-      ]
-    },
-    {
-      "specie": "bronzor",
-      "form": 0,
-      "shinySetup": {
-        "kind": "automatic",
-        "rate": -1
-      },
-      "levelSetup": {
-        "kind": "minmax",
-        "level": {
-          "minimumLevel": 24,
-          "maximumLevel": 27
-        }
-      },
-      "randomEncounterChance": 1,
+      "randomEncounterChance": 50,
       "expandPokemonSetup": [
         {
           "type": "evs",
@@ -266,6 +104,5 @@
       ]
     }
   ],
-  "stepsAverage": 0,
-  "vsType": "simple"
+  "stepsAverage": 30
 }

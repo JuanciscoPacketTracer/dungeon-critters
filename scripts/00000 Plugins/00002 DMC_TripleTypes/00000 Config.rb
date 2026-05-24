@@ -48,7 +48,7 @@ module DMC
       [:vilevora, 0] => :poison,
       [:tyranovine, 0] => :fire,
       [:bombusk, 0] => :explosive,
-      [:jewelusk, 0] => :crystal,
+      [:jewelusk,. 0] => :crystal,
       [:magnehusk, 0] => :magnetism,
       [:crochetta, 0] => :hearth,
       [:crochetress, 0] => :hearth,

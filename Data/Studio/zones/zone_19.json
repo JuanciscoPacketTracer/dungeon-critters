@@ -1,9 +1,9 @@
 {
   "klass": "Zone",
-  "id": 17,
-  "dbSymbol": "zone_17",
+  "id": 19,
+  "dbSymbol": "zone_19",
   "maps": [
-    21
+    25
   ],
   "worldmaps": [],
   "panelId": 2,
@@ -16,7 +16,9 @@
     "y": null
   },
   "isFlyAllowed": false,
-  "isWarpDisallowed": true,
+  "isWarpDisallowed": false,
   "forcedWeather": null,
-  "wildGroups": []
+  "wildGroups": [
+    "group_10"
+  ]
 }
