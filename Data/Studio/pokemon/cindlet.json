@@ -109,7 +109,7 @@
         "characterShiny": "",
         "egg": "",
         "iconEgg": "",
-        "cry": "009.wav",
+        "cry": "009Cry.wav",
         "hasFemale": false
       },
       "moveSet": [
