@@ -1,9 +1,9 @@
 module BattleUI
   class InfoBar < UI::SpriteStack
     def create_type_sprite
-      @type1_sprite = add_sprite(*type1_coordinates, NO_INITIAL_IMAGE, type: BattleType1Sprite)
-      @type2_sprite = add_sprite(*type2_coordinates, NO_INITIAL_IMAGE, type: BattleType2Sprite)
-      @type3_sprite = add_sprite(*type3_coordinates, NO_INITIAL_IMAGE, type: BattleType3Sprite)
+      @type1_sprite = add_sprite(*type1_coordinates, NO_INITIAL_IMAGE, type: UI::BattleType1Sprite)
+      @type2_sprite = add_sprite(*type2_coordinates, NO_INITIAL_IMAGE, type: UI::BattleType2Sprite)
+      @type3_sprite = add_sprite(*type3_coordinates, NO_INITIAL_IMAGE, type: UI::BattleType3Sprite)
     end
 
     def type1_coordinates
@@ -44,9 +44,9 @@ module SpritePatch
   def reposition_type_sprites_dynamic(pokemon)
     return unless @sprites && pokemon
 
-    type1_sprite = @sprites.find { |s| s.is_a?(UI::BattleType1Sprite) || s.is_a?(BattleType1Sprite) }
-    type2_sprite = @sprites.find { |s| s.is_a?(UI::BattleType2Sprite) || s.is_a?(BattleType2Sprite) }
-    type3_sprite = @sprites.find { |s| s.is_a?(UI::BattleType3Sprite) || s.is_a?(BattleType3Sprite) }
+    type1_sprite = @sprites.find { |s| s.is_a?(UI::BattleType1Sprite) }
+    type2_sprite = @sprites.find { |s| s.is_a?(UI::BattleType2Sprite) }
+    type3_sprite = @sprites.find { |s| s.is_a?(UI::BattleType3Sprite) }
 
     return unless type1_sprite && type2_sprite && type3_sprite
 

@@ -1,33 +1,54 @@
 ================================Erreur de script================================
 Message :
-undefined method `If' for #<Interpreter:0x11859ea0>
+undefined method `type' for #<PFM::Pokemon:0x11ab9ac0>
 
 Type : NoMethodError
-Script : (eval) (RMXP)
-Ligne : 2
-Date : 24/05/2026 02:09:39
+Script : 4_Systems_000_General_4_UI_Generics.rb (PSDK)
+Ligne : 873
+Date : 24/05/2026 23:16:09
 Game Version : 256
 Logiciel : PSDK 26.56
-Script used by eval command : 
-If LV(:pokemon_data).nil?
-
 ===================================Backtraces===================================
-[26] : (eval) (RMXP) | ligne 2 eval_X7
-[25] : 1_RMXP_Scripts.rb (PSDK) | ligne 1349 eval_condition_script
-[24] : 1_RMXP_Scripts.rb (PSDK) | ligne 1334 command_111
-[23] : 1_RMXP_Scripts.rb (PSDK) | ligne 1101 execute_command
-[22] : 1_RMXP_Scripts.rb (PSDK) | ligne 976 update
-[21] : 1_RMXP_Scripts.rb (PSDK) | ligne 956 loop
-[20] : 1_RMXP_Scripts.rb (PSDK) | ligne 956 update
-[19] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9257 update_map_logic
-[18] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 2916 update_map_logic
-[17] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9265 auto_transfert_update
-[16] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9264 loop
-[15] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9264 auto_transfert_update
-[14] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9118 update
-[13] : 0_Dependencies.rb (PSDK) | ligne 1375 times
-[12] : 0_Dependencies.rb (PSDK) | ligne 1375 run
-[11] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9118 update
+[50] : 4_Systems_000_General_4_UI_Generics.rb (PSDK) | ligne 873 data=
+[49] : 4_Systems_000_General_4_UI_Generics.rb (PSDK) | ligne 330 data=
+[48] : 4_Systems_000_General_4_UI_Generics.rb (PSDK) | ligne 329 each
+[47] : 4_Systems_000_General_4_UI_Generics.rb (PSDK) | ligne 329 data=
+[46] : 00000 Plugins/00002 DMC_TripleTypes/00005 SummaryRevamp.rb (user) | ligne 214 data=
+[45] : 4_Systems_102_Party.rb (PSDK) | ligne 2117 update_pokemon
+[44] : 4_Systems_102_Party.rb (PSDK) | ligne 2117 each
+[43] : 4_Systems_102_Party.rb (PSDK) | ligne 2117 update_pokemon
+[42] : 4_Systems_102_Party.rb (PSDK) | ligne 2072 create_graphics
+[41] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 228 main_begin
+[40] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 143 main
+[39] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 175 call_scene
+[38] : 4_Systems_102_Party.rb (PSDK) | ligne 1682 launch_summary
+[37] : 4_Systems_000_General_1_PFM.rb (PSDK) | ligne 464 call
+[36] : 4_Systems_000_General_1_PFM.rb (PSDK) | ligne 464 call_validate_handle
+[35] : 4_Systems_000_General_1_PFM.rb (PSDK) | ligne 401 display_choice
+[34] : 4_Systems_102_Party.rb (PSDK) | ligne 1618 show_menu_mode_choice
+[33] : 4_Systems_102_Party.rb (PSDK) | ligne 1583 show_choice
+[32] : 4_Systems_102_Party.rb (PSDK) | ligne 1474 action_A_menu
+[31] : 4_Systems_102_Party.rb (PSDK) | ligne 1452 action_A
+[30] : 4_Systems_102_Party.rb (PSDK) | ligne 1274 update_inputs
+[29] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 433 update
+[28] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 463 update
+[27] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 236 main_process
+[26] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 144 main
+[25] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 175 call_scene
+[24] : 4_Systems_000_General.rb (PSDK) | ligne 243 open_party_menu
+[23] : 4_Systems_100_Menu.rb (PSDK) | ligne 256 open_party
+[22] : 4_Systems_100_Menu.rb (PSDK) | ligne 248 action
+[21] : 4_Systems_100_Menu.rb (PSDK) | ligne 71 update_inputs
+[20] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 433 update
+[19] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 236 main_process
+[18] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 144 main
+[17] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 175 call_scene
+[16] : 4_Systems_000_General.rb (PSDK) | ligne 158 open_menu
+[15] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9419 call_menu
+[14] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9348 update_scene_calling
+[13] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9346 each
+[12] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9346 update_scene_calling
+[11] : 4_Systems_003_Map_Engine.rb (PSDK) | ligne 9123 update
 [10] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 236 main_process
 [9] : 4_Systems_000_General_2_GamePlay__Base.rb (PSDK) | ligne 144 main
 [8] : tools/GameLoader/Z_main.rb (PSDK) | ligne 16 <top (required)>

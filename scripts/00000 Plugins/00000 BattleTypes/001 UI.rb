@@ -29,7 +29,8 @@ module UI
       :type2
     end
   end
-    class BattleType3Sprite < BattleType1Sprite
+
+  class BattleType3Sprite < BattleType1Sprite
     private
 
     def data_source
