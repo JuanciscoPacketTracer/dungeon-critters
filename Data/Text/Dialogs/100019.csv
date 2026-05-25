@@ -1257,5 +1257,11 @@ The wild [VAR PKNICK(0000)] used its Mirror Herb to mirror its opponent’s stat
 The opposing [VAR PKNICK(0000)] used its Mirror Herb to mirror its opponent’s stat changes!,[VAR PKNICK(0000)]  ennemi copie les changements de stats de la cible grâce à la Feuille Copieuse !,[VAR PKNICK(0000)] avversario ha copiato le modifiche alle statistiche avversarie usando la Foglia carbone!,"[VAR PKNICK(0000)] (Gegner) nutzt das Item Kopierkraut, um die gegnerischen Statusveränderungen zu kopieren.",[VAR PKNICK(0000)] enemigo ha usado una Hierba Copia y ha copiado los cambios en las características del rival!,상대 [VAR PKNICK(0000)] 흉내허브를 써서 상대의 능력 변화를 흉내 냈다!,对手的[VAR PKNICK(0000)]使用模仿香草 模仿了对手的能力变化！
 [VAR PKNICK(0000)]'s light weakens Dark and Spirit type type attacks!,,,,La luz de [VAR PKNICK(0000)] debilita los ataques tipo Oscuro!,,
 The wild [VAR PKNICK(0000)]'s light weakens Dark and Spirit type attacks!,,,,La luz del [VAR PKNICK(0000)] salvaje debilita los ataques tipo Oscuro!,,
-[VAR PKNICK(0000)]'s light weakens Dark and Spirit type type attacks!,,,,La luz de [VAR PKNICK(0000)] debilita los ataques tipo Oscuro!,,
+The opposing [VAR PKNICK(0000)]'s light weakens Dark and Spirit type type attacks!,,,,La luz de [VAR PKNICK(0000)] debilita los ataques tipo Oscuro!,,
 [VAR PKNICK(0000)] Recieved a PowerUp!,,,,[VAR PKNICK(0000)] recibió un PowerUp!,,
+[VAR PKNICK(0000)]'s guiding light sharpens its allies' focus!,,,,¡La luz guía de [VAR PKNICK(0000)] mejora la concentración de sus aliados!,,
+The wild [VAR PKNICK(0000)]'s guiding light sharpens its allies' focus!,,,,¡La luz guía del [VAR PKNICK(0000)] salvaje mejora la concentración de sus aliados!,,
+The opposing [VAR PKNICK(0000)]'s guiding light sharpens its allies' focus!,,,,¡La luz guía del [VAR PKNICK(0000)] enemigo mejora la concentración de sus aliados!,,
+[VAR PKNICK(0000)]'s soullight weakens Dark type attacks and strengthens Spirit type attacks!,,,,¡La luz ánima de [VAR PKNICK(0000)] debilita los ataques tipo Oscuro y fortalece los ataques tipo Espíritu!,,
+The wild [VAR PKNICK(0000)]'s soullight weakens Dark type attacks and strengthens Spirit type attacks!,,,,¡La luz ánima del [VAR PKNICK(0000)] salvaje debilita los ataques tipo Oscuro y Espíritu!,,
+The opposing [VAR PKNICK(0000)]'s soullight weakens Dark type attacks and strengthens Spirit type attacks!,,,,¡La luz ánima del [VAR PKNICK(0000)] enemigo debilita los ataques tipo Oscuro y Espíritu!,,

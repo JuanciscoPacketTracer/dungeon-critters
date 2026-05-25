@@ -71,7 +71,7 @@
       ],
       "abilities": [
         "mushroom_power_up",
-        "mushroom_power_up",
+        "effect_spore",
         "anticipation"
       ],
       "frontOffsetY": 0,

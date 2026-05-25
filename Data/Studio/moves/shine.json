@@ -6,7 +6,7 @@
   "battleEngineMethod": "s_basic",
   "type": "luz",
   "power": 40,
-  "accuracy": 100,
+  "accuracy": 95,
   "pp": 15,
   "category": "special",
   "movecriticalRate": 1,
