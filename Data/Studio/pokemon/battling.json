@@ -96,9 +96,9 @@
         }
       ],
       "abilities": [
-        "soundproof",
-        "soundproof",
-        "overcoat"
+        "drain_fang",
+        "echolocation",
+        "soundproof"
       ],
       "frontOffsetY": 0,
       "resources": {

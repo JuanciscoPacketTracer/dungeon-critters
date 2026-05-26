@@ -5,7 +5,7 @@
   "mapUse": 0,
   "battleEngineMethod": "s_basic",
   "type": "rodent",
-  "power": 40,
+  "power": 35,
   "accuracy": 100,
   "pp": 25,
   "category": "physical",

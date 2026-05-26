@@ -6,7 +6,7 @@
     22
   ],
   "worldmaps": [],
-  "panelId": 0,
+  "panelId": 2,
   "warp": {
     "x": null,
     "y": null
@@ -17,6 +17,6 @@
   },
   "isFlyAllowed": false,
   "isWarpDisallowed": false,
-  "forcedWeather": null,
+  "forcedWeather": 0,
   "wildGroups": []
 }
