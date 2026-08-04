@@ -33,7 +33,7 @@
           "maximumLevel": 5
         }
       },
-      "randomEncounterChance": 50,
+      "randomEncounterChance": 45,
       "expandPokemonSetup": [
         {
           "type": "evs",
@@ -75,7 +75,49 @@
           "maximumLevel": 5
         }
       },
-      "randomEncounterChance": 50,
+      "randomEncounterChance": 45,
+      "expandPokemonSetup": [
+        {
+          "type": "evs",
+          "value": {
+            "hp": 0,
+            "atk": 0,
+            "dfe": 0,
+            "spd": 0,
+            "ats": 0,
+            "dfs": 0
+          }
+        },
+        {
+          "type": "loyalty",
+          "value": 70
+        },
+        {
+          "type": "moves",
+          "value": [
+            "__undef__",
+            "__undef__",
+            "__undef__",
+            "__undef__"
+          ]
+        }
+      ]
+    },
+    {
+      "specie": "nibblet",
+      "form": 0,
+      "shinySetup": {
+        "kind": "automatic",
+        "rate": -1
+      },
+      "levelSetup": {
+        "kind": "minmax",
+        "level": {
+          "minimumLevel": 1,
+          "maximumLevel": 1
+        }
+      },
+      "randomEncounterChance": 10,
       "expandPokemonSetup": [
         {
           "type": "evs",
