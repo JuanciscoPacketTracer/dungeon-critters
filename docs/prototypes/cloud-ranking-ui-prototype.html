@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prototype: nube y ranking</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #111827; color: #f8fafc; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, #334155, #111827 56%); }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .game { width: min(100%, 900px); min-height: 100vh; margin: auto; padding: 28px 24px 100px; }
+    .prototype-note { color: #cbd5e1; font-size: .85rem; margin: 0 0 20px; }
+    .topline, .account, .sync, .rank-row, .panel, .actions, .status-strip { display: flex; align-items: center; }
+    .topline { justify-content: space-between; gap: 16px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(1.7rem, 5vw, 2.8rem); margin-bottom: 4px; }
+    h2 { font-size: 1.25rem; }
+    .muted { color: #cbd5e1; }
+    .eyebrow { color: #fbbf24; font-size: .78rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .panel, .account, .rank-row, .status-strip { background: rgb(15 23 42 / .86); border: 1px solid #475569; border-radius: 16px; }
+    .panel { padding: 20px; display: block; }
+    .actions { gap: 10px; flex-wrap: wrap; }
+    .primary, .secondary, .danger { border: 0; border-radius: 10px; padding: 10px 14px; font-weight: 700; }
+    .primary { background: #fbbf24; color: #1e293b; }
+    .secondary { background: #334155; }
+    .danger { background: #991b1b; }
+    .banner { margin: 20px 0; padding: 14px 16px; border-left: 5px solid #f59e0b; background: #78350f; border-radius: 8px; }
+    .success { border-left-color: #34d399; background: #065f46; }
+    .error { border-left-color: #fb7185; background: #881337; }
+    .pending { border-left-color: #60a5fa; background: #1e3a8a; }
+    .variant-a .grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 18px; }
+    .account { padding: 18px; justify-content: space-between; gap: 12px; }
+    .account strong { display: block; }
+    .sync { gap: 10px; margin: 18px 0; }
+    .dot { width: 13px; height: 13px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 15px #f59e0b; flex: none; }
+    .dot.pending { background: #60a5fa; box-shadow: 0 0 15px #60a5fa; }
+    .dot.error { background: #fb7185; box-shadow: 0 0 15px #fb7185; }
+    .slot { padding: 13px 0; border-top: 1px solid #334155; }
+    .slot:first-of-type { border-top: 0; }
+    .slot b { display: block; }
+    .rank-list { list-style: none; margin: 0; padding: 0; }
+    .rank-row { justify-content: space-between; margin: 8px 0; padding: 12px; }
+    .rank-row.me { border-color: #fbbf24; }
+    .rank-row span:first-child { color: #fbbf24; font-weight: 800; width: 34px; }
+    .variant-b { max-width: 630px; margin: auto; }
+    .variant-b .hero { text-align: center; padding: 36px 20px 22px; }
+    .status-strip { gap: 14px; margin: 18px 0; padding: 15px; }
+    .status-strip > div { flex: 1; }
+    .status-strip b { display: block; }
+    .menu { display: grid; gap: 10px; }
+    .menu button { text-align: left; padding: 18px; border: 1px solid #64748b; border-radius: 12px; background: #1e293b; }
+    .menu button b, .menu button span { display: block; }
+    .menu button span { margin-top: 4px; color: #cbd5e1; font-size: .9rem; }
+    .variant-c { display: grid; grid-template-columns: 210px 1fr; gap: 20px; }
+    .rail { padding: 18px; background: #020617; border-radius: 18px; }
+    .rail button { display: block; width: 100%; margin-top: 8px; padding: 12px; text-align: left; border: 0; border-radius: 8px; background: transparent; }
+    .rail button.active { background: #334155; color: #fbbf24; }
+    .main { min-width: 0; }
+    .main .panel { margin-bottom: 14px; }
+    .conflict { border-color: #fb7185; }
+    .switcher { position: fixed; z-index: 3; bottom: 20px; left: 50%; display: flex; gap: 8px; align-items: center; transform: translateX(-50%); padding: 8px; background: #f8fafc; color: #0f172a; border-radius: 999px; box-shadow: 0 8px 30px #0009; }
+    .switcher button { min-width: 38px; border: 0; border-radius: 999px; padding: 8px; background: #e2e8f0; font-weight: 800; }
+    .switcher span { min-width: 150px; text-align: center; font-size: .85rem; font-weight: 800; }
+    @media (max-width: 650px) { .variant-a .grid, .variant-c { grid-template-columns: 1fr; } .rail { display: flex; gap: 6px; overflow-x: auto; } .rail button { width: auto; white-space: nowrap; } }
+  </style>
+</head>
+<body>
+  <main class="game">
+    <!-- PROTOTYPE: Three cloud-save and leaderboard flows, switchable with ?variant=A|B|C. -->
+    <p class="prototype-note">PROTOTIPO DESCARTABLE — responde qué flujo permite ver cuenta, sincronización y ranking sin confundir el estado remoto.</p>
+    <section id="app"></section>
+  </main>
+  <nav class="switcher" aria-label="Cambiar variante del prototipo">
+    <button id="previous" aria-label="Variante anterior">←</button>
+    <span id="label"></span>
+    <button id="next" aria-label="Variante siguiente">→</button>
+  </nav>
+  <script>
+    const variants = {
+      A: { name: "Panel de control", render: () => `
+        <div class="variant-a">
+          <div class="topline"><div><p class="eyebrow">Dungeon Critters</p><h1>Nube y ranking</h1></div><button class="secondary" data-action="logout">Cerrar sesión</button></div>
+          <div class="account"><div><strong>Exploradora Luna</strong><span class="muted">luna-mazmorra · Cuenta conectada</span></div><button class="secondary" data-action="account">Gestionar cuenta</button></div>
+          <div class="sync"><i class="dot ${state.sync}"></i><div><b>${syncTitle()}</b><span class="muted">${syncDetail()}</span></div></div>
+          ${notice()}
+          <div class="grid">
+            <section class="panel"><h2>Partidas</h2>${slots()}<p class="actions"><button class="primary" data-action="sync">Sincronizar ahora</button><button class="secondary" data-action="conflict">Ver conflicto</button></p></section>
+            <section class="panel"><h2>Ranking casual</h2>${ranking()}<p><button class="secondary" data-action="ranking">Abrir ranking completo</button></p></section>
+          </div>
+        </div>` },
+      B: { name: "Estado primero", render: () => `
+        <div class="variant-b">
+          <div class="hero"><p class="eyebrow">Dungeon Critters</p><h1>Tu aventura está protegida</h1><p class="muted">La partida local siempre sigue disponible. La nube solo confirma cambios cuando el servidor responde.</p></div>
+          <section class="status-strip"><i class="dot ${state.sync}"></i><div><b>${syncTitle()}</b><span class="muted">${syncDetail()}</span></div><button class="primary" data-action="sync">Revisar nube</button></section>
+          ${notice()}
+          <section class="panel"><h2>¿Qué quieres hacer?</h2><div class="menu">
+            <button data-action="account"><b>Cuenta</b><span>Exploradora Luna · cambiar sesión o alias público</span></button>
+            <button data-action="conflict"><b>Partidas</b><span>Ranura 1 y 2 listas; ${state.sync === "error" ? "una acción necesita tu atención" : "ningún dato remoto se sobrescribe sin confirmar"}</span></button>
+            <button data-action="ranking"><b>Ranking casual</b><span>Tu mejor resultado: puesto 42</span></button>
+          </div></section>
+        </div>` },
+      C: { name: "Centro de mando", render: () => `
+        <div class="variant-c">
+          <aside class="rail"><p class="eyebrow">Dungeon Critters</p><button class="active">Resumen</button><button data-action="account">Cuenta</button><button data-action="sync">Partidas</button><button data-action="ranking">Ranking</button><button data-action="logout">Cerrar sesión</button></aside>
+          <div class="main"><div class="topline"><div><h1>Resumen</h1><p class="muted">Exploradora Luna</p></div><i class="dot ${state.sync}" title="${syncTitle()}"></i></div>
+            ${notice()}
+            <section class="panel"><h2>Sincronización</h2><p><b>${syncTitle()}</b><br><span class="muted">${syncDetail()}</span></p><p class="actions"><button class="primary" data-action="sync">Sincronizar ahora</button><button class="secondary" data-action="conflict">Resolver versiones</button></p></section>
+            <section class="panel"><h2>Tu ranking</h2>${ranking(true)}<button class="secondary" data-action="ranking">Ver tabla</button></section>
+          </div>
+        </div>` }
+    };
+    const state = { sync: "pending", message: "" };
+    const syncTitle = () => ({ pending: "1 cambio pendiente de confirmar", synced: "Nube al día", error: "No se pudo confirmar la nube" }[state.sync]);
+    const syncDetail = () => ({ pending: "La partida local continúa siendo la fuente de verdad.", synced: "Última confirmación: hace 2 minutos.", error: "El juego no perdió datos. Reintenta o revisa las versiones." }[state.sync]);
+    const notice = () => state.message ? `<p class="banner ${state.sync}">${state.message}</p>` : "";
+    const slots = () => `<div class="slot"><b>Ranura 1 · Cueva de Cristal</b><span class="muted">Nivel 18 · ${state.sync === "pending" ? "esperando confirmación" : "confirmada"}</span></div><div class="slot"><b>Ranura 2 · Bosque Alto</b><span class="muted">Nivel 7 · confirmada</span></div>`;
+    const ranking = compact => `<ol class="rank-list"><li class="rank-row"><span>1</span><b>RioRuna</b><small>8 medallas</small></li><li class="rank-row"><span>2</span><b>Mina</b><small>7 medallas</small></li>${compact ? "" : `<li class="rank-row me"><span>42</span><b>Exploradora Luna</b><small>3 medallas</small></li>`}</ol>${compact ? `<p class="muted">Puesto 42 · 3 medallas · 19 especies</p>` : ""}`;
+    function act(action) {
+      if (action === "sync") { state.sync = state.sync === "synced" ? "pending" : "synced"; state.message = state.sync === "synced" ? "Confirmado por el servidor: la versión actual de la ranura 1 es segura." : "Se creó un cambio local pendiente; aún no se presenta como guardado en la nube."; }
+      if (action === "conflict") { state.sync = "error"; state.message = "Conflicto detectado: hay dos versiones de la ranura 1. Elige cuál continuará; ninguna será borrada automáticamente."; }
+      if (action === "account") state.message = "Cuenta: aquí se cambiaría correo, contraseña o alias público sin modificar las partidas.";
+      if (action === "ranking") state.message = "El ranking muestra solo el alias y la mejor marca histórica aceptada de cada cuenta.";
+      if (action === "logout") state.message = "Al cerrar sesión, las partidas locales permanecen jugables; la sincronización queda pausada.";
+      render();
+    }
+    let variant = new URLSearchParams(location.search).get("variant") || "A";
+    if (!variants[variant]) variant = "A";
+    function navigate(step) { const keys = Object.keys(variants); variant = keys[(keys.indexOf(variant) + step + keys.length) % keys.length]; history.replaceState({}, "", `${location.pathname}?variant=${variant}`); render(); }
+    function render() { document.getElementById("app").innerHTML = variants[variant].render(); document.getElementById("label").textContent = `${variant} · ${variants[variant].name}`; document.querySelectorAll("[data-action]").forEach(button => button.onclick = () => act(button.dataset.action)); }
+    document.getElementById("previous").onclick = () => navigate(-1);
+    document.getElementById("next").onclick = () => navigate(1);
+    document.addEventListener("keydown", event => { if (!["INPUT", "TEXTAREA"].includes(document.activeElement.tagName) && !document.activeElement.isContentEditable) { if (event.key === "ArrowLeft") navigate(-1); if (event.key === "ArrowRight") navigate(1); } });
+    render();
+  </script>
+</body>
+</html>
