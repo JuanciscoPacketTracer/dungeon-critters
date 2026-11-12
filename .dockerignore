@@ -1,0 +1,9 @@
+*
+!Dockerfile.ruby-3.0
+!test/
+!test/**
+!docs/
+!docs/persistent_state_inventory.json
+!scripts/
+!scripts/00001 LocalSave/
+!scripts/00001 LocalSave/**
