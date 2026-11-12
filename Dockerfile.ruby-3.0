@@ -1,4 +1,4 @@
-FROM ruby:3.0.6
+FROM docker.io/library/ruby:3.0.6
 
 WORKDIR /workspace
 
