@@ -7,16 +7,18 @@ module DungeonCritters
 
     class << self
       def write_file(filename, save_data)
-        backup_filename = GamePlay::Save.backup_filename(filename)
+        backup_filename = GamePlay::Save.send(:backup_filename, filename)
         File.delete(backup_filename) if File.exist?(backup_filename)
         File.rename(filename, backup_filename) if File.exist?(filename)
         File.binwrite(filename, save_data)
 
         return WriteResult.new(success?: true) if File.binread(filename) == save_data
 
+        $scene.display_message_and_wait(text_get(26, 19))
         File.rename(backup_filename, filename) if File.exist?(backup_filename)
         WriteResult.new(success?: false)
-      rescue SystemCallError, IOError => error
+      rescue Exception => error
+        $scene.display_message_and_wait(text_get(26, 19))
         WriteResult.new(success?: false, error: error)
       end
 
@@ -53,11 +55,15 @@ module DungeonCritters
 
       def save_file(filename, save_data)
         result = DungeonCritters::LocalSave.write_file(filename, save_data)
-        $scene.display_message_and_wait(text_get(26, 19)) unless result.success?
         result.success?
       end
+      private :save_file
     end
   end
 end
 
-GamePlay::Save.singleton_class.prepend(DungeonCritters::LocalSave::GamePlaySavePatch) if defined?(GamePlay::Save)
+if defined?(GamePlay::Save)
+  GamePlay::Save.singleton_class.prepend(DungeonCritters::LocalSave::GamePlaySavePatch)
+else
+  log_error('DungeonCritters::LocalSave requires GamePlay::Save to be defined before loading.')
+end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'tmpdir'
+require 'open3'
+require 'rbconfig'
 require_relative '../test_helper'
 
 SaveConfig = Struct.new(:save_header, :save_key)
@@ -40,6 +42,8 @@ module GamePlay
       def save_filename
         save_path
       end
+
+      private
 
       def backup_filename(filename)
         "#{filename}.bak"
@@ -85,6 +89,41 @@ class LocalSaveTest < Minitest::Test
       assert_equal save_data, snapshot.data
       assert_nil DungeonCritters::LocalSave.next_confirmed_snapshot
     end
+  end
+
+  def test_keeps_save_file_private
+    with_save_path do |path|
+      assert_includes GamePlay::Save.private_methods, :save_file
+      assert_raises(NoMethodError) { GamePlay::Save.save_file(path, 'save data') }
+    end
+  end
+
+  def test_reports_and_returns_a_failure_for_any_write_exception
+    error = Exception.new('write failed')
+
+    File.stub(:binwrite, ->(*) { raise error }) do
+      result = DungeonCritters::LocalSave.write_file('save', 'save data')
+
+      refute_predicate result, :success?
+      assert_same error, result.error
+    end
+
+    assert_equal 'Save failed', $scene.messages.last
+  end
+
+  def test_logs_an_error_when_gameplay_save_is_undefined_during_loading
+    script_path = File.expand_path('../../scripts/00001 LocalSave/00000 ConfirmedLocalSave.rb', __dir__)
+    source = <<~RUBY
+      def log_error(message)
+        puts message
+      end
+
+      load #{script_path.dump}
+    RUBY
+    output, status = Open3.capture2(RbConfig.ruby, '-e', source)
+
+    assert_predicate status, :success?
+    assert_includes output, 'DungeonCritters::LocalSave requires GamePlay::Save to be defined before loading.'
   end
 
   def test_keeps_after_hooks_but_does_not_queue_a_snapshot_when_local_writing_fails
