@@ -1,0 +1,9 @@
+FROM docker.io/library/ruby:3.0.6
+
+WORKDIR /workspace
+
+COPY test test
+COPY docs/persistent_state_inventory.json docs/persistent_state_inventory.json
+COPY ["scripts/00001 LocalSave", "scripts/00001 LocalSave"]
+
+CMD ["ruby", "-Itest", "test/run.rb"]
