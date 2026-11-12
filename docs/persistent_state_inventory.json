@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "purpose": "Inventory of PSDK local persistence that defines the safe JSON boundary. It does not enable remote restoration.",
+  "entries": [
+    {
+      "id": "local-marshal-save",
+      "identity": "The local GamePlay::Save byte stream, beginning with the configured DUNCR header.",
+      "type": "Header plus a Ruby Marshal payload, optionally XOR-transformed by saveKey.",
+      "handling": "reject",
+      "restrictions": "Never accept Marshal data from a remote source. A nonzero saveKey is reversible obfuscation, not encryption.",
+      "evidence": "GamePlay::Save.save and GamePlay::Save.load in scripts/psdk_scripts/4_Systems_106_Save_Load.rb; Data/configs/save_config.json."
+    },
+    {
+      "id": "game-state-root",
+      "identity": "PFM::GameState, the root local state object.",
+      "type": "Ruby object graph with globals, map state, player state, and plugin extensions.",
+      "handling": "rebuild",
+      "restrictions": "Do not encode the object graph directly. Rebuild only from independently validated entries, then call the runtime load lifecycle.",
+      "evidence": "PFM::GameState in scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb."
+    },
+    {
+      "id": "global-switches",
+      "identity": "Game_Switches exposed as $game_switches.",
+      "type": "Boolean values indexed by switch ID.",
+      "handling": "serialize",
+      "restrictions": "Keep explicit false values; omission is not equivalent to false.",
+      "evidence": "RMXP global state and PFM::GameState global bindings."
+    },
+    {
+      "id": "global-variables",
+      "identity": "Game_Variables exposed as $game_variables.",
+      "type": "Integer values indexed by variable ID.",
+      "handling": "serialize",
+      "restrictions": "Preserve IDs, values, defaults, and out-of-range access semantics. Reject values outside the supported integer domain.",
+      "evidence": "RMXP global state and PFM::GameState global bindings."
+    },
+    {
+      "id": "self-switches",
+      "identity": "Game_SelfSwitches keyed by map, event, and switch.",
+      "type": "Boolean values keyed by a composite event identity.",
+      "handling": "serialize",
+      "restrictions": "Use an ordered tuple [map_id, event_id, switch_id]; never stringify the key.",
+      "evidence": "RMXP event state and PFM::GameState global bindings."
+    },
+    {
+      "id": "self-variables",
+      "identity": "Project self variables keyed by map, event, and variable.",
+      "type": "Composite keys with values that may be Ruby objects.",
+      "handling": "reject",
+      "restrictions": "Reject until an adapter defines reversible tuple keys and an explicit allowlist of value types.",
+      "evidence": "Project self-variable extension and PFM::GameState global bindings."
+    },
+    {
+      "id": "trainer-party-and-actors",
+      "identity": "Trainer profile, party, actors, stored Critters, inventory, Bestiary, and quests.",
+      "type": "PSDK domain objects with cross-references and game-data identifiers.",
+      "handling": "serialize",
+      "restrictions": "Use versioned adapters with explicit IDs and scalar fields. Reject unknown species, moves, items, quest states, and cross-references.",
+      "evidence": "PFM::Trainer, PFM::Pokedex, PFM::Quests, and PFM::GameState."
+    },
+    {
+      "id": "system-screen-and-player",
+      "identity": "Persistent system, screen, and player data including map position and direction.",
+      "type": "PSDK and RMXP runtime objects.",
+      "handling": "serialize",
+      "restrictions": "Encode only documented persistent fields such as map ID, coordinates, direction, timer, and restrictions. Exclude live graphics and callbacks.",
+      "evidence": "PFM::GameState and RMXP map engine."
+    },
+    {
+      "id": "map-and-events",
+      "identity": "Current map definitions, event pages, followers, and selected event state.",
+      "type": "Map resources plus transient Game_Event instances.",
+      "handling": "rebuild",
+      "restrictions": "Reload map definitions from the installed game and restore only the explicitly captured event state. Do not serialize live Game_Event objects.",
+      "evidence": "Game_Map.begin_save, Game_Map.end_save, and Game_Map.setup in scripts/psdk_scripts/4_Systems_003_Map_Engine.rb."
+    },
+    {
+      "id": "erased-events",
+      "identity": "Per-map and per-event erase state.",
+      "type": "Environment state separate from a live event object.",
+      "handling": "serialize",
+      "restrictions": "Preserve map and event IDs. Verify behavior after map setup; do not infer that every runtime erase is persistent.",
+      "evidence": "Environment state in scripts/psdk_scripts/4_Systems_202_Environment.rb."
+    },
+    {
+      "id": "interpreter-execution",
+      "identity": "Map, battle, and parallel-event interpreter progress.",
+      "type": "Instruction pointers, branches, waits, children, and possible fibers.",
+      "handling": "reject",
+      "restrictions": "Do not promise resumption in the middle of an event. Resume only from a separately specified safe checkpoint.",
+      "evidence": "RMXP interpreter and map engine lifecycle."
+    },
+    {
+      "id": "temporary-state",
+      "identity": "Game temporary state, graphics, callbacks, and live scene references.",
+      "type": "Runtime-only objects and callbacks.",
+      "handling": "reject",
+      "restrictions": "Never encode runtime objects, callbacks, fibers, graphics, or scene references.",
+      "evidence": "GamePlay::Save pre-save cleanup and RMXP runtime state."
+    },
+    {
+      "id": "user-data",
+      "identity": "PFM::GameState user_data extension storage.",
+      "type": "Arbitrary Ruby Hash values.",
+      "handling": "reject",
+      "restrictions": "Reject arbitrary Hash values until each key has a versioned adapter and an allowlisted value schema.",
+      "evidence": "PFM::GameState persistent user_data field."
+    },
+    {
+      "id": "pathfinding-requests",
+      "identity": "PFM::GameState pathfinding request queue.",
+      "type": "Live pathfinding request objects.",
+      "handling": "reject",
+      "restrictions": "Never serialize live pathfinding requests; recreate a request only through a future explicit gameplay action.",
+      "evidence": "PFM::GameState persistent pathfinding_requests field."
+    },
+    {
+      "id": "nuzlocke-state",
+      "identity": "PFM::GameState Nuzlocke plugin state.",
+      "type": "Plugin-defined state with project-specific invariants.",
+      "handling": "reject",
+      "restrictions": "Reject until an adapter defines its supported fields, identifiers, migrations, and reconstruction procedure.",
+      "evidence": "PFM::GameState persistent nuzlocke field."
+    },
+    {
+      "id": "berry-state",
+      "identity": "PFM::GameState berry storage and growth state.",
+      "type": "Game-data-indexed collection with plugin-specific values.",
+      "handling": "reject",
+      "restrictions": "Reject until an adapter defines the supported berry keys and values, validation rules, and migration policy.",
+      "evidence": "PFM::GameState persistent berries field."
+    },
+    {
+      "id": "game-troop",
+      "identity": "PFM::GameState current Game_Troop battle state.",
+      "type": "Live battle runtime object.",
+      "handling": "rebuild",
+      "restrictions": "Do not serialize a live battle troop. Rebuild only from a separately specified safe battle checkpoint.",
+      "evidence": "PFM::GameState persistent game_troop field."
+    },
+    {
+      "id": "tint-time-set",
+      "identity": "PFM::GameState tint-time initialization marker.",
+      "type": "Boolean flag.",
+      "handling": "serialize",
+      "restrictions": "Allow only a boolean value; reject nulls and truthy or falsy substitutes.",
+      "evidence": "PFM::GameState persistent tint_time_set field."
+    },
+    {
+      "id": "plugin-extension-data",
+      "identity": "State registered by active plugins, including crafting.",
+      "type": "Plugin-defined Ruby objects with plugin-specific invariants.",
+      "handling": "reject",
+      "restrictions": "Reject unless the installed plugin supplies a versioned adapter, allowed-value schema, reconstruction procedure, and migration policy.",
+      "evidence": "Crafting PFM extension in scripts/00000 Plugins/00001 Crafting/000_PFM.rb."
+    },
+    {
+      "id": "save-compatibility-metadata",
+      "identity": "Save-slot binding, game version, PSDK version, and JSON schema version.",
+      "type": "Versioned scalar metadata.",
+      "handling": "serialize",
+      "restrictions": "Require an exact supported schema and explicit migration. Reject unknown future versions without silently dropping fields.",
+      "evidence": "GamePlay::Save metadata updates and PFM::Trainer save metadata."
+    }
+  ]
+}
