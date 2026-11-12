@@ -99,6 +99,54 @@
       "evidence": "GamePlay::Save pre-save cleanup and RMXP runtime state."
     },
     {
+      "id": "user-data",
+      "identity": "PFM::GameState user_data extension storage.",
+      "type": "Arbitrary Ruby Hash values.",
+      "handling": "reject",
+      "restrictions": "Reject arbitrary Hash values until each key has a versioned adapter and an allowlisted value schema.",
+      "evidence": "PFM::GameState persistent user_data field."
+    },
+    {
+      "id": "pathfinding-requests",
+      "identity": "PFM::GameState pathfinding request queue.",
+      "type": "Live pathfinding request objects.",
+      "handling": "reject",
+      "restrictions": "Never serialize live pathfinding requests; recreate a request only through a future explicit gameplay action.",
+      "evidence": "PFM::GameState persistent pathfinding_requests field."
+    },
+    {
+      "id": "nuzlocke-state",
+      "identity": "PFM::GameState Nuzlocke plugin state.",
+      "type": "Plugin-defined state with project-specific invariants.",
+      "handling": "reject",
+      "restrictions": "Reject until an adapter defines its supported fields, identifiers, migrations, and reconstruction procedure.",
+      "evidence": "PFM::GameState persistent nuzlocke field."
+    },
+    {
+      "id": "berry-state",
+      "identity": "PFM::GameState berry storage and growth state.",
+      "type": "Game-data-indexed collection with plugin-specific values.",
+      "handling": "reject",
+      "restrictions": "Reject until an adapter defines the supported berry keys and values, validation rules, and migration policy.",
+      "evidence": "PFM::GameState persistent berries field."
+    },
+    {
+      "id": "game-troop",
+      "identity": "PFM::GameState current Game_Troop battle state.",
+      "type": "Live battle runtime object.",
+      "handling": "rebuild",
+      "restrictions": "Do not serialize a live battle troop. Rebuild only from a separately specified safe battle checkpoint.",
+      "evidence": "PFM::GameState persistent game_troop field."
+    },
+    {
+      "id": "tint-time-set",
+      "identity": "PFM::GameState tint-time initialization marker.",
+      "type": "Boolean flag.",
+      "handling": "serialize",
+      "restrictions": "Allow only a boolean value; reject nulls and truthy or falsy substitutes.",
+      "evidence": "PFM::GameState persistent tint_time_set field."
+    },
+    {
       "id": "plugin-extension-data",
       "identity": "State registered by active plugins, including crafting.",
       "type": "Plugin-defined Ruby objects with plugin-specific invariants.",
