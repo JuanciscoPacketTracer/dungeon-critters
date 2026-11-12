@@ -32,3 +32,16 @@ To update the dex, edit the existing game data files above. No extra dex-specifi
 - Add sprites in `graphics/pokedex/pokefront`
 
 The Pages site reads those files at runtime, so once changes are pushed, the dex reflects them.
+
+## Headless tests
+
+Install the test dependency once with `bundle install`, then run the complete
+headless suite from the repository root:
+
+```bash
+bundle exec ruby test/run.rb
+```
+
+The suite never loads `Game.rb`, starts the graphical game, or accesses local
+save files. Client tests can use `DungeonCritters::Online::ControlledTransport`
+to queue API responses and inspect versioned requests without network access.
