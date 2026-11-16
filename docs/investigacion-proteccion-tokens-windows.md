@@ -13,22 +13,23 @@ La implementación debe tratar todo error de lectura o descifrado como un token 
 Se ejecutó este comando, sin instalar gemas:
 
 ```powershell
-& 'C:\Users\JUAN2\AppData\Local\Programs\pokemon-studio\resources\psdk-binaries\ruby.exe' 'C:\Users\JUAN2\AppData\Local\Temp\dpapi_token_proof.rb'
+& 'C:\Users\JUAN2\AppData\Local\Programs\pokemon-studio\resources\psdk-binaries\ruby.exe' 'C:\Users\JUAN2\Documents\Dungeon Critters\tools\windows\dpapi_token_proof.rb'
 ```
 
 Salida real:
 
 ```text
-Ruby: ruby 3.0.6p216 (2023-03-30 revision 6d37fc43f1) [i386-mingw32]
+Ruby: ruby 3.0.6p216 (2023-03-30 revision 23a532679b) [i386-mingw32]
 Fiddle pointer bytes: 4
 protect/write/read/current-user round trip: PASS
 missing file: PASS (MissingProtectedToken)
 corrupt file: PASS (DpapiError)
 incorrect entropy: PASS (DpapiError)
+invalid magic header: PASS (InvalidTokenHeader)
+invalid version header: PASS (InvalidTokenHeader)
+invalid length header: PASS (InvalidTokenHeader)
 different Windows user or computer: NOT VERIFIED (not executed)
 ```
-
-La salida inicial de versión durante la prueba mostró la revisión `2023-03-30 revision 6d37fc43f1`; el valor relevante para esta decisión es `ruby 3.0.6p216 [i386-mingw32]`.
 
 El script generó un token falso y una entropía aleatoria en tiempo de ejecución. No imprimió ni escribió en el repositorio un token real. Creó sus archivos de datos únicamente bajo el directorio temporal de Windows y los eliminó al terminar.
 
@@ -67,10 +68,12 @@ La entropía no se guarda en ese archivo. En la prueba se generó aleatoriamente
 | Archivo ausente | `MissingProtectedToken` | No hay sesión persistente; pedir inicio de sesión. |
 | Último byte del texto cifrado alterado | `DpapiError` | Considerar el token no recuperable; eliminar o poner en cuarentena el archivo y pedir inicio de sesión. |
 | Entropía incorrecta | `DpapiError` | Tratar como token no recuperable; no reintentar con datos relajados. |
-| Magia, versión o longitud inválidas | **NO VERIFICADO:** el script contiene validación, pero esta ruta no se ejecutó. | Rechazar el archivo antes de llamar a DPAPI. |
+| Magia, versión o longitud inválidas | `InvalidTokenHeader` | Rechazar el archivo antes de llamar a DPAPI. |
 | Otro usuario de Windows | **NO VERIFICADO:** no se ejecutó. | Tratar el fallo de descifrado como token no recuperable. |
 | Otro equipo | **NO VERIFICADO:** no se ejecutó. | Tratar el fallo de descifrado como token no recuperable. |
 
 ## Límites
 
 La prueba demuestra una llamada local de ida y vuelta bajo el usuario actual, no propiedades de seguridad entre perfiles, equipos, restauraciones de perfil, cambios de contraseña ni versiones de Windows. Esas situaciones permanecen **NO VERIFICADAS** y requieren pruebas separadas con cuentas y equipos de ensayo.
+
+El script `tools/windows/dpapi_token_proof.rb` solo es válido con el Ruby de 32 bits de PSDK, porque empaqueta los punteros con 4 bytes; no se ha probado con Ruby de 64 bits.
