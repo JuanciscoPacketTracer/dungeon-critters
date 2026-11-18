@@ -59,7 +59,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
 
   def test_empty_database_rejects_startup_without_writing
     error = assert_raises(DungeonCritters::Server::ConfigurationError) do
-      PostgresStore.new(@database_url)
+      DungeonCritters::Server::PostgresStore.new(@database_url)
     end
 
     assert_includes error.message, 'email_outbox is missing'
@@ -113,7 +113,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
     )
 
     error = assert_raises(DungeonCritters::Server::ConfigurationError) do
-      PostgresStore.new(@database_url)
+      DungeonCritters::Server::PostgresStore.new(@database_url)
     end
 
     assert_includes error.message, 'legacy token column'
@@ -137,7 +137,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
     SQL
 
     error = assert_raises(DungeonCritters::Server::ConfigurationError) do
-      PostgresStore.new(@database_url)
+      DungeonCritters::Server::PostgresStore.new(@database_url)
     end
 
     assert_includes error.message, 'key_version'
