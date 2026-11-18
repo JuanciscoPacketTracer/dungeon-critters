@@ -62,7 +62,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
       DungeonCritters::Server::PostgresStore.new(@database_url)
     end
 
-    assert_includes error.message, 'email_outbox is missing'
+    assert_includes error.message, 'database schema is missing tables'
     assert_empty table_names
   end
 
@@ -97,6 +97,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
   end
 
   def test_legacy_schema_rejects_startup_and_preserves_raw_token
+    create_supporting_schema
     @connection.exec <<~SQL
       CREATE TABLE email_outbox (
         id uuid PRIMARY KEY,
@@ -122,6 +123,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
   end
 
   def test_partial_schema_rejects_startup_and_reports_missing_columns
+    create_supporting_schema
     @connection.exec <<~SQL
       CREATE TABLE email_outbox (
         id uuid,
@@ -140,7 +142,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
       DungeonCritters::Server::PostgresStore.new(@database_url)
     end
 
-    assert_includes error.message, 'key_version'
+    assert_includes error.message, 'email_outbox.key_version'
     assert_equal 1, @connection.exec("SELECT 1 FROM pg_class WHERE relname = 'email_outbox'").ntuples
   end
 
@@ -233,6 +235,36 @@ class ServerPostgresIntegrationTest < Minitest::Test
 
   def apply_migration
     @connection.exec(File.read(MIGRATION_PATH))
+  end
+
+  def create_supporting_schema
+    @connection.exec <<~SQL
+      CREATE TABLE users (
+        id uuid PRIMARY KEY,
+        email text NOT NULL UNIQUE,
+        password_digest text NOT NULL,
+        verified_at timestamptz,
+        created_at timestamptz NOT NULL DEFAULT now()
+      );
+
+      CREATE TABLE email_verifications (
+        token_digest text PRIMARY KEY,
+        user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        expires_at timestamptz NOT NULL,
+        used_at timestamptz
+      );
+
+      CREATE TABLE sessions (
+        id uuid PRIMARY KEY,
+        user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        access_token_digest text NOT NULL UNIQUE,
+        refresh_token_digest text NOT NULL UNIQUE,
+        access_expires_at timestamptz NOT NULL,
+        refresh_expires_at timestamptz NOT NULL,
+        revoked_at timestamptz,
+        created_at timestamptz NOT NULL DEFAULT now()
+      );
+    SQL
   end
 
   def table_names
