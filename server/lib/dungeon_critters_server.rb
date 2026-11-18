@@ -3,6 +3,7 @@
 require 'digest'
 require 'base64'
 require 'json'
+require 'openssl'
 require 'securerandom'
 require 'time'
 require 'uri'
@@ -12,6 +13,7 @@ module DungeonCritters
     ACCESS_TOKEN_TTL = 15 * 60
     REFRESH_TOKEN_TTL = 30 * 24 * 60 * 60
     VERIFICATION_TTL = 24 * 60 * 60
+    OUTBOX_CLAIM_TTL = 5 * 60
     MAX_SESSIONS = 5
 
     class ValidationError < StandardError; end
@@ -25,6 +27,8 @@ module DungeonCritters
     Session = Struct.new(:id, :user_id, :access_token_digest, :refresh_token_digest,
                          :access_expires_at, :refresh_expires_at, :revoked_at, :created_at, keyword_init: true)
     Verification = Struct.new(:user_id, :token_digest, :expires_at, :used_at, keyword_init: true)
+    OutboxMessage = Struct.new(:id, :email, :user_id, :token_digest, :nonce, :expires_at, :key_version,
+                               :sent_at, :claimed_at, :created_at, keyword_init: true)
 
     module TokenCodec
       module_function
@@ -35,6 +39,40 @@ module DungeonCritters
 
       def digest(token)
         Digest::SHA256.hexdigest(token.to_s)
+      end
+    end
+
+    class VerificationTokenCodec
+      def initialize(secrets:, current_version:)
+        @secrets = secrets.transform_keys(&:to_s)
+        @current_version = current_version.to_s
+        raise ConfigurationError if @secrets.empty? || !@secrets.key?(@current_version)
+      end
+
+      def self.from_env(environment: ENV.fetch('RACK_ENV', 'development'))
+        configured = ENV['VERIFICATION_TOKEN_SECRETS'].to_s
+        if configured.empty?
+          raise ConfigurationError if environment == 'production'
+
+          return new(secrets: { 'development' => 'development-only-secret' }, current_version: 'development')
+        end
+
+        secrets = JSON.parse(configured)
+        new(secrets: secrets, current_version: ENV.fetch('VERIFICATION_TOKEN_KEY_VERSION'))
+      rescue JSON::ParserError, KeyError, TypeError
+        raise ConfigurationError
+      end
+
+      def current_version
+        @current_version
+      end
+
+      def issue(user_id:, nonce:, expires_at:, key_version: @current_version)
+        secret = @secrets.fetch(key_version.to_s)
+        payload = [key_version, user_id, nonce, expires_at.to_i].join('|')
+        Base64.urlsafe_encode64(OpenSSL::HMAC.digest('SHA256', secret, payload), padding: false)
+      rescue KeyError
+        raise ConfigurationError
       end
     end
 
@@ -73,31 +111,78 @@ module DungeonCritters
     end
 
     class InMemoryStore
-      attr_reader :users, :sessions, :verifications
+      attr_reader :users, :sessions, :verifications, :outbox
 
       def initialize
         @users = {}
         @sessions = {}
         @verifications = {}
+        @outbox = {}
         @mutex = Mutex.new
       end
 
       def transaction
         @mutex.synchronize do
-          snapshot = Marshal.dump([@users, @sessions, @verifications])
+          snapshot = Marshal.dump([@users, @sessions, @verifications, @outbox])
           yield self
         rescue StandardError
-          @users, @sessions, @verifications = Marshal.load(snapshot)
+          @users, @sessions, @verifications, @outbox = Marshal.load(snapshot)
           raise
         end
       end
     end
 
     class PostgresStore < InMemoryStore
+      REQUIRED_SCHEMA_COLUMNS = {
+        'users' => %w[id email password_digest verified_at created_at],
+        'email_verifications' => %w[token_digest user_id expires_at used_at],
+        'email_outbox' => %w[id email user_id token_digest nonce expires_at key_version sent_at claimed_at created_at],
+        'sessions' => %w[id user_id access_token_digest refresh_token_digest access_expires_at refresh_expires_at
+                          revoked_at created_at]
+      }.freeze
+      REQUIRED_OUTBOX_COLUMNS = %w[
+        id email user_id token_digest nonce expires_at key_version sent_at claimed_at created_at
+      ].freeze
+
+      def self.validate_outbox_columns(columns)
+        names = columns.map(&:to_s)
+        if names.empty?
+          raise ConfigurationError, 'email_outbox is missing; apply server/db/001_sessions.sql before starting'
+        end
+        if names.include?('token')
+          raise ConfigurationError, 'email_outbox has legacy token column; do not start until the schema is migrated'
+        end
+
+        missing = REQUIRED_OUTBOX_COLUMNS - names
+        return if missing.empty?
+
+        raise ConfigurationError, "email_outbox schema is incomplete; missing: #{missing.join(', ')}"
+      end
+
+      def self.validate_schema(columns_by_table)
+        names_by_table = columns_by_table.transform_values { |columns| columns.map(&:to_s) }
+        missing_tables = REQUIRED_SCHEMA_COLUMNS.keys - names_by_table.keys
+        unless missing_tables.empty?
+          raise ConfigurationError, "database schema is missing tables: #{missing_tables.join(', ')}"
+        end
+        if names_by_table['email_outbox'].include?('token')
+          raise ConfigurationError, 'email_outbox has legacy token column; do not start until the schema is migrated'
+        end
+
+        missing_columns = REQUIRED_SCHEMA_COLUMNS.each_with_object([]) do |(table, required), missing|
+          absent = required - names_by_table.fetch(table)
+          missing << "#{table}.#{absent.join(',')}" unless absent.empty?
+        end
+        return if missing_columns.empty?
+
+        raise ConfigurationError, "database schema is incomplete; missing: #{missing_columns.join('; ')}"
+      end
+
       def initialize(url)
         require 'pg'
         @connection = PG.connect(url)
         super()
+        validate_outbox_schema
         load_rows
       rescue LoadError => e
         raise ConfigurationError, "pg is required: #{e.message}"
@@ -113,10 +198,23 @@ module DungeonCritters
 
       private
 
+      def validate_outbox_schema
+        rows = @connection.exec(
+          "SELECT table_name, column_name FROM information_schema.columns " \
+          "WHERE table_schema = current_schema() AND table_name IN " \
+          "('users', 'email_verifications', 'email_outbox', 'sessions')"
+        )
+        columns_by_table = rows.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |row, columns|
+          columns[row['table_name']] << row['column_name']
+        end
+        self.class.validate_schema(columns_by_table)
+      end
+
       def load_rows
         @users.clear
         @sessions.clear
         @verifications.clear
+        @outbox.clear
         @connection.exec('SELECT id, email, password_digest, verified_at, created_at FROM users').each do |row|
           @users[row['id']] = User.new(id: row['id'], email: row['email'], password_digest: row['password_digest'],
                                        verified_at: time(row['verified_at']), created_at: time(row['created_at']))
@@ -130,6 +228,12 @@ module DungeonCritters
         @connection.exec('SELECT user_id, token_digest, expires_at, used_at FROM email_verifications').each do |row|
           @verifications[row['token_digest']] = Verification.new(user_id: row['user_id'],
             token_digest: row['token_digest'], expires_at: time(row['expires_at']), used_at: time(row['used_at']))
+        end
+        @connection.exec('SELECT id, email, user_id, token_digest, nonce, expires_at, key_version, sent_at, claimed_at, created_at FROM email_outbox').each do |row|
+          @outbox[row['id']] = OutboxMessage.new(id: row['id'], email: row['email'], user_id: row['user_id'],
+            token_digest: row['token_digest'], nonce: row['nonce'], expires_at: time(row['expires_at']),
+            key_version: row['key_version'], sent_at: time(row['sent_at']), claimed_at: time(row['claimed_at']),
+            created_at: time(row['created_at']))
         end
       end
 
@@ -157,6 +261,15 @@ module DungeonCritters
             [verification.token_digest, verification.user_id, verification.expires_at, verification.used_at]
           )
         end
+        @outbox.each_value do |message|
+          @connection.exec_params(
+            'INSERT INTO email_outbox (id, email, user_id, token_digest, nonce, expires_at, key_version, sent_at, claimed_at, created_at)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+             ON CONFLICT (id) DO UPDATE SET sent_at=$8, claimed_at=$9',
+            [message.id, message.email, message.user_id, message.token_digest, message.nonce, message.expires_at,
+             message.key_version, message.sent_at, message.claimed_at, message.created_at]
+          )
+        end
       end
 
       def time(value)
@@ -165,10 +278,14 @@ module DungeonCritters
     end
 
     class ResendMailer
-      def initialize(api_key: ENV['RESEND_API_KEY'], from: ENV['RESEND_FROM_EMAIL'], client: nil)
+      def initialize(api_key: ENV['RESEND_API_KEY'], from: ENV['RESEND_FROM_EMAIL'], client: nil,
+                     public_api_url: ENV['PUBLIC_API_URL'], environment: ENV.fetch('RACK_ENV', 'development'))
         @api_key = api_key
         @from = from
         @client = client
+        @public_api_url = public_api_url
+        @environment = environment
+        @public_api_base = validated_public_api_base
       end
 
       def send_verification(email:, token:)
@@ -190,18 +307,71 @@ module DungeonCritters
       private
 
       def verification_url(token)
-        base = ENV.fetch('PUBLIC_API_URL', 'http://localhost:9292')
-        "#{base}/v1/accounts/verify-email?token=#{URI.encode_www_form_component(token)}"
+        "#{@public_api_base}/v1/accounts/verify-email#token=#{URI.encode_www_form_component(token)}"
+      end
+
+      def validated_public_api_base
+        uri = URI.parse(@public_api_url.to_s.empty? ? 'http://localhost:9292' : @public_api_url)
+        if @environment == 'production'
+          raise ConfigurationError unless uri.scheme == 'https' && uri.host && uri.userinfo.nil?
+        elsif uri.host.nil? || !%w[http https].include?(uri.scheme)
+          raise ConfigurationError
+        end
+        uri.to_s.sub(%r{/+\z}, '')
+      rescue URI::InvalidURIError
+        raise ConfigurationError
+      end
+    end
+
+    class OutboxDispatcher
+      def initialize(store:, mailer:, verification_tokens:, clock: -> { Time.now.utc })
+        @store = store
+        @mailer = mailer
+        @verification_tokens = verification_tokens
+        @clock = clock
+      end
+
+      def deliver_pending(limit: 100)
+        delivered = 0
+        limit.times do
+          message = @store.transaction do
+            now = @clock.call
+            pending = @store.outbox.values.find do |candidate|
+              candidate.sent_at.nil? &&
+                (candidate.claimed_at.nil? || candidate.claimed_at <= now - OUTBOX_CLAIM_TTL)
+            end
+            pending&.tap { |candidate| candidate.claimed_at = @clock.call }
+          end
+          break unless message
+
+          begin
+            token = @verification_tokens.issue(
+              user_id: message.user_id, nonce: message.nonce, expires_at: message.expires_at,
+              key_version: message.key_version
+            )
+            @mailer.send_verification(email: message.email, token: token)
+            @store.transaction do
+              current = @store.outbox.fetch(message.id)
+              current.sent_at = @clock.call
+              current.claimed_at = nil
+            end
+            delivered += 1
+          rescue StandardError
+            @store.transaction { @store.outbox.fetch(message.id).claimed_at = nil }
+            raise
+          end
+        end
+        delivered
       end
     end
 
     class AccountService
       EMAIL = /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/
 
-      def initialize(store:, hasher:, mailer:, clock: -> { Time.now.utc })
+      def initialize(store:, hasher:, verification_tokens:, clock: -> { Time.now.utc })
         @store = store
         @hasher = hasher
-        @mailer = mailer
+        @verification_tokens = verification_tokens
         @clock = clock
       end
 
@@ -210,22 +380,30 @@ module DungeonCritters
         raise ValidationError, 'invalid email' unless email.match?(EMAIL)
         raise ValidationError, 'invalid password' unless password.is_a?(String) && password.length >= 12
 
-        token = TokenCodec.issue
-        result = @store.transaction do
-          raise ConflictError, 'account unavailable' if @store.users.values.any? { |candidate| candidate.email == email }
+        @store.transaction do
+          next if @store.users.values.any? { |candidate| candidate.email == email }
 
           now = @clock.call
           user = User.new(id: SecureRandom.uuid, email: email, password_digest: @hasher.digest(password),
                           verified_at: nil, created_at: now)
           @store.users[user.id] = user
+          nonce = SecureRandom.hex(16)
+          key_version = @verification_tokens.current_version
+          token = @verification_tokens.issue(
+            user_id: user.id, nonce: nonce, expires_at: now + VERIFICATION_TTL, key_version: key_version
+          )
           digest = TokenCodec.digest(token)
           @store.verifications[digest] = Verification.new(
             user_id: user.id, token_digest: digest, expires_at: now + VERIFICATION_TTL, used_at: nil
           )
-          @mailer.send_verification(email: user.email, token: token)
-          user
+          id = SecureRandom.uuid
+          @store.outbox[id] = OutboxMessage.new(
+            id: id, email: user.email, user_id: user.id, token_digest: digest, nonce: nonce,
+            expires_at: now + VERIFICATION_TTL, key_version: key_version,
+            sent_at: nil, claimed_at: nil, created_at: now
+          )
         end
-        { 'id' => result.id, 'email_verified' => false }
+        { 'registration_received' => true }
       end
 
       def verify_email(token:)
@@ -345,13 +523,18 @@ module DungeonCritters
                    PostgresStore.new(ENV['DATABASE_URL'])
                  end
         hasher = PasswordHasher.new
-        @accounts = account_service || AccountService.new(store: @store, hasher: hasher, mailer: ResendMailer.new)
+        verification_tokens = VerificationTokenCodec.from_env
+        @accounts = account_service || AccountService.new(
+          store: @store, hasher: hasher, verification_tokens: verification_tokens
+        )
         @sessions = session_service || SessionService.new(store: @store, hasher: hasher)
       end
 
       def call(env)
         request_id = SecureRandom.uuid
         response = route(env['REQUEST_METHOD'], env['PATH_INFO'].to_s, parse_body(env), env)
+        return verification_page(request_id) if response['verification_required']
+
         json(200, response, request_id)
       rescue ValidationError
         problem(400, 'invalid_request', request_id)
@@ -380,6 +563,8 @@ module DungeonCritters
           @accounts.register(email: body.fetch('email'), password: body.fetch('password'))
         when ['POST', '/v1/accounts/verify-email']
           @accounts.verify_email(token: body.fetch('token'))
+        when ['GET', '/v1/accounts/verify-email']
+          { 'verification_required' => true }
         when ['POST', '/v1/sessions']
           @sessions.login(email: body.fetch('email'), password: body.fetch('password'))
         when ['POST', '/v1/sessions/refresh']
@@ -415,11 +600,54 @@ module DungeonCritters
         body = input.read(MAX_BODY_BYTES + 1)
         raise PayloadTooLargeError if body.bytesize > MAX_BODY_BYTES
 
-        JSON.parse(body)
+        if env['CONTENT_TYPE'].to_s.start_with?('application/x-www-form-urlencoded')
+          URI.decode_www_form(body).to_h
+        else
+          JSON.parse(body)
+        end
+      rescue ArgumentError
+        raise ValidationError
       end
 
-      def json(status, data, request_id)
-        [status, { 'Content-Type' => 'application/json', 'X-Request-Id' => request_id }, [JSON.generate(data)]]
+      def json(status, data, request_id, extra_headers = {})
+        headers = { 'Content-Type' => 'application/json', 'X-Request-Id' => request_id }.merge(extra_headers)
+        [status, headers, [JSON.generate(data)]]
+      end
+
+      def verification_page(request_id)
+        html = <<~HTML
+          <!doctype html>
+          <html><body>
+          <h1>Confirm email verification</h1>
+          <button id="verify" type="button">Verify email</button>
+          <p id="result">Click the button to verify your email.</p>
+          <script>
+          document.getElementById('verify').addEventListener('click', async () => {
+            const token = window.location.hash.startsWith('#token=') ? decodeURIComponent(window.location.hash.slice(7)) : '';
+            if (!token) {
+              document.getElementById('result').textContent = 'Verification link is incomplete.';
+              return;
+            }
+            const response = await fetch('/v1/accounts/verify-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token })
+            });
+            document.getElementById('result').textContent = response.ok ? 'Email verified.' : 'Verification failed.';
+          });
+          </script>
+          </body></html>
+        HTML
+        [
+          200,
+          {
+            'Content-Type' => 'text/html; charset=utf-8',
+            'Cache-Control' => 'no-store',
+            'Referrer-Policy' => 'no-referrer',
+            'X-Request-Id' => request_id
+          },
+          [html]
+        ]
       end
 
       def problem(status, code, request_id)

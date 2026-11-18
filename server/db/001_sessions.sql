@@ -13,6 +13,19 @@ CREATE TABLE IF NOT EXISTS email_verifications (
   used_at timestamptz
 );
 
+CREATE TABLE IF NOT EXISTS email_outbox (
+  id uuid PRIMARY KEY,
+  email text NOT NULL,
+  user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_digest text NOT NULL,
+  nonce text NOT NULL,
+  expires_at timestamptz NOT NULL,
+  key_version text NOT NULL,
+  sent_at timestamptz,
+  claimed_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS sessions (
   id uuid PRIMARY KEY,
   user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
