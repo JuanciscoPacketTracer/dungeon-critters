@@ -48,7 +48,13 @@
       "type": "Composite keys with values that may be Ruby objects.",
       "handling": "reject",
       "restrictions": "Reject until an adapter defines reversible tuple keys and an explicit allowlist of value types.",
-      "evidence": "Project self-variable extension and PFM::GameState global bindings."
+      "evidence": "Project self-variable extension and PFM::GameState global bindings.",
+      "analysis": {
+        "runtime_default": "Only the containing data structure may be empty when the field is absent; no default is justified for individual values.",
+        "observations": "The isolated base contains 9 DUNCR files: 5 have no entries, 3 have one nil-valued entry, and 1 has 107 heterogeneous entries.",
+        "inference": "A missing key and a present key whose value is nil must remain distinct; observed values are not universal defaults.",
+        "sources": "scripts/psdk_scripts/1_RMXP_Scripts.rb:2161-2170; read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree."
+      }
     },
     {
       "id": "trainer-party-and-actors",
@@ -104,7 +110,13 @@
       "type": "Arbitrary Ruby Hash values.",
       "handling": "reject",
       "restrictions": "Reject arbitrary Hash values until each key has a versioned adapter and an allowlisted value schema.",
-      "evidence": "PFM::GameState persistent user_data field."
+      "evidence": "PFM::GameState persistent user_data field.",
+      "analysis": {
+        "runtime_default": "{} when the field is absent or nil, as applied by the runtime initializer/expander.",
+        "observations": "All 9 inspected DUNCR files contain user_data; the observed keys are follower_pos and tjn_events, with scheduled_for_cleanup in 2 files.",
+        "inference": "The empty Hash is a conditional repair value only; existing keys and values must not be added, removed, or normalized.",
+        "sources": "scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb:156-164; read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree."
+      }
     },
     {
       "id": "pathfinding-requests",
@@ -112,7 +124,13 @@
       "type": "Live pathfinding request objects.",
       "handling": "reject",
       "restrictions": "Never serialize live pathfinding requests; recreate a request only through a future explicit gameplay action.",
-      "evidence": "PFM::GameState persistent pathfinding_requests field."
+      "evidence": "PFM::GameState persistent pathfinding_requests field.",
+      "analysis": {
+        "runtime_default": "[] via Pathfinding::DEFAULT_SAVE; the runtime also applies it when the field is nil.",
+        "observations": "All 9 inspected DUNCR files contain an empty pathfinding request array.",
+        "inference": "An absent or nil field may be rebuilt as []; non-empty live requests must not be serialized or inferred from the sample.",
+        "sources": "scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb:131-132; scripts/psdk_scripts/4_Systems_003_Map_Engine.rb:8121-8123; read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree."
+      }
     },
     {
       "id": "nuzlocke-state",
@@ -120,7 +138,13 @@
       "type": "Plugin-defined state with project-specific invariants.",
       "handling": "reject",
       "restrictions": "Reject until an adapter defines its supported fields, identifiers, migrations, and reconstruction procedure.",
-      "evidence": "PFM::GameState persistent nuzlocke field."
+      "evidence": "PFM::GameState persistent nuzlocke field.",
+      "analysis": {
+        "runtime_default": "A newly constructed object uses empty catch_locked_zones and graveyard arrays and false for no_lock_on_duplicate; the expander repairs graveyard and reconnects game_state.",
+        "observations": "All 9 inspected DUNCR files show empty catch_locked_zones and graveyard and false no_lock_on_duplicate.",
+        "inference": "These are constructor/repair defaults, not proof that arbitrary or unknown Nuzlocke state may be replaced with them.",
+        "sources": "scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb:115-122; scripts/psdk_scripts/4_Systems_204_Nuzlocke.rb:15-20; read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree."
+      }
     },
     {
       "id": "berry-state",
@@ -128,7 +152,13 @@
       "type": "Game-data-indexed collection with plugin-specific values.",
       "handling": "reject",
       "restrictions": "Reject until an adapter defines the supported berry keys and values, validation rules, and migration policy.",
-      "evidence": "PFM::GameState persistent berries field."
+      "evidence": "PFM::GameState persistent berries field.",
+      "analysis": {
+        "runtime_default": "{} when a new GameState is initialized; missing map entries are created lazily.",
+        "observations": "All 9 inspected DUNCR files contain 3 to 6 map hashes; populated entries are arrays of 8 integers and several map hashes are empty.",
+        "inference": "Only the missing top-level collection may default to {}; berry entry arrays must not be filled from observed values, and stage_time=0 remains invalid.",
+        "sources": "scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb:170-172; scripts/psdk_scripts/4_Systems_003_Map_Engine.rb:3502-3514,3541-3544; read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree."
+      }
     },
     {
       "id": "game-troop",
@@ -139,12 +169,46 @@
       "evidence": "PFM::GameState persistent game_troop field."
     },
     {
+      "id": "level-max-limit",
+      "identity": "PFM::GameState maximum level limit for allied Pokemon.",
+      "type": "Configuration-dependent integer.",
+      "handling": "serialize",
+      "restrictions": "If absent or nil, use Configs.settings.max_level; do not use the observed value 100 as a universal default.",
+      "evidence": "PFM::GameState level_max_limit initializer and expander in scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb:168-169.",
+      "analysis": {
+        "runtime_default": "Configs.settings.max_level.",
+        "observations": "The observed value was 100 in the inspected DUNCR files.",
+        "inference": "The configured runtime value, not the sample value, is the only justified fallback.",
+        "sources": "scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb:168-169; read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree."
+      }
+    },
+    {
+      "id": "mystery-gift",
+      "identity": "Optional mystery-gift state found in some save graphs.",
+      "type": "Optional version-dependent payload.",
+      "handling": "reject",
+      "restrictions": "Permit absence; do not invent content or silently discard a present value until an adapter defines its schema.",
+      "evidence": "Read-only aggregate inspection of the DUNCR files available in the issue-27 worktree.",
+      "analysis": {
+        "runtime_default": "No content default is confirmed.",
+        "observations": "The field was absent from all 9 DUNCR files in the isolated #13 base.",
+        "inference": "Absence may be accepted as optional, but this base does not establish a universal presence or payload rule.",
+        "sources": "Read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree; no game load performed."
+      }
+    },
+    {
       "id": "tint-time-set",
       "identity": "PFM::GameState tint-time initialization marker.",
-      "type": "Boolean flag.",
+      "type": "Symbol or nil.",
       "handling": "serialize",
-      "restrictions": "Allow only a boolean value; reject nulls and truthy or falsy substitutes.",
-      "evidence": "PFM::GameState persistent tint_time_set field."
+      "restrictions": "Allow only a Symbol or nil; nil selects the runtime default and must not be coerced to false or to an observed Symbol.",
+      "evidence": "PFM::GameState persistent tint_time_set field.",
+      "analysis": {
+        "runtime_default": "nil means use the default time set.",
+        "observations": "All 9 inspected DUNCR files contain the Symbol :platinum_daynight.",
+        "inference": "The observed Symbol is not a universal default; preserve nil as a meaningful state.",
+        "sources": "scripts/psdk_scripts/4_Systems_000_General_3_GameState.rb:154-155; read-only aggregate inspection of Saves/Critter_Party-* in the issue-27 worktree."
+      }
     },
     {
       "id": "plugin-extension-data",
