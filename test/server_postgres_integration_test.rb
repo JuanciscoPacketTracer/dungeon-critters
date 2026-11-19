@@ -143,7 +143,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
     assert_equal [1], observed_attempts
     assert_nil row.fetch('claimed_at')
     assert_nil row.fetch('claim_token')
-    assert_equal (NOW + 7).iso8601(6), Time.parse(row.fetch('next_attempt_at')).iso8601(6)
+    assert_equal NOW + 7, Time.parse(row.fetch('next_attempt_at'))
     assert_nil row.fetch('terminal_at')
   end
 
