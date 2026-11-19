@@ -517,7 +517,7 @@ class ServerPostgresIntegrationTest < Minitest::Test
       backoff_max: backoff_max,
       max_attempts: max_attempts,
       clock: clock,
-      logger: Object.new.tap { |logger| logger.define_singleton_method(:warn) {} },
+      logger: Object.new.tap { |logger| logger.define_singleton_method(:warn) { |_message| } },
       sleeper: ->(_seconds) {}
     )
   end
