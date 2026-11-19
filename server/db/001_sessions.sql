@@ -23,6 +23,10 @@ CREATE TABLE IF NOT EXISTS email_outbox (
   key_version text NOT NULL,
   sent_at timestamptz,
   claimed_at timestamptz,
+  claim_token uuid,
+  attempts integer NOT NULL DEFAULT 0,
+  next_attempt_at timestamptz,
+  terminal_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now()
 );
 

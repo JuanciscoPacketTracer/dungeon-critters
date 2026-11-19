@@ -7,6 +7,7 @@ require_relative '../server/lib/dungeon_critters_server'
 
 class ServerPostgresIntegrationTest < Minitest::Test
   MIGRATION_PATH = File.expand_path('../server/db/001_sessions.sql', __dir__)
+  RETRY_MIGRATION_PATH = File.expand_path('../server/db/002_outbox_retry_state.sql', __dir__)
   TEST_DATABASE_NAME = 'dungeon_critters_test'
   TEST_DATABASE_HOSTS = %w[localhost 127.0.0.1 ::1].freeze
   NOW = Time.utc(2026, 1, 1, 12, 0, 0)
@@ -92,8 +93,147 @@ class ServerPostgresIntegrationTest < Minitest::Test
     refute row.key?('token')
     assert_match(/\A[0-9a-f]{64}\z/, row.fetch('token_digest'))
     assert_equal 'v1', row.fetch('key_version')
-    assert_equal %w[created_at email expires_at id key_version nonce sent_at token_digest user_id claimed_at].sort,
+    assert_equal %w[attempts claimed_at claim_token created_at email expires_at id key_version next_attempt_at nonce
+                    sent_at terminal_at token_digest user_id].sort,
                  row.keys.sort
+  end
+
+  def test_retry_migration_is_idempotent_and_adds_persistent_state
+    apply_migration
+    apply_retry_migration
+    apply_retry_migration
+
+    columns = @connection.exec(
+      "SELECT column_name FROM information_schema.columns " \
+      "WHERE table_schema = current_schema() AND table_name = 'email_outbox'"
+    ).map { |row| row.fetch('column_name') }
+
+    assert_includes columns, 'attempts'
+    assert_includes columns, 'next_attempt_at'
+    assert_includes columns, 'terminal_at'
+    assert_includes columns, 'claim_token'
+    assert_equal 0, @connection.exec("SELECT column_default FROM information_schema.columns " \
+                                     "WHERE table_name = 'email_outbox' AND column_name = 'attempts'")
+                        .first.fetch('column_default').to_i
+  end
+
+  def test_worker_persists_backoff_after_postgres_delivery_failure
+    apply_migration
+    apply_retry_migration
+    insert_pending_message
+    observed_attempts = []
+    observer = PG.connect(@database_url)
+    mailer = Object.new
+    mailer.define_singleton_method(:send_verification) do |**|
+      observed_attempts << observer.exec('SELECT attempts FROM email_outbox').first.fetch('attempts').to_i
+      raise 'synthetic delivery failure'
+    end
+    worker = build_worker(store: new_store, mailer: mailer, backoff_base: 7, backoff_max: 20)
+
+    begin
+      assert_equal 0, worker.run_once
+    ensure
+      observer.close unless observer.finished?
+    end
+
+    row = @connection.exec(
+      'SELECT attempts, claimed_at, claim_token, next_attempt_at, terminal_at FROM email_outbox'
+    ).first
+    assert_equal 1, row.fetch('attempts').to_i
+    assert_equal [1], observed_attempts
+    assert_nil row.fetch('claimed_at')
+    assert_nil row.fetch('claim_token')
+    assert_equal (NOW + 7).iso8601(6), Time.parse(row.fetch('next_attempt_at')).iso8601(6)
+    assert_nil row.fetch('terminal_at')
+  end
+
+  def test_worker_restart_respects_persisted_backoff_and_delivers_when_due
+    apply_migration
+    apply_retry_migration
+    insert_pending_message
+    now = NOW
+    sends = 0
+    mailer = Object.new
+    mailer.define_singleton_method(:send_verification) do |**|
+      sends += 1
+      raise 'temporary failure' if sends == 1
+    end
+
+    first_worker = build_worker(store: new_store, mailer: mailer, clock: -> { now }, backoff_base: 10)
+    assert_equal 0, first_worker.run_once
+
+    restarted_worker = build_worker(store: new_store, mailer: mailer, clock: -> { now }, backoff_base: 10)
+    assert_equal 0, restarted_worker.run_once
+    assert_equal 1, sends
+
+    now += 10
+    assert_equal 1, restarted_worker.run_once
+    assert_equal 2, sends
+    row = @connection.exec(
+      'SELECT attempts, sent_at, claim_token, next_attempt_at, terminal_at FROM email_outbox'
+    ).first
+    assert_equal 2, row.fetch('attempts').to_i
+    refute_nil row.fetch('sent_at')
+    assert_nil row.fetch('claim_token')
+    assert_nil row.fetch('next_attempt_at')
+    assert_nil row.fetch('terminal_at')
+  end
+
+  def test_worker_applies_exponential_backoff_with_maximum_in_postgres
+    apply_migration
+    apply_retry_migration
+    insert_pending_message
+    now = NOW
+    sends = 0
+    mailer = Object.new
+    mailer.define_singleton_method(:send_verification) do |**|
+      sends += 1
+      raise 'temporary failure'
+    end
+    worker = build_worker(store: new_store, mailer: mailer, clock: -> { now },
+                          backoff_base: 3, backoff_max: 5, max_attempts: 4)
+
+    assert_equal 0, worker.run_once
+    assert_equal 3, (outbox_timestamp('next_attempt_at') - now).to_i
+
+    now += 3
+    assert_equal 0, worker.run_once
+    assert_equal 5, (outbox_timestamp('next_attempt_at') - now).to_i
+
+    now += 5
+    assert_equal 0, worker.run_once
+    assert_equal 5, (outbox_timestamp('next_attempt_at') - now).to_i
+    assert_equal 3, sends
+  end
+
+  def test_worker_marks_terminal_after_max_attempts_in_postgres
+    apply_migration
+    apply_retry_migration
+    insert_pending_message
+    now = NOW
+    sends = 0
+    mailer = Object.new
+    mailer.define_singleton_method(:send_verification) do |**|
+      sends += 1
+      raise 'permanent delivery failure'
+    end
+    worker = build_worker(store: new_store, mailer: mailer, clock: -> { now }, max_attempts: 2)
+
+    assert_equal 0, worker.run_once
+    now += 1
+    assert_equal 0, worker.run_once
+
+    row = @connection.exec(
+      'SELECT attempts, sent_at, claim_token, next_attempt_at, terminal_at FROM email_outbox'
+    ).first
+    assert_equal 2, row.fetch('attempts').to_i
+    assert_nil row.fetch('sent_at')
+    assert_nil row.fetch('claim_token')
+    assert_nil row.fetch('next_attempt_at')
+    refute_nil row.fetch('terminal_at')
+    now += 100
+    assert_equal 0, worker.run_once
+    assert_equal 2, sends
   end
 
   def test_legacy_schema_rejects_startup_and_preserves_raw_token
@@ -174,6 +314,54 @@ class ServerPostgresIntegrationTest < Minitest::Test
     assert_equal 1, @connection.exec('SELECT 1 FROM email_outbox WHERE sent_at IS NOT NULL').ntuples
   end
 
+  def test_reclaimed_lease_cannot_be_acknowledged_by_stale_dispatcher
+    apply_migration
+    insert_pending_message
+    now = NOW
+    first_started = Queue.new
+    release_first = Queue.new
+    sent = Queue.new
+    first_mailer = Object.new
+    first_mailer.define_singleton_method(:send_verification) do |**|
+      sent << :first
+      first_started << true
+      release_first.pop
+    end
+    second_mailer = Object.new
+    second_mailer.define_singleton_method(:send_verification) { |**| sent << :second }
+    first_dispatcher = DungeonCritters::Server::OutboxDispatcher.new(
+      store: new_store, mailer: first_mailer, verification_tokens: verification_tokens, clock: -> { now }
+    )
+    second_dispatcher = DungeonCritters::Server::OutboxDispatcher.new(
+      store: new_store, mailer: second_mailer, verification_tokens: verification_tokens, clock: -> { now }
+    )
+
+    first_error = nil
+    first = Thread.new do
+      begin
+        first_dispatcher.deliver_pending
+      rescue StandardError => error
+        first_error = error
+      end
+    end
+    first_started.pop
+    now += DungeonCritters::Server::OUTBOX_CLAIM_TTL + 1
+
+    assert_equal 1, second_dispatcher.deliver_pending
+    release_first << true
+    first.join
+
+    assert_instance_of DungeonCritters::Server::OutboxLeaseLostError, first_error
+    assert_equal %i[first second], 2.times.map { sent.pop }
+    row = @connection.exec(
+      'SELECT attempts, sent_at, claimed_at, claim_token FROM email_outbox'
+    ).first
+    assert_equal 2, row.fetch('attempts').to_i
+    refute_nil row.fetch('sent_at')
+    assert_nil row.fetch('claimed_at')
+    assert_nil row.fetch('claim_token')
+  end
+
   def test_active_lease_is_not_reclaimed
     apply_migration
     insert_pending_message(claimed_at: NOW)
@@ -235,6 +423,11 @@ class ServerPostgresIntegrationTest < Minitest::Test
 
   def apply_migration
     @connection.exec(File.read(MIGRATION_PATH))
+    apply_retry_migration
+  end
+
+  def apply_retry_migration
+    @connection.exec(File.read(RETRY_MIGRATION_PATH))
   end
 
   def create_supporting_schema
@@ -304,6 +497,28 @@ class ServerPostgresIntegrationTest < Minitest::Test
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',
       [outbox_id, 'player@example.test', user_id, 'a' * 64, 'synthetic-nonce',
        NOW + DungeonCritters::Server::VERIFICATION_TTL, 'v1', nil, claimed_at, NOW]
+    )
+  end
+
+  def outbox_timestamp(column)
+    value = @connection.exec("SELECT #{column} FROM email_outbox").first.fetch(column)
+    Time.parse(value)
+  end
+
+  def build_worker(store:, mailer:, clock: -> { NOW }, backoff_base: 1, backoff_max: 60, max_attempts: 5)
+    dispatcher = DungeonCritters::Server::OutboxDispatcher.new(
+      store: store, mailer: mailer, verification_tokens: verification_tokens, clock: clock
+    )
+    DungeonCritters::Server::OutboxWorker.new(
+      store: store,
+      dispatcher: dispatcher,
+      poll_interval: 5,
+      backoff_base: backoff_base,
+      backoff_max: backoff_max,
+      max_attempts: max_attempts,
+      clock: clock,
+      logger: Object.new.tap { |logger| logger.define_singleton_method(:warn) {} },
+      sleeper: ->(_seconds) {}
     )
   end
 end

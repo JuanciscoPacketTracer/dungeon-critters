@@ -53,16 +53,48 @@ cinco sesiones activas.
 
 El registro responde siempre `{ "registration_received": true }` para cuentas
 nuevas y existentes. La API solo persiste la cuenta y el outbox; no construye
-`ResendMailer` ni envía correo. El worker debe construir `ResendMailer`, llamar
-al dispatcher después del commit y liberar el lock global antes de llamar a
-Resend. Un fallo deja el mensaje pendiente y no cambia la respuesta uniforme
-del registro. Los leases expirados se pueden reclamar, pero se requiere un
-worker de outbox autónomo con reintentos y observabilidad para producción; sin
-ese worker la entrega no está garantizada.
+`ResendMailer` ni envía correo. El worker construye `ResendMailer`, llama al
+dispatcher después del commit y libera el lock global antes de llamar a Resend.
+Un fallo deja el mensaje pendiente y no cambia la respuesta uniforme del
+registro. Los leases expirados se pueden reclamar.
+
+El worker ejecutable es `bundle exec ruby server/bin/outbox_worker.rb`. Requiere
+`DATABASE_URL`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `PUBLIC_API_URL` (HTTPS en
+producción), `VERIFICATION_TOKEN_SECRETS` y
+`VERIFICATION_TOKEN_KEY_VERSION`. No usa la URL localhost ni el secreto de
+desarrollo como fallback: si falta cualquiera de estas variables, el proceso
+termina antes de reclamar un mensaje. Consulta el outbox cada
+`OUTBOX_POLL_INTERVAL` segundos (5 por defecto), intenta entregar cada mensaje
+hasta `OUTBOX_MAX_ATTEMPTS` veces en total (5 por defecto), usa backoff
+exponencial limitado por `OUTBOX_BACKOFF_MAX` (60 segundos por defecto) y
+recupera leases vencidos.
+`OUTBOX_BACKOFF_BASE` controla el primer retraso (1 segundo por defecto).
+`SIGINT` y `SIGTERM` detienen el polling ordenadamente. Los logs solo incluyen
+contadores y clases de error; nunca mensajes de error, tokens ni secretos.
+Cada intento incrementa `attempts` antes de llamar a Resend. `claim_token` identifica al dueño de cada lease; las confirmaciones y
+transiciones de fallo solo aplican si ese token sigue siendo el actual.
+`next_attempt_at`
+persiste el backoff y `terminal_at` marca un fallo permanente cuando se alcanza
+el límite; por eso un reinicio no reinicia el contador ni reintenta antes de
+tiempo. Una señal recibida durante la espera evita iniciar otro intento.
+
+Para una base creada con la versión anterior de `001_sessions.sql`, aplicar
+explícitamente `server/db/002_outbox_retry_state.sql` antes de iniciar el
+worker. La aplicación no añade columnas ni transforma mensajes automáticamente;
+el guard de arranque rechaza esquemas incompletos.
+
+Si Resend acepta un envío pero el worker pierde la conexión antes de persistir
+`sent_at`, el resultado es incierto: el lease queda para recuperación y otro
+worker puede reenviar el mismo mensaje. Por ello la entrega es al menos una vez
+y pueden existir duplicados; Resend debe tratarse como un destino idempotente
+cuando sea posible. Un fallo de PostgreSQL al guardar el backoff o el estado
+terminal se registra explícitamente y conserva el lease para que la recuperación
+no pierda el intento.
 
 Pendientes de despliegue: añadir limitación de tasa para login, registro,
-verificación y renovación; implementar y operar un worker autónomo de outbox
-con polling, backoff, límite de reintentos, observabilidad y recuperación de
-leases; y evaluar un lock por usuario en lugar del lock advisory global actual.
-Este PR no incluye un ejecutable del worker: hasta definir su scheduler,
-credenciales y política operativa, la entrega de correo no está garantizada.
+verificación y renovación; operar el worker con un scheduler/servicio
+supervisado, credenciales y alertas; y evaluar un lock por usuario en lugar del
+lock advisory global actual. La entrega es al menos una vez: un lease que expire
+durante una llamada lenta puede producir un envío duplicado. Un mensaje en estado
+terminal requiere intervención operativa (corregir la causa y reencolarlo de
+forma explícita); no se promete entrega exactamente una vez.
