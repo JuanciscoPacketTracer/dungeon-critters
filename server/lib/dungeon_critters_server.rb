@@ -10,6 +10,18 @@ require 'uri'
 
 module DungeonCritters
   module Server
+    OUTBOX_REQUIRED_ENV = %w[
+      DATABASE_URL RESEND_API_KEY RESEND_FROM_EMAIL PUBLIC_API_URL
+      VERIFICATION_TOKEN_SECRETS VERIFICATION_TOKEN_KEY_VERSION
+    ].freeze
+
+    def self.require_env!(name, env: ENV)
+      value = env[name].to_s
+      raise ConfigurationError, "#{name} is required" if value.empty?
+
+      value
+    end
+
     ACCESS_TOKEN_TTL = 15 * 60
     REFRESH_TOKEN_TTL = 30 * 24 * 60 * 60
     VERIFICATION_TTL = 24 * 60 * 60
@@ -20,6 +32,8 @@ module DungeonCritters
     class AuthenticationError < StandardError; end
     class ConflictError < StandardError; end
     class ConfigurationError < StandardError; end
+    class OutboxPersistenceError < StandardError; end
+    class OutboxLeaseLostError < StandardError; end
     class PayloadTooLargeError < StandardError; end
     MAX_BODY_BYTES = 64 * 1024
 
@@ -28,7 +42,8 @@ module DungeonCritters
                          :access_expires_at, :refresh_expires_at, :revoked_at, :created_at, keyword_init: true)
     Verification = Struct.new(:user_id, :token_digest, :expires_at, :used_at, keyword_init: true)
     OutboxMessage = Struct.new(:id, :email, :user_id, :token_digest, :nonce, :expires_at, :key_version,
-                               :sent_at, :claimed_at, :created_at, keyword_init: true)
+                               :sent_at, :claimed_at, :claim_token, :attempts, :next_attempt_at, :terminal_at,
+                               :created_at, keyword_init: true)
 
     module TokenCodec
       module_function
@@ -136,12 +151,14 @@ module DungeonCritters
       REQUIRED_SCHEMA_COLUMNS = {
         'users' => %w[id email password_digest verified_at created_at],
         'email_verifications' => %w[token_digest user_id expires_at used_at],
-        'email_outbox' => %w[id email user_id token_digest nonce expires_at key_version sent_at claimed_at created_at],
+        'email_outbox' => %w[id email user_id token_digest nonce expires_at key_version sent_at claimed_at claim_token
+                              attempts next_attempt_at terminal_at created_at],
         'sessions' => %w[id user_id access_token_digest refresh_token_digest access_expires_at refresh_expires_at
                           revoked_at created_at]
       }.freeze
       REQUIRED_OUTBOX_COLUMNS = %w[
-        id email user_id token_digest nonce expires_at key_version sent_at claimed_at created_at
+        id email user_id token_digest nonce expires_at key_version sent_at claimed_at claim_token attempts
+        next_attempt_at terminal_at created_at
       ].freeze
 
       def self.validate_outbox_columns(columns)
@@ -229,11 +246,13 @@ module DungeonCritters
           @verifications[row['token_digest']] = Verification.new(user_id: row['user_id'],
             token_digest: row['token_digest'], expires_at: time(row['expires_at']), used_at: time(row['used_at']))
         end
-        @connection.exec('SELECT id, email, user_id, token_digest, nonce, expires_at, key_version, sent_at, claimed_at, created_at FROM email_outbox').each do |row|
+        @connection.exec('SELECT id, email, user_id, token_digest, nonce, expires_at, key_version, sent_at, claimed_at,
+                                 claim_token, attempts, next_attempt_at, terminal_at, created_at FROM email_outbox').each do |row|
           @outbox[row['id']] = OutboxMessage.new(id: row['id'], email: row['email'], user_id: row['user_id'],
             token_digest: row['token_digest'], nonce: row['nonce'], expires_at: time(row['expires_at']),
             key_version: row['key_version'], sent_at: time(row['sent_at']), claimed_at: time(row['claimed_at']),
-            created_at: time(row['created_at']))
+            claim_token: row['claim_token'], attempts: row['attempts'].to_i, next_attempt_at: time(row['next_attempt_at']),
+            terminal_at: time(row['terminal_at']), created_at: time(row['created_at']))
         end
       end
 
@@ -263,11 +282,14 @@ module DungeonCritters
         end
         @outbox.each_value do |message|
           @connection.exec_params(
-            'INSERT INTO email_outbox (id, email, user_id, token_digest, nonce, expires_at, key_version, sent_at, claimed_at, created_at)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-             ON CONFLICT (id) DO UPDATE SET sent_at=$8, claimed_at=$9',
+            'INSERT INTO email_outbox (id, email, user_id, token_digest, nonce, expires_at, key_version, sent_at,
+             claimed_at, claim_token, attempts, next_attempt_at, terminal_at, created_at)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
+             ON CONFLICT (id) DO UPDATE SET sent_at=$8, claimed_at=$9, claim_token=$10, attempts=$11,
+             next_attempt_at=$12, terminal_at=$13',
             [message.id, message.email, message.user_id, message.token_digest, message.nonce, message.expires_at,
-             message.key_version, message.sent_at, message.claimed_at, message.created_at]
+             message.key_version, message.sent_at, message.claimed_at, message.claim_token, message.attempts,
+             message.next_attempt_at, message.terminal_at, message.created_at]
           )
         end
       end
@@ -289,7 +311,7 @@ module DungeonCritters
       end
 
       def send_verification(email:, token:)
-        raise ConfigurationError, 'Resend is not configured' if @client.nil? && (@api_key.to_s.empty? || @from.to_s.empty?)
+        validate_configuration!
 
         payload = {
           from: @from,
@@ -302,6 +324,11 @@ module DungeonCritters
         require 'resend'
         Resend.api_key = @api_key
         Resend::Emails.send(payload)
+      end
+
+      def validate_configuration!
+        return if @client
+        raise ConfigurationError, 'Resend is not configured' if @api_key.to_s.empty? || @from.to_s.empty?
       end
 
       private
@@ -331,17 +358,14 @@ module DungeonCritters
         @clock = clock
       end
 
-      def deliver_pending(limit: 100)
+      def validate_configuration!
+        @mailer.validate_configuration! if @mailer.respond_to?(:validate_configuration!)
+      end
+
+      def deliver_pending(limit: 100, max_attempts: nil, on_failure: nil)
         delivered = 0
         limit.times do
-          message = @store.transaction do
-            now = @clock.call
-            pending = @store.outbox.values.find do |candidate|
-              candidate.sent_at.nil? &&
-                (candidate.claimed_at.nil? || candidate.claimed_at <= now - OUTBOX_CLAIM_TTL)
-            end
-            pending&.tap { |candidate| candidate.claimed_at = @clock.call }
-          end
+          message = claim_pending(max_attempts: max_attempts)
           break unless message
 
           begin
@@ -350,18 +374,182 @@ module DungeonCritters
               key_version: message.key_version
             )
             @mailer.send_verification(email: message.email, token: token)
-            @store.transaction do
-              current = @store.outbox.fetch(message.id)
-              current.sent_at = @clock.call
-              current.claimed_at = nil
-            end
-            delivered += 1
           rescue StandardError
-            @store.transaction { @store.outbox.fetch(message.id).claimed_at = nil }
+            handle_failure(message, on_failure)
             raise
+          end
+
+          begin
+            mark_delivered(message)
+            delivered += 1
+          rescue OutboxLeaseLostError
+            raise
+          rescue StandardError => error
+            raise OutboxPersistenceError, "unable to persist delivered outbox message #{message.id}: #{error.class}"
           end
         end
         delivered
+      end
+
+      private
+
+      def claim_pending(max_attempts:)
+        @store.transaction do
+          now = @clock.call
+          pending = @store.outbox.values.find do |candidate|
+            next false unless candidate.sent_at.nil? &&
+                              candidate.terminal_at.nil? &&
+                              (candidate.next_attempt_at.nil? || candidate.next_attempt_at <= now) &&
+                              (candidate.claimed_at.nil? || candidate.claimed_at <= now - OUTBOX_CLAIM_TTL)
+
+            if max_attempts && candidate.attempts.to_i >= max_attempts
+              candidate.terminal_at = now
+              candidate.next_attempt_at = nil
+              candidate.claimed_at = nil
+              candidate.claim_token = nil
+              false
+            else
+              true
+            end
+          end
+          pending&.tap do |candidate|
+            candidate.attempts = candidate.attempts.to_i + 1
+            candidate.claimed_at = now
+            candidate.claim_token = SecureRandom.uuid
+          end
+        end
+      rescue StandardError => error
+        raise OutboxPersistenceError, "unable to claim outbox message: #{error.class}"
+      end
+
+      def mark_delivered(message)
+        @store.transaction do
+          current = @store.outbox.fetch(message.id)
+          unless current.claim_token == message.claim_token && current.sent_at.nil?
+            raise OutboxLeaseLostError, "outbox lease lost for #{message.id}"
+          end
+
+          current.sent_at = @clock.call
+          current.claimed_at = nil
+          current.claim_token = nil
+          current.next_attempt_at = nil
+        end
+      end
+
+      def handle_failure(message, on_failure)
+        if on_failure
+          on_failure.call(message)
+        else
+          release_claim(message)
+        end
+      rescue OutboxPersistenceError
+        raise
+      rescue OutboxLeaseLostError
+        raise
+      rescue StandardError => error
+        raise OutboxPersistenceError, "unable to persist failed outbox message #{message.id}: #{error.class}"
+      end
+
+      def release_claim(message)
+        @store.transaction do
+          current = @store.outbox.fetch(message.id)
+          if current.claim_token == message.claim_token
+            current.claimed_at = nil
+            current.claim_token = nil
+          end
+        end
+      end
+    end
+
+    class OutboxWorker
+      DEFAULT_POLL_INTERVAL = 5
+      DEFAULT_BACKOFF_BASE = 1
+      DEFAULT_BACKOFF_MAX = 60
+      DEFAULT_MAX_ATTEMPTS = 5
+
+      def initialize(store:, dispatcher:, poll_interval: DEFAULT_POLL_INTERVAL, backoff_base: DEFAULT_BACKOFF_BASE,
+                     backoff_max: DEFAULT_BACKOFF_MAX, max_attempts: DEFAULT_MAX_ATTEMPTS,
+                     clock: -> { Time.now.utc },
+                     logger: $stderr, sleeper: ->(seconds) { sleep(seconds) })
+        @store = store
+        @dispatcher = dispatcher
+        @poll_interval = positive_number(poll_interval, 'poll interval')
+        @backoff_base = positive_number(backoff_base, 'backoff base')
+        @backoff_max = positive_number(backoff_max, 'backoff maximum')
+        @max_attempts = Integer(max_attempts)
+        raise ConfigurationError, 'max attempts must be positive' unless @max_attempts.positive?
+
+        @clock = clock
+        @logger = logger
+        @sleeper = sleeper
+        @next_wait = nil
+        @dispatcher.validate_configuration!
+      end
+
+      def run_once
+        @next_wait = nil
+        @dispatcher.deliver_pending(
+          max_attempts: @max_attempts,
+          on_failure: ->(message) { schedule_failure(message) }
+        )
+      rescue OutboxLeaseLostError
+        log('outbox delivery outcome uncertain; lease ownership changed before acknowledgement')
+        0
+      rescue OutboxPersistenceError => error
+        log("outbox persistence failed error=#{error.class}")
+        0
+      rescue StandardError => error
+        log("outbox delivery failed error=#{error.class}")
+        0
+      end
+
+      def run(stop: -> { false })
+        until stop.call
+          run_once
+          wait = @next_wait || @poll_interval
+          @sleeper.call(wait) unless stop.call
+        end
+      end
+
+      private
+
+      def schedule_failure(message)
+        @store.transaction do
+          current = @store.outbox.fetch(message.id)
+          unless current.claim_token == message.claim_token && current.sent_at.nil?
+            raise OutboxLeaseLostError, "outbox lease lost for #{message.id}"
+          end
+
+          now = @clock.call
+          if current.attempts >= @max_attempts
+            current.terminal_at = now
+            current.next_attempt_at = nil
+            @next_wait = @poll_interval
+          else
+            delay = [@backoff_base * (2**(current.attempts - 1)), @backoff_max].min
+            current.next_attempt_at = now + delay
+            @next_wait = delay
+          end
+          current.claimed_at = nil
+          current.claim_token = nil
+        end
+      rescue OutboxLeaseLostError
+        raise
+      rescue StandardError => error
+        raise OutboxPersistenceError, "unable to persist retry state for #{message.id}: #{error.class}"
+      end
+
+      def positive_number(value, name)
+        number = Float(value)
+        raise ConfigurationError, "#{name} must be positive" unless number.positive?
+
+        number
+      rescue ArgumentError, TypeError
+        raise ConfigurationError, "#{name} must be positive"
+      end
+
+      def log(message)
+        @logger.warn(message)
       end
     end
 
@@ -400,7 +588,8 @@ module DungeonCritters
           @store.outbox[id] = OutboxMessage.new(
             id: id, email: user.email, user_id: user.id, token_digest: digest, nonce: nonce,
             expires_at: now + VERIFICATION_TTL, key_version: key_version,
-            sent_at: nil, claimed_at: nil, created_at: now
+            sent_at: nil, claimed_at: nil, claim_token: nil, attempts: 0, next_attempt_at: nil, terminal_at: nil,
+            created_at: now
           )
         end
         { 'registration_received' => true }
