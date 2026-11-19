@@ -247,6 +247,17 @@ class ServerOutboxWorkerTest < Minitest::Test
     assert_includes logger.messages.last, 'persistence failed'
   end
 
+  def test_worker_entrypoint_configures_retry_runtime
+    entrypoint = File.read(File.expand_path('../server/bin/outbox_worker.rb', __dir__))
+
+    assert_includes entrypoint, 'Server::OutboxWorker.new'
+    assert_includes entrypoint, "ENV.fetch('OUTBOX_POLL_INTERVAL'"
+    assert_includes entrypoint, "ENV.fetch('OUTBOX_BACKOFF_BASE'"
+    assert_includes entrypoint, "ENV.fetch('OUTBOX_BACKOFF_MAX'"
+    assert_includes entrypoint, "ENV.fetch('OUTBOX_MAX_ATTEMPTS'"
+    assert_includes entrypoint, 'worker.run(stop: -> { stopping })'
+  end
+
   private
 
   def build_worker(dispatcher:, sleeper: ->(_seconds) {}, max_attempts: 3, logger: FakeLogger.new([]),
