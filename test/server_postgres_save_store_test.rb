@@ -2,6 +2,7 @@
 
 require 'digest'
 require 'delegate'
+require 'json'
 require 'minitest/autorun'
 require 'pg'
 require 'securerandom'
@@ -85,13 +86,27 @@ class ServerPostgresSaveStoreTest < Minitest::Test
         connection = PG.connect(DATABASE_URL)
         set_search_path(connection)
         service = service_for(DungeonCritters::Server::PostgresSaveStore.new(connection: connection))
-        service.upload(**upload_arguments(payload))
+        { result: service.upload(**upload_arguments(payload)) }
+      rescue StandardError => error
+        { error: error.class.name }
       ensure
         connection&.close
       end
     end
 
-    results = threads.map(&:value)
+    outcomes = threads.map(&:value)
+    errors = outcomes.filter_map { |outcome| outcome[:error] }
+    unless errors.empty?
+      diagnostic = same_upload_diagnostic(payload)
+      flunk JSON.generate(
+        'concurrent_errors' => errors,
+        'same_upload_mismatches' => diagnostic.fetch(:mismatches),
+        'persisted_versions' => diagnostic.fetch(:version_count),
+        'persisted_slots' => diagnostic.fetch(:slot_count)
+      )
+    end
+
+    results = outcomes.map { |outcome| outcome.fetch(:result) }
 
     assert_equal 1, results.map { |result| result.fetch('version_id') }.uniq.length
     assert_equal 1, scalar('SELECT count(*) FROM save_versions')
@@ -126,6 +141,34 @@ class ServerPostgresSaveStoreTest < Minitest::Test
 
   def scalar(sql, params = [])
     @connection.exec_params(sql, params).first.values.first.to_i
+  end
+
+  def same_upload_diagnostic(payload)
+    store = DungeonCritters::Server::PostgresSaveStore.new(connection: @connection)
+    existing = store.find_upload(@account_id, 'upload-1')
+    slot = @connection.exec_params(
+      'SELECT id FROM cloud_slots WHERE user_id = $1 AND local_slot_id = $2',
+      [@account_id, '1']
+    ).first
+    return { mismatches: ['missing_existing_version'], version_count: 0, slot_count: slot ? 1 : 0 } unless existing
+
+    slot_id = slot && slot['id']
+    expected_hash = Digest::SHA256.hexdigest(payload)
+    checks = {
+      cloud_slot_id: existing.cloud_slot_id == slot_id,
+      parent_version_id: existing.parent_version_id.nil?,
+      codec_schema_version: existing.codec_schema_version == 1,
+      game_version: existing.game_version == 'game',
+      psdk_version: existing.psdk_version == 'psdk',
+      payload_length: existing.payload_length == payload.bytesize,
+      payload_sha256: existing.payload_sha256 == expected_hash,
+      payload_bytes: existing.payload_bytes == payload.b
+    }
+    {
+      mismatches: checks.filter_map { |field, matches| field.to_s unless matches },
+      version_count: scalar('SELECT count(*) FROM save_versions'),
+      slot_count: scalar('SELECT count(*) FROM cloud_slots')
+    }
   end
 
   def service_for(store)
