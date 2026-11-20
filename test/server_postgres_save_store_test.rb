@@ -132,15 +132,36 @@ class ServerPostgresSaveStoreTest < Minitest::Test
   def test_round_trips_utf8_and_escaped_json_bytes_through_postgres
     apply_migration
     payload = '{"schema_version":1,"text":"é \u2603","slash":"\\\\","quote":"\\""}'
+    digest = Digest::SHA256.hexdigest(payload.b)
+    slot_id = SecureRandom.uuid
+    version_id = SecureRandom.uuid
+    @connection.exec_params(
+      'INSERT INTO cloud_slots (id, user_id, local_slot_id) VALUES ($1, $2, $3)',
+      [slot_id, @account_id, '1']
+    )
+    @connection.exec_params(
+      <<~SQL,
+        INSERT INTO save_versions
+          (id, user_id, cloud_slot_id, upload_id, sequence, status, payload,
+           payload_sha256, payload_length, codec_schema_version, game_version, psdk_version)
+        VALUES ($1, $2, $3, $4, 1, 'accepted', decode($5, 'hex'), $6, $7, 1, $8, $9)
+      SQL
+      [version_id, @account_id, slot_id, 'upload-1', payload.unpack1('H*'), digest,
+       payload.bytesize, 'game', 'psdk']
+    )
+    @connection.exec_params(
+      'UPDATE cloud_slots SET current_version_id = $1, next_sequence = 1 WHERE id = $2',
+      [version_id, slot_id]
+    )
+
     store = DungeonCritters::Server::PostgresSaveStore.new(connection: @connection)
     service = service_for(store)
 
-    first = service.upload(**upload_arguments(payload))
     version = store.find_upload(@account_id, 'upload-1')
     replay = service.upload(**upload_arguments(payload))
 
     assert_equal payload.b, version.payload_bytes
-    assert_equal first.fetch('version_id'), replay.fetch('version_id')
+    assert_equal version_id, replay.fetch('version_id')
     assert_equal 1, scalar('SELECT count(*) FROM save_versions')
     assert_equal "é ☃", JSON.parse(version.payload_bytes).fetch('text')
     assert_includes version.payload_bytes, '\\u2603'
