@@ -215,8 +215,13 @@ class ServerPostgresSaveStoreTest < Minitest::Test
 
   def assert_final_schema(connection)
     columns = connection.exec(
-      "SELECT table_name, column_name FROM information_schema.columns " \
-      "WHERE table_schema = current_schema() AND table_name IN ('cloud_slots', 'save_versions')"
+      "SELECT c.relname AS table_name, a.attname AS column_name, " \
+      "format_type(a.atttypid, a.atttypmod) AS data_type " \
+      "FROM pg_attribute AS a " \
+      "JOIN pg_class AS c ON c.oid = a.attrelid " \
+      "JOIN pg_namespace AS n ON n.oid = c.relnamespace " \
+      "WHERE n.nspname = current_schema() AND c.relname IN ('cloud_slots', 'save_versions') " \
+      "AND a.attnum > 0 AND NOT a.attisdropped"
     ).group_by { |row| row['table_name'] }
     expected_types = DungeonCritters::Server::PostgresSaveStore::REQUIRED_COLUMN_TYPES
     assert_equal expected_types['cloud_slots'].keys.sort,
