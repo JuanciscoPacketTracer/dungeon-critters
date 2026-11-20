@@ -10,7 +10,9 @@ require 'uri'
 require_relative '../server/lib/save_upload'
 
 class ServerPostgresSaveStoreTest < Minitest::Test
-  MIGRATION = File.expand_path('../server/db/20261119_34_cloud_save_versions.sql', __dir__)
+  SESSIONS_MIGRATION = File.expand_path('../server/db/001_sessions.sql', __dir__)
+  RETRY_MIGRATION = File.expand_path('../server/db/002_outbox_retry_state.sql', __dir__)
+  SAVE_MIGRATION = File.expand_path('../server/db/20261119_34_cloud_save_versions.sql', __dir__)
   ISOLATED_DATABASE = 'dungeon_critters_issue34_test'
   DATABASE_URL = ENV['POSTGRES_TEST_DATABASE_URL']
 
@@ -24,9 +26,12 @@ class ServerPostgresSaveStoreTest < Minitest::Test
     @schema = "issue34_test_#{SecureRandom.hex(8)}"
     @connection.exec("CREATE SCHEMA #{@connection.quote_ident(@schema)}")
     set_search_path(@connection)
-    @connection.exec('CREATE TABLE users (id uuid PRIMARY KEY)')
+    @connection.exec(File.read(SESSIONS_MIGRATION))
     @account_id = SecureRandom.uuid
-    @connection.exec_params('INSERT INTO users (id) VALUES ($1)', [@account_id])
+    @connection.exec_params(
+      'INSERT INTO users (id, email, password_digest) VALUES ($1, $2, $3)',
+      [@account_id, "#{@account_id}@example.test", 'test-digest']
+    )
   end
 
   def teardown
@@ -35,18 +40,34 @@ class ServerPostgresSaveStoreTest < Minitest::Test
   end
 
   def test_applies_migration_twice
-    sql = File.read(MIGRATION)
-
-    @connection.exec(sql)
-    @connection.exec(sql)
+    @connection.exec(File.read(RETRY_MIGRATION))
+    @connection.exec(File.read(SAVE_MIGRATION))
+    @connection.exec(File.read(SAVE_MIGRATION))
 
     assert_equal 1, scalar('SELECT count(*) FROM pg_tables WHERE tablename = $1', ['cloud_slots'])
     assert_equal 1, scalar('SELECT count(*) FROM pg_tables WHERE tablename = $1', ['save_versions'])
-    assert_equal 1, scalar(<<~SQL, ['save_versions_user_upload_key'])
-      SELECT count(*)
-        FROM pg_constraint
-       WHERE conname = $1
-    SQL
+    assert_final_schema(@connection)
+  end
+
+  def test_new_installation_applies_all_migrations_and_validates_final_schema
+    with_temporary_schema('issue34_new') do |connection|
+      connection.exec(File.read(SESSIONS_MIGRATION))
+      connection.exec(File.read(RETRY_MIGRATION))
+      connection.exec(File.read(SAVE_MIGRATION))
+
+      assert_final_schema(connection)
+      DungeonCritters::Server::PostgresSaveStore.new(connection: connection)
+    end
+  end
+
+  def test_upgrade_from_issue23_applies_retry_then_save_migration
+    assert_equal 0, scalar('SELECT count(*) FROM pg_tables WHERE tablename IN ($1, $2)',
+                            ['cloud_slots', 'save_versions'])
+    @connection.exec(File.read(RETRY_MIGRATION))
+    @connection.exec(File.read(SAVE_MIGRATION))
+
+    assert_final_schema(@connection)
+    DungeonCritters::Server::PostgresSaveStore.new(connection: @connection)
   end
 
   def test_enforces_account_and_slot_foreign_keys
@@ -175,7 +196,46 @@ class ServerPostgresSaveStoreTest < Minitest::Test
   end
 
   def apply_migration
-    @connection.exec(File.read(MIGRATION))
+    @connection.exec(File.read(RETRY_MIGRATION))
+    @connection.exec(File.read(SAVE_MIGRATION))
+  end
+
+  def with_temporary_schema(prefix)
+    connection = PG.connect(DATABASE_URL)
+    schema = "#{prefix}_#{SecureRandom.hex(8)}"
+    connection.exec("CREATE SCHEMA #{connection.quote_ident(schema)}")
+    connection.exec("SET search_path TO #{connection.quote_ident(schema)}")
+    yield connection
+  ensure
+    if connection
+      connection.exec("DROP SCHEMA IF EXISTS #{connection.quote_ident(schema)} CASCADE")
+      connection.close
+    end
+  end
+
+  def assert_final_schema(connection)
+    columns = connection.exec(
+      "SELECT table_name, column_name FROM information_schema.columns " \
+      "WHERE table_schema = current_schema() AND table_name IN ('cloud_slots', 'save_versions')"
+    ).group_by { |row| row['table_name'] }
+    assert_equal DungeonCritters::Server::PostgresSaveStore::REQUIRED_COLUMNS['cloud_slots'].sort,
+                 columns.fetch('cloud_slots').map { |row| row['column_name'] }.sort
+    assert_equal DungeonCritters::Server::PostgresSaveStore::REQUIRED_COLUMNS['save_versions'].sort,
+                 columns.fetch('save_versions').map { |row| row['column_name'] }.sort
+
+    constraints = connection.exec(
+      "SELECT t.relname AS table_name, c.conname, pg_get_constraintdef(c.oid) AS definition " \
+      "FROM pg_constraint AS c " \
+      "JOIN pg_class AS t ON t.oid = c.conrelid " \
+      "JOIN pg_namespace AS n ON n.oid = t.relnamespace " \
+      "WHERE n.nspname = current_schema() AND t.relname IN ('cloud_slots', 'save_versions')"
+    ).group_by { |row| row['table_name'] }
+    DungeonCritters::Server::PostgresSaveStore::REQUIRED_CONSTRAINTS.each do |table, required|
+      actual = constraints.fetch(table).to_h { |row| [row['conname'], row['definition']] }
+      required.each do |name, definition|
+        assert_includes actual.fetch(name), definition
+      end
+    end
   end
 
   def scalar(sql, params = [])

@@ -85,6 +85,7 @@ class ServerPostgresRackIntegrationTest < Minitest::Test
   def apply_schema
     [
       File.expand_path('../server/db/001_sessions.sql', __dir__),
+      File.expand_path('../server/db/002_outbox_retry_state.sql', __dir__),
       File.expand_path('../server/db/20261119_34_cloud_save_versions.sql', __dir__)
     ].each { |path| @connection.exec(File.read(path)) }
   end

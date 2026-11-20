@@ -30,19 +30,43 @@ CREATE TABLE IF NOT EXISTS save_versions (
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'cloud_slots_user_fkey') THEN
+  IF NOT EXISTS (
+    SELECT 1
+      FROM pg_constraint AS c
+      JOIN pg_class AS t ON t.oid = c.conrelid
+      JOIN pg_namespace AS n ON n.oid = t.relnamespace
+     WHERE n.nspname = current_schema()
+       AND t.relname = 'cloud_slots'
+       AND c.conname = 'cloud_slots_user_fkey'
+  ) THEN
     ALTER TABLE cloud_slots
       ADD CONSTRAINT cloud_slots_user_fkey
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'save_versions_user_fkey') THEN
+  IF NOT EXISTS (
+    SELECT 1
+      FROM pg_constraint AS c
+      JOIN pg_class AS t ON t.oid = c.conrelid
+      JOIN pg_namespace AS n ON n.oid = t.relnamespace
+     WHERE n.nspname = current_schema()
+       AND t.relname = 'save_versions'
+       AND c.conname = 'save_versions_user_fkey'
+  ) THEN
     ALTER TABLE save_versions
       ADD CONSTRAINT save_versions_user_fkey
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'save_versions_cloud_slot_owner_fkey') THEN
+  IF NOT EXISTS (
+    SELECT 1
+      FROM pg_constraint AS c
+      JOIN pg_class AS t ON t.oid = c.conrelid
+      JOIN pg_namespace AS n ON n.oid = t.relnamespace
+     WHERE n.nspname = current_schema()
+       AND t.relname = 'save_versions'
+       AND c.conname = 'save_versions_cloud_slot_owner_fkey'
+  ) THEN
     ALTER TABLE save_versions
       ADD CONSTRAINT save_versions_cloud_slot_owner_fkey
       FOREIGN KEY (user_id, cloud_slot_id)
@@ -50,7 +74,15 @@ BEGIN
       DEFERRABLE INITIALLY DEFERRED;
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'save_versions_parent_owner_fkey') THEN
+  IF NOT EXISTS (
+    SELECT 1
+      FROM pg_constraint AS c
+      JOIN pg_class AS t ON t.oid = c.conrelid
+      JOIN pg_namespace AS n ON n.oid = t.relnamespace
+     WHERE n.nspname = current_schema()
+       AND t.relname = 'save_versions'
+       AND c.conname = 'save_versions_parent_owner_fkey'
+  ) THEN
     ALTER TABLE save_versions
       ADD CONSTRAINT save_versions_parent_owner_fkey
       FOREIGN KEY (parent_version_id, user_id, cloud_slot_id)
@@ -58,7 +90,15 @@ BEGIN
       DEFERRABLE INITIALLY DEFERRED;
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'cloud_slots_current_version_owner_fkey') THEN
+  IF NOT EXISTS (
+    SELECT 1
+      FROM pg_constraint AS c
+      JOIN pg_class AS t ON t.oid = c.conrelid
+      JOIN pg_namespace AS n ON n.oid = t.relnamespace
+     WHERE n.nspname = current_schema()
+       AND t.relname = 'cloud_slots'
+       AND c.conname = 'cloud_slots_current_version_owner_fkey'
+  ) THEN
     ALTER TABLE cloud_slots
       ADD CONSTRAINT cloud_slots_current_version_owner_fkey
       FOREIGN KEY (current_version_id, user_id, id)

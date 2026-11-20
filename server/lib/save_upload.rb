@@ -95,7 +95,34 @@ module DungeonCritters
     class PostgresSaveStore
       Slot = Struct.new(:id, :account_id, :local_slot_id, :current_version_id, :next_sequence,
                         keyword_init: true)
-      REQUIRED_TABLES = %w[cloud_slots save_versions].freeze
+      REQUIRED_TABLES = %w[users cloud_slots save_versions].freeze
+      REQUIRED_COLUMNS = {
+        'cloud_slots' => %w[id user_id local_slot_id current_version_id next_sequence created_at],
+        'save_versions' => %w[
+          id user_id cloud_slot_id upload_id parent_version_id sequence status payload
+          payload_sha256 payload_length codec_schema_version game_version psdk_version created_at
+        ]
+      }.freeze
+      REQUIRED_CONSTRAINTS = {
+        'cloud_slots' => {
+          'cloud_slots_user_local_slot_key' => 'UNIQUE (user_id, local_slot_id)',
+          'cloud_slots_user_id_key' => 'UNIQUE (user_id, id)',
+          'cloud_slots_user_fkey' => 'FOREIGN KEY (user_id) REFERENCES users(id)',
+          'cloud_slots_current_version_owner_fkey' =>
+            'FOREIGN KEY (current_version_id, user_id, id) ' \
+            'REFERENCES save_versions(id, user_id, cloud_slot_id)'
+        },
+        'save_versions' => {
+          'save_versions_user_upload_key' => 'UNIQUE (user_id, upload_id)',
+          'save_versions_user_slot_id_key' => 'UNIQUE (id, user_id, cloud_slot_id)',
+          'save_versions_user_fkey' => 'FOREIGN KEY (user_id) REFERENCES users(id)',
+          'save_versions_cloud_slot_owner_fkey' =>
+            'FOREIGN KEY (user_id, cloud_slot_id) REFERENCES cloud_slots(user_id, id)',
+          'save_versions_parent_owner_fkey' =>
+            'FOREIGN KEY (parent_version_id, user_id, cloud_slot_id) ' \
+            'REFERENCES save_versions(id, user_id, cloud_slot_id)'
+        }
+      }.freeze
 
       def initialize(connection: nil, url: ENV['DATABASE_URL'])
         require 'pg'
@@ -106,12 +133,35 @@ module DungeonCritters
         raise SaveUploadError, "pg is required: #{error.message}"
       end
 
-      def self.validate_save_schema(table_names)
-        missing = REQUIRED_TABLES - table_names.map(&:to_s).uniq
-        return if missing.empty?
+      def self.validate_save_schema(table_names:, columns_by_table:, constraints_by_table:)
+        names = table_names.map(&:to_s).uniq
+        missing_tables = REQUIRED_TABLES - names
+        unless missing_tables.empty?
+          raise SaveUploadError,
+                "save schema is missing tables: #{missing_tables.join(', ')}; apply " \
+                'server/db/001_sessions.sql and server/db/20261119_34_cloud_save_versions.sql'
+        end
+
+        missing_columns = REQUIRED_COLUMNS.each_with_object([]) do |(table, required), missing|
+          absent = required - columns_by_table.fetch(table, []).map(&:to_s)
+          absent.each { |column| missing << "#{table}.#{column}" }
+        end
+        unless missing_columns.empty?
+          raise SaveUploadError, "save schema is missing columns: #{missing_columns.join('; ')}"
+        end
+
+        missing_constraints = REQUIRED_CONSTRAINTS.each_with_object([]) do |(table, required), missing|
+          actual = constraints_by_table.fetch(table, {})
+          required.each do |name, definition|
+            actual_definition = actual[name]
+            missing << "#{table}.#{name}" unless actual_definition&.include?(definition)
+          end
+        end
+        return if missing_constraints.empty?
 
         raise SaveUploadError,
-              "save schema is missing tables: #{missing.join(', ')}; apply server/db/20261119_34_cloud_save_versions.sql"
+              "save schema is missing constraints: #{missing_constraints.join(', ')}; apply " \
+              'server/db/20261119_34_cloud_save_versions.sql'
       end
 
       def transaction
@@ -207,12 +257,35 @@ module DungeonCritters
       private
 
       def validate_save_schema
-        rows = @connection.exec(
+        table_rows = @connection.exec(
           "SELECT table_name FROM information_schema.tables " \
+          "WHERE table_schema = current_schema() AND table_name IN " \
+          "('users', 'cloud_slots', 'save_versions')"
+        )
+        column_rows = @connection.exec(
+          "SELECT table_name, column_name FROM information_schema.columns " \
           "WHERE table_schema = current_schema() AND table_name IN " \
           "('cloud_slots', 'save_versions')"
         )
-        self.class.validate_save_schema(rows.map { |row| row['table_name'] })
+        constraint_rows = @connection.exec(
+          "SELECT t.relname AS table_name, c.conname, pg_get_constraintdef(c.oid) AS definition " \
+          "FROM pg_constraint AS c " \
+          "JOIN pg_class AS t ON t.oid = c.conrelid " \
+          "JOIN pg_namespace AS n ON n.oid = t.relnamespace " \
+          "WHERE n.nspname = current_schema() " \
+          "AND t.relname IN ('cloud_slots', 'save_versions')"
+        )
+        columns_by_table = column_rows.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |row, columns|
+          columns[row['table_name']] << row['column_name']
+        end
+        constraints_by_table = constraint_rows.each_with_object(Hash.new { |hash, key| hash[key] = {} }) do |row, constraints|
+          constraints[row['table_name']][row['conname']] = row['definition']
+        end
+        self.class.validate_save_schema(
+          table_names: table_rows.map { |row| row['table_name'] },
+          columns_by_table: columns_by_table,
+          constraints_by_table: constraints_by_table
+        )
       end
 
       def version_from_row(row)
