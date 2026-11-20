@@ -218,22 +218,54 @@ class ServerPostgresSaveStoreTest < Minitest::Test
       "SELECT table_name, column_name FROM information_schema.columns " \
       "WHERE table_schema = current_schema() AND table_name IN ('cloud_slots', 'save_versions')"
     ).group_by { |row| row['table_name'] }
-    assert_equal DungeonCritters::Server::PostgresSaveStore::REQUIRED_COLUMNS['cloud_slots'].sort,
+    expected_types = DungeonCritters::Server::PostgresSaveStore::REQUIRED_COLUMN_TYPES
+    assert_equal expected_types['cloud_slots'].keys.sort,
                  columns.fetch('cloud_slots').map { |row| row['column_name'] }.sort
-    assert_equal DungeonCritters::Server::PostgresSaveStore::REQUIRED_COLUMNS['save_versions'].sort,
+    assert_equal expected_types['save_versions'].keys.sort,
                  columns.fetch('save_versions').map { |row| row['column_name'] }.sort
+    expected_types.each do |table, required|
+      actual = columns.fetch(table).to_h { |row| [row['column_name'], row['data_type']] }
+      required.each { |column, type| assert_equal type, actual.fetch(column) }
+    end
 
     constraints = connection.exec(
-      "SELECT t.relname AS table_name, c.conname, pg_get_constraintdef(c.oid) AS definition " \
+      "SELECT t.relname AS table_name, c.conname, c.contype, c.convalidated, " \
+      "c.confdeltype, c.confupdtype, rt.relname AS referenced_table, " \
+      "to_json(ARRAY(SELECT a.attname FROM unnest(c.conkey) WITH ORDINALITY AS k(attnum, ord) " \
+      "JOIN pg_attribute AS a ON a.attrelid = c.conrelid AND a.attnum = k.attnum " \
+      "ORDER BY k.ord)) AS columns, " \
+      "to_json(ARRAY(SELECT a.attname FROM unnest(c.confkey) WITH ORDINALITY AS k(attnum, ord) " \
+      "JOIN pg_attribute AS a ON a.attrelid = c.confrelid AND a.attnum = k.attnum " \
+      "ORDER BY k.ord)) AS referenced_columns " \
       "FROM pg_constraint AS c " \
       "JOIN pg_class AS t ON t.oid = c.conrelid " \
       "JOIN pg_namespace AS n ON n.oid = t.relnamespace " \
+      "LEFT JOIN pg_class AS rt ON rt.oid = c.confrelid " \
       "WHERE n.nspname = current_schema() AND t.relname IN ('cloud_slots', 'save_versions')"
     ).group_by { |row| row['table_name'] }
     DungeonCritters::Server::PostgresSaveStore::REQUIRED_CONSTRAINTS.each do |table, required|
-      actual = constraints.fetch(table).to_h { |row| [row['conname'], row['definition']] }
-      required.each do |name, definition|
-        assert_includes actual.fetch(name), definition
+      actual = constraints.fetch(table).to_h do |row|
+        [row['conname'], {
+          'type' => row['contype'],
+          'columns' => JSON.parse(row['columns']),
+          'validated' => row['convalidated'] == 't',
+          'referenced_table' => row['referenced_table'],
+          'referenced_columns' => JSON.parse(row['referenced_columns'] || '[]'),
+          'on_delete' => row['confdeltype'],
+          'on_update' => row['confupdtype']
+        }]
+      end
+      required.each do |name, expected|
+        observed = actual.fetch(name)
+        assert_equal expected[:type], observed['type']
+        assert_equal expected[:columns], observed['columns']
+        assert observed['validated']
+        next unless expected[:type] == 'f'
+
+        assert_equal expected[:referenced_table], observed['referenced_table']
+        assert_equal expected[:referenced_columns], observed['referenced_columns']
+        assert_equal expected[:on_delete], observed['on_delete']
+        assert_equal expected[:on_update], observed['on_update']
       end
     end
   end

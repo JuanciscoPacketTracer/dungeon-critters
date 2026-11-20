@@ -103,24 +103,57 @@ module DungeonCritters
           payload_sha256 payload_length codec_schema_version game_version psdk_version created_at
         ]
       }.freeze
-      REQUIRED_CONSTRAINTS = {
+      REQUIRED_COLUMN_TYPES = {
         'cloud_slots' => {
-          'cloud_slots_user_local_slot_key' => 'UNIQUE (user_id, local_slot_id)',
-          'cloud_slots_user_id_key' => 'UNIQUE (user_id, id)',
-          'cloud_slots_user_fkey' => 'FOREIGN KEY (user_id) REFERENCES users(id)',
-          'cloud_slots_current_version_owner_fkey' =>
-            'FOREIGN KEY (current_version_id, user_id, id) ' \
-            'REFERENCES save_versions(id, user_id, cloud_slot_id)'
+          'id' => 'uuid', 'user_id' => 'uuid', 'local_slot_id' => 'text',
+          'current_version_id' => 'uuid', 'next_sequence' => 'bigint', 'created_at' => 'timestamp with time zone'
         },
         'save_versions' => {
-          'save_versions_user_upload_key' => 'UNIQUE (user_id, upload_id)',
-          'save_versions_user_slot_id_key' => 'UNIQUE (id, user_id, cloud_slot_id)',
-          'save_versions_user_fkey' => 'FOREIGN KEY (user_id) REFERENCES users(id)',
-          'save_versions_cloud_slot_owner_fkey' =>
-            'FOREIGN KEY (user_id, cloud_slot_id) REFERENCES cloud_slots(user_id, id)',
-          'save_versions_parent_owner_fkey' =>
-            'FOREIGN KEY (parent_version_id, user_id, cloud_slot_id) ' \
-            'REFERENCES save_versions(id, user_id, cloud_slot_id)'
+          'id' => 'uuid', 'user_id' => 'uuid', 'cloud_slot_id' => 'uuid', 'upload_id' => 'text',
+          'parent_version_id' => 'uuid', 'sequence' => 'bigint', 'status' => 'text', 'payload' => 'bytea',
+          'payload_sha256' => 'text', 'payload_length' => 'integer', 'codec_schema_version' => 'integer',
+          'game_version' => 'text', 'psdk_version' => 'text', 'created_at' => 'timestamp with time zone'
+        }
+      }.freeze
+      REQUIRED_CHECKS = {
+        'save_versions' => {
+          'save_versions_status_check' => /status.*accepted.*conflict/,
+          'save_versions_payload_sha256_check' => /payload_sha256.*[0-9a-f].*64/,
+          'save_versions_payload_length_check' => /payload_length.*>=.*0/
+        }
+      }.freeze
+      REQUIRED_CONSTRAINTS = {
+        'cloud_slots' => {
+          'cloud_slots_user_local_slot_key' => { type: 'u', columns: %w[user_id local_slot_id] },
+          'cloud_slots_user_id_key' => { type: 'u', columns: %w[user_id id] },
+          'cloud_slots_user_fkey' => {
+            type: 'f', columns: %w[user_id], referenced_table: 'users', referenced_columns: %w[id],
+            on_delete: 'c', on_update: 'a', referenced_schema_current: true
+          },
+          'cloud_slots_current_version_owner_fkey' =>
+            {
+              type: 'f', columns: %w[current_version_id user_id id], referenced_table: 'save_versions',
+              referenced_columns: %w[id user_id cloud_slot_id], on_delete: 'a', on_update: 'a',
+              referenced_schema_current: true
+            }
+        },
+        'save_versions' => {
+          'save_versions_user_upload_key' => { type: 'u', columns: %w[user_id upload_id] },
+          'save_versions_user_slot_id_key' => { type: 'u', columns: %w[id user_id cloud_slot_id] },
+          'save_versions_user_fkey' => {
+            type: 'f', columns: %w[user_id], referenced_table: 'users', referenced_columns: %w[id],
+            on_delete: 'c', on_update: 'a', referenced_schema_current: true
+          },
+          'save_versions_cloud_slot_owner_fkey' => {
+            type: 'f', columns: %w[user_id cloud_slot_id], referenced_table: 'cloud_slots',
+            referenced_columns: %w[user_id id], on_delete: 'a', on_update: 'a',
+            referenced_schema_current: true
+          },
+          'save_versions_parent_owner_fkey' => {
+            type: 'f', columns: %w[parent_version_id user_id cloud_slot_id], referenced_table: 'save_versions',
+            referenced_columns: %w[id user_id cloud_slot_id], on_delete: 'a', on_update: 'a',
+            referenced_schema_current: true
+          }
         }
       }.freeze
 
@@ -142,19 +175,52 @@ module DungeonCritters
                 'server/db/001_sessions.sql and server/db/20261119_34_cloud_save_versions.sql'
         end
 
-        missing_columns = REQUIRED_COLUMNS.each_with_object([]) do |(table, required), missing|
-          absent = required - columns_by_table.fetch(table, []).map(&:to_s)
-          absent.each { |column| missing << "#{table}.#{column}" }
+        missing_columns = REQUIRED_COLUMN_TYPES.each_with_object([]) do |(table, required), missing|
+          actual = columns_by_table.fetch(table, {})
+          required.each do |column, type|
+            actual_type = actual[column]
+            missing << "#{table}.#{column}" unless actual_type == type
+          end
         end
         unless missing_columns.empty?
-          raise SaveUploadError, "save schema is missing columns: #{missing_columns.join('; ')}"
+          raise SaveUploadError, "save schema has missing or invalid columns: #{missing_columns.join('; ')}"
+        end
+
+        missing_checks = REQUIRED_CHECKS.each_with_object([]) do |(table, required), missing|
+          actual = constraints_by_table.fetch(table, {})
+          required.each do |name, pattern|
+            observed = actual[name]
+            valid = observed &&
+                    observed['type'] == 'c' &&
+                    observed['validated'] &&
+                    observed['definition'].to_s.match?(pattern)
+            missing << "#{table}.#{name}" unless valid
+          end
+        end
+        unless missing_checks.empty?
+          raise SaveUploadError,
+                "save schema is missing or invalid checks: #{missing_checks.join(', ')}; apply " \
+                'server/db/20261119_34_cloud_save_versions.sql'
         end
 
         missing_constraints = REQUIRED_CONSTRAINTS.each_with_object([]) do |(table, required), missing|
           actual = constraints_by_table.fetch(table, {})
-          required.each do |name, definition|
-            actual_definition = actual[name]
-            missing << "#{table}.#{name}" unless actual_definition&.include?(definition)
+          required.each do |name, expected|
+            observed = actual[name]
+            valid = observed &&
+                    observed['type'] == expected[:type] &&
+                    observed['columns'] == expected[:columns] &&
+                    observed['validated'] &&
+                    if expected[:type] == 'f'
+                      observed['referenced_table'] == expected[:referenced_table] &&
+                        observed['referenced_columns'] == expected[:referenced_columns] &&
+                        observed['referenced_schema_current'] == expected[:referenced_schema_current] &&
+                        observed['on_delete'] == expected[:on_delete] &&
+                        observed['on_update'] == expected[:on_update]
+                    else
+                      true
+                    end
+            missing << "#{table}.#{name}" unless valid
           end
         end
         return if missing_constraints.empty?
@@ -258,28 +324,54 @@ module DungeonCritters
 
       def validate_save_schema
         table_rows = @connection.exec(
-          "SELECT table_name FROM information_schema.tables " \
-          "WHERE table_schema = current_schema() AND table_name IN " \
-          "('users', 'cloud_slots', 'save_versions')"
+          "SELECT c.relname AS table_name " \
+          "FROM pg_class AS c JOIN pg_namespace AS n ON n.oid = c.relnamespace " \
+          "WHERE n.nspname = current_schema() AND c.relkind IN ('r', 'p') " \
+          "AND c.relname IN ('users', 'cloud_slots', 'save_versions')"
         )
         column_rows = @connection.exec(
-          "SELECT table_name, column_name FROM information_schema.columns " \
-          "WHERE table_schema = current_schema() AND table_name IN " \
-          "('cloud_slots', 'save_versions')"
+          "SELECT c.relname AS table_name, a.attname AS column_name, " \
+          "format_type(a.atttypid, a.atttypmod) AS data_type " \
+          "FROM pg_attribute AS a " \
+          "JOIN pg_class AS c ON c.oid = a.attrelid " \
+          "JOIN pg_namespace AS n ON n.oid = c.relnamespace " \
+          "WHERE n.nspname = current_schema() AND c.relname IN ('cloud_slots', 'save_versions') " \
+          "AND a.attnum > 0 AND NOT a.attisdropped"
         )
         constraint_rows = @connection.exec(
-          "SELECT t.relname AS table_name, c.conname, pg_get_constraintdef(c.oid) AS definition " \
+          "SELECT t.relname AS table_name, c.conname, c.contype, c.convalidated, " \
+          "c.confdeltype, c.confupdtype, rt.relname AS referenced_table, " \
+          "COALESCE(rn.nspname = current_schema(), false) AS referenced_schema_current, " \
+          "pg_get_constraintdef(c.oid) AS definition, " \
+          "to_json(ARRAY(SELECT a.attname FROM unnest(c.conkey) WITH ORDINALITY AS k(attnum, ord) " \
+          "JOIN pg_attribute AS a ON a.attrelid = c.conrelid AND a.attnum = k.attnum " \
+          "ORDER BY k.ord)) AS columns, " \
+          "to_json(ARRAY(SELECT a.attname FROM unnest(c.confkey) WITH ORDINALITY AS k(attnum, ord) " \
+          "JOIN pg_attribute AS a ON a.attrelid = c.confrelid AND a.attnum = k.attnum " \
+          "ORDER BY k.ord)) AS referenced_columns " \
           "FROM pg_constraint AS c " \
           "JOIN pg_class AS t ON t.oid = c.conrelid " \
           "JOIN pg_namespace AS n ON n.oid = t.relnamespace " \
+          "LEFT JOIN pg_class AS rt ON rt.oid = c.confrelid " \
+          "LEFT JOIN pg_namespace AS rn ON rn.oid = rt.relnamespace " \
           "WHERE n.nspname = current_schema() " \
           "AND t.relname IN ('cloud_slots', 'save_versions')"
         )
-        columns_by_table = column_rows.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |row, columns|
-          columns[row['table_name']] << row['column_name']
+        columns_by_table = column_rows.each_with_object(Hash.new { |hash, key| hash[key] = {} }) do |row, columns|
+          columns[row['table_name']][row['column_name']] = row['data_type']
         end
         constraints_by_table = constraint_rows.each_with_object(Hash.new { |hash, key| hash[key] = {} }) do |row, constraints|
-          constraints[row['table_name']][row['conname']] = row['definition']
+          constraints[row['table_name']][row['conname']] = {
+            'type' => row['contype'],
+            'validated' => row['convalidated'] == 't',
+            'columns' => JSON.parse(row['columns'] || '[]'),
+            'referenced_table' => row['referenced_table'],
+            'referenced_columns' => JSON.parse(row['referenced_columns'] || '[]'),
+            'referenced_schema_current' => row['referenced_schema_current'] == 't' || row['referenced_schema_current'] == true,
+            'definition' => row['definition'],
+            'on_delete' => row['confdeltype'],
+            'on_update' => row['confupdtype']
+          }
         end
         self.class.validate_save_schema(
           table_names: table_rows.map { |row| row['table_name'] },
