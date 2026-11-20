@@ -129,6 +129,24 @@ class ServerPostgresSaveStoreTest < Minitest::Test
     assert_equal 0, scalar('SELECT count(*) FROM cloud_slots')
   end
 
+  def test_round_trips_utf8_and_escaped_json_bytes_through_postgres
+    apply_migration
+    payload = '{"schema_version":1,"text":"é \u2603","slash":"\\\\","quote":"\\""}'
+    store = DungeonCritters::Server::PostgresSaveStore.new(connection: @connection)
+    service = service_for(store)
+
+    first = service.upload(**upload_arguments(payload))
+    version = store.find_upload(@account_id, 'upload-1')
+    replay = service.upload(**upload_arguments(payload))
+
+    assert_equal payload.b, version.payload_bytes
+    assert_equal first.fetch('version_id'), replay.fetch('version_id')
+    assert_equal 1, scalar('SELECT count(*) FROM save_versions')
+    assert_equal "é ☃", JSON.parse(version.payload_bytes).fetch('text')
+    assert_includes version.payload_bytes, '\\u2603'
+    assert_includes version.payload_bytes, '\\\\'
+  end
+
   private
 
   def set_search_path(connection)

@@ -95,12 +95,23 @@ module DungeonCritters
     class PostgresSaveStore
       Slot = Struct.new(:id, :account_id, :local_slot_id, :current_version_id, :next_sequence,
                         keyword_init: true)
+      REQUIRED_TABLES = %w[cloud_slots save_versions].freeze
 
       def initialize(connection: nil, url: ENV['DATABASE_URL'])
         require 'pg'
         @connection = connection || PG.connect(url.to_s)
+        @bytea_decoder = PG::TextDecoder::Bytea.new
+        validate_save_schema
       rescue LoadError => error
         raise SaveUploadError, "pg is required: #{error.message}"
+      end
+
+      def self.validate_save_schema(table_names)
+        missing = REQUIRED_TABLES - table_names.map(&:to_s).uniq
+        return if missing.empty?
+
+        raise SaveUploadError,
+              "save schema is missing tables: #{missing.join(', ')}; apply server/db/20261119_34_cloud_save_versions.sql"
       end
 
       def transaction
@@ -195,6 +206,15 @@ module DungeonCritters
 
       private
 
+      def validate_save_schema
+        rows = @connection.exec(
+          "SELECT table_name FROM information_schema.tables " \
+          "WHERE table_schema = current_schema() AND table_name IN " \
+          "('cloud_slots', 'save_versions')"
+        )
+        self.class.validate_save_schema(rows.map { |row| row['table_name'] })
+      end
+
       def version_from_row(row)
         SaveVersion.new(
           id: row['id'],
@@ -202,7 +222,7 @@ module DungeonCritters
           cloud_slot_id: row['cloud_slot_id'],
           upload_id: row['upload_id'],
           parent_version_id: row['parent_version_id'],
-          payload_bytes: row['payload'].to_s.b,
+          payload_bytes: @bytea_decoder.decode(row.fetch('payload')),
           payload_sha256: row['payload_sha256'],
           payload_length: Integer(row['payload_length']),
           codec_schema_version: Integer(row['codec_schema_version']),
