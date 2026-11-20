@@ -20,13 +20,16 @@ class ServerPostgresSaveStoreTest < Minitest::Test
       uri.host == 'localhost' && uri.path == "/#{ISOLATED_DATABASE}"
 
     @connection = PG.connect(DATABASE_URL)
-    reset_schema
+    @schema = "issue34_test_#{SecureRandom.hex(8)}"
+    @connection.exec("CREATE SCHEMA #{@connection.quote_ident(@schema)}")
+    set_search_path(@connection)
+    @connection.exec('CREATE TABLE users (id uuid PRIMARY KEY)')
     @account_id = SecureRandom.uuid
     @connection.exec_params('INSERT INTO users (id) VALUES ($1)', [@account_id])
   end
 
   def teardown
-    @connection&.exec('DROP TABLE IF EXISTS save_versions, cloud_slots, users CASCADE')
+    @connection&.exec("DROP SCHEMA IF EXISTS #{@connection.quote_ident(@schema)} CASCADE") if @schema
     @connection&.close
   end
 
@@ -80,6 +83,7 @@ class ServerPostgresSaveStoreTest < Minitest::Test
     threads = 8.times.map do
       Thread.new do
         connection = PG.connect(DATABASE_URL)
+        set_search_path(connection)
         service = service_for(DungeonCritters::Server::PostgresSaveStore.new(connection: connection))
         service.upload(**upload_arguments(payload))
       ensure
@@ -112,9 +116,8 @@ class ServerPostgresSaveStoreTest < Minitest::Test
 
   private
 
-  def reset_schema
-    @connection.exec('DROP TABLE IF EXISTS save_versions, cloud_slots, users CASCADE')
-    @connection.exec('CREATE TABLE users (id uuid PRIMARY KEY)')
+  def set_search_path(connection)
+    connection.exec("SET search_path TO #{connection.quote_ident(@schema)}")
   end
 
   def apply_migration
