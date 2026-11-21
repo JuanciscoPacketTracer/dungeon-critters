@@ -2,7 +2,7 @@ name: PostgreSQL save store
 
 on:
   push:
-    branches: [issue-34-save-upload-postgres-tests]
+    branches: [issue-34-save-upload]
   pull_request:
 
 jobs:
