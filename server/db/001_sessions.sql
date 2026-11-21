@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS users (
+  id uuid PRIMARY KEY,
+  email text NOT NULL UNIQUE,
+  password_digest text NOT NULL,
+  verified_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS email_verifications (
+  token_digest text PRIMARY KEY,
+  user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at timestamptz NOT NULL,
+  used_at timestamptz
+);
+
+CREATE TABLE IF NOT EXISTS email_outbox (
+  id uuid PRIMARY KEY,
+  email text NOT NULL,
+  user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_digest text NOT NULL,
+  nonce text NOT NULL,
+  expires_at timestamptz NOT NULL,
+  key_version text NOT NULL,
+  sent_at timestamptz,
+  claimed_at timestamptz,
+  claim_token uuid,
+  attempts integer NOT NULL DEFAULT 0,
+  next_attempt_at timestamptz,
+  terminal_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  id uuid PRIMARY KEY,
+  user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  access_token_digest text NOT NULL UNIQUE,
+  refresh_token_digest text NOT NULL UNIQUE,
+  access_expires_at timestamptz NOT NULL,
+  refresh_expires_at timestamptz NOT NULL,
+  revoked_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS sessions_user_active_idx ON sessions (user_id, created_at)
+WHERE revoked_at IS NULL;
