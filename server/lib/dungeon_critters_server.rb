@@ -25,6 +25,8 @@ module DungeonCritters
     ACCESS_TOKEN_TTL = 15 * 60
     REFRESH_TOKEN_TTL = 30 * 24 * 60 * 60
     VERIFICATION_TTL = 24 * 60 * 60
+    ALIAS_CHANGE_INTERVAL = 30 * 24 * 60 * 60
+    ALIAS_RESERVATION_TTL = 90 * 24 * 60 * 60
     OUTBOX_CLAIM_TTL = 5 * 60
     MAX_SESSIONS = 5
 
@@ -44,6 +46,9 @@ module DungeonCritters
     OutboxMessage = Struct.new(:id, :email, :user_id, :token_digest, :nonce, :expires_at, :key_version,
                                :sent_at, :claimed_at, :claim_token, :attempts, :next_attempt_at, :terminal_at,
                                :created_at, keyword_init: true)
+    PublicProfile = Struct.new(:user_id, :public_alias, :alias_normalized, :alias_changed_at, :created_at,
+                               keyword_init: true)
+    AliasReservation = Struct.new(:alias_normalized, :user_id, :released_at, keyword_init: true)
 
     module TokenCodec
       module_function
@@ -126,24 +131,30 @@ module DungeonCritters
     end
 
     class InMemoryStore
-      attr_reader :users, :sessions, :verifications, :outbox
+      attr_reader :users, :sessions, :verifications, :outbox, :profiles, :alias_reservations
 
       def initialize
         @users = {}
         @sessions = {}
         @verifications = {}
         @outbox = {}
+        @profiles = {}
+        @alias_reservations = {}
         @mutex = Mutex.new
       end
 
       def transaction
         @mutex.synchronize do
-          snapshot = Marshal.dump([@users, @sessions, @verifications, @outbox])
+          snapshot = Marshal.dump([@users, @sessions, @verifications, @outbox, @profiles, @alias_reservations])
           yield self
         rescue StandardError
-          @users, @sessions, @verifications, @outbox = Marshal.load(snapshot)
+          @users, @sessions, @verifications, @outbox, @profiles, @alias_reservations = Marshal.load(snapshot)
           raise
         end
+      end
+
+      def read
+        @mutex.synchronize { yield self }
       end
     end
 
@@ -154,7 +165,9 @@ module DungeonCritters
         'email_outbox' => %w[id email user_id token_digest nonce expires_at key_version sent_at claimed_at claim_token
                               attempts next_attempt_at terminal_at created_at],
         'sessions' => %w[id user_id access_token_digest refresh_token_digest access_expires_at refresh_expires_at
-                          revoked_at created_at]
+                          revoked_at created_at],
+        'public_profiles' => %w[user_id public_alias alias_normalized alias_changed_at created_at],
+        'public_alias_reservations' => %w[alias_normalized user_id released_at]
       }.freeze
       REQUIRED_OUTBOX_COLUMNS = %w[
         id email user_id token_digest nonce expires_at key_version sent_at claimed_at claim_token attempts
@@ -180,7 +193,10 @@ module DungeonCritters
         names_by_table = columns_by_table.transform_values { |columns| columns.map(&:to_s) }
         missing_tables = REQUIRED_SCHEMA_COLUMNS.keys - names_by_table.keys
         unless missing_tables.empty?
-          raise ConfigurationError, "database schema is missing tables: #{missing_tables.join(', ')}"
+          raise ConfigurationError,
+                "database schema is missing tables: #{missing_tables.join(', ')}; apply " \
+                'server/db/001_sessions.sql, server/db/002_outbox_retry_state.sql, ' \
+                'then server/db/20261120_25_public_profiles.sql'
         end
         if names_by_table['email_outbox'].include?('token')
           raise ConfigurationError, 'email_outbox has legacy token column; do not start until the schema is migrated'
@@ -213,13 +229,21 @@ module DungeonCritters
         end
       end
 
+      def read
+        @connection.transaction do
+          load_rows
+          yield self
+        end
+      end
+
       private
 
       def validate_outbox_schema
         rows = @connection.exec(
           "SELECT table_name, column_name FROM information_schema.columns " \
           "WHERE table_schema = current_schema() AND table_name IN " \
-          "('users', 'email_verifications', 'email_outbox', 'sessions')"
+          "('users', 'email_verifications', 'email_outbox', 'sessions', " \
+          "'public_profiles', 'public_alias_reservations')"
         )
         columns_by_table = rows.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |row, columns|
           columns[row['table_name']] << row['column_name']
@@ -232,6 +256,8 @@ module DungeonCritters
         @sessions.clear
         @verifications.clear
         @outbox.clear
+        @profiles.clear
+        @alias_reservations.clear
         @connection.exec('SELECT id, email, password_digest, verified_at, created_at FROM users').each do |row|
           @users[row['id']] = User.new(id: row['id'], email: row['email'], password_digest: row['password_digest'],
                                        verified_at: time(row['verified_at']), created_at: time(row['created_at']))
@@ -253,6 +279,17 @@ module DungeonCritters
             key_version: row['key_version'], sent_at: time(row['sent_at']), claimed_at: time(row['claimed_at']),
             claim_token: row['claim_token'], attempts: row['attempts'].to_i, next_attempt_at: time(row['next_attempt_at']),
             terminal_at: time(row['terminal_at']), created_at: time(row['created_at']))
+        end
+        @connection.exec('SELECT user_id, public_alias, alias_normalized, alias_changed_at, created_at FROM public_profiles').each do |row|
+          @profiles[row['user_id']] = PublicProfile.new(
+            user_id: row['user_id'], public_alias: row['public_alias'], alias_normalized: row['alias_normalized'],
+            alias_changed_at: time(row['alias_changed_at']), created_at: time(row['created_at'])
+          )
+        end
+        @connection.exec('SELECT alias_normalized, user_id, released_at FROM public_alias_reservations').each do |row|
+          @alias_reservations[row['alias_normalized']] = AliasReservation.new(
+            alias_normalized: row['alias_normalized'], user_id: row['user_id'], released_at: time(row['released_at'])
+          )
         end
       end
 
@@ -290,6 +327,23 @@ module DungeonCritters
             [message.id, message.email, message.user_id, message.token_digest, message.nonce, message.expires_at,
              message.key_version, message.sent_at, message.claimed_at, message.claim_token, message.attempts,
              message.next_attempt_at, message.terminal_at, message.created_at]
+          )
+        end
+        @profiles.each_value do |profile|
+          @connection.exec_params(
+            'INSERT INTO public_profiles (user_id, public_alias, alias_normalized, alias_changed_at, created_at)
+             VALUES ($1,$2,$3,$4,$5)
+             ON CONFLICT (user_id) DO UPDATE SET public_alias=$2, alias_normalized=$3, alias_changed_at=$4',
+            [profile.user_id, profile.public_alias, profile.alias_normalized, profile.alias_changed_at, profile.created_at]
+          )
+        end
+        @alias_reservations.each_value do |reservation|
+          @connection.exec_params(
+            'INSERT INTO public_alias_reservations (alias_normalized, user_id, released_at)
+             VALUES ($1,$2,$3)
+             ON CONFLICT (alias_normalized) DO UPDATE
+             SET user_id=$2, released_at=$3',
+            [reservation.alias_normalized, reservation.user_id, reservation.released_at]
           )
         end
       end
@@ -620,6 +674,100 @@ module DungeonCritters
       end
     end
 
+    class ProfileService
+      ALIAS = /\A[A-Za-z0-9_-]{3,20}\z/
+      RESERVED_ALIASES = %w[
+        admin administrator moderator support system official
+      ].freeze
+
+      def initialize(store:, clock: -> { Time.now.utc })
+        @store = store
+        @clock = clock
+      end
+
+      def current(user_id:)
+        @store.read do
+          profile = @store.profiles[user_id]
+          profile && public_profile(profile)
+        end
+      end
+
+      def set_alias(user_id:, public_alias:)
+        normalized = normalize_alias(public_alias)
+        @store.transaction do
+          now = @clock.call
+          profile = @store.profiles[user_id]
+          return public_profile(profile) if profile && profile.alias_normalized == normalized
+
+          validate_change_window(profile, now)
+          validate_available(normalized, user_id, now)
+          @store.alias_reservations.delete(normalized) if reusable_reservation?(normalized, now)
+
+          if profile && profile.alias_normalized != normalized
+            @store.alias_reservations[profile.alias_normalized] = AliasReservation.new(
+              alias_normalized: profile.alias_normalized,
+              user_id: user_id,
+              released_at: now
+            )
+          end
+
+          profile ||= PublicProfile.new(
+            user_id: user_id,
+            created_at: now
+          )
+          profile.public_alias = normalized
+          profile.alias_normalized = normalized
+          profile.alias_changed_at = now
+          @store.profiles[user_id] = profile
+          public_profile(profile)
+        end
+      rescue StandardError => error
+        if defined?(PG::UniqueViolation) && error.is_a?(PG::UniqueViolation)
+          raise ConflictError, 'alias is already in use'
+        end
+
+        raise
+      end
+
+      private
+
+      def normalize_alias(public_alias)
+        raise ValidationError, 'invalid alias' unless public_alias.is_a?(String)
+
+        value = public_alias.strip
+        raise ValidationError, 'invalid alias' unless value.match?(ALIAS)
+        raise ValidationError, 'invalid alias' if RESERVED_ALIASES.include?(value.downcase)
+
+        value.downcase
+      end
+
+      def validate_change_window(profile, now)
+        return unless profile && profile.alias_changed_at + ALIAS_CHANGE_INTERVAL > now
+
+        raise ConflictError, 'alias change is not available yet'
+      end
+
+      def validate_available(normalized, user_id, now)
+        current = @store.profiles.values.find { |profile| profile.alias_normalized == normalized }
+        return if current && current.user_id == user_id
+        raise ConflictError, 'alias is already in use' if current
+
+        reservation = @store.alias_reservations[normalized]
+        return unless reservation && reservation.released_at + ALIAS_RESERVATION_TTL > now
+
+        raise ConflictError, 'alias is reserved'
+      end
+
+      def reusable_reservation?(normalized, now)
+        reservation = @store.alias_reservations[normalized]
+        reservation && reservation.released_at + ALIAS_RESERVATION_TTL <= now
+      end
+
+      def public_profile(profile)
+        { 'alias' => profile.public_alias }
+      end
+    end
+
     class SessionService
       def initialize(store:, hasher:, clock: -> { Time.now.utc })
         @store = store
@@ -703,7 +851,7 @@ module DungeonCritters
     end
 
     class App
-      def initialize(account_service: nil, session_service: nil)
+      def initialize(account_service: nil, session_service: nil, profile_service: nil)
         @store = if account_service || session_service
                    InMemoryStore.new
                  elsif ENV['DATABASE_URL'].to_s.empty?
@@ -717,6 +865,7 @@ module DungeonCritters
           store: @store, hasher: hasher, verification_tokens: verification_tokens
         )
         @sessions = session_service || SessionService.new(store: @store, hasher: hasher)
+        @profiles = profile_service || ProfileService.new(store: @store)
       end
 
       def call(env)
@@ -762,6 +911,10 @@ module DungeonCritters
           @sessions.revoke(token: token(env, body, 'refresh_token'), kind: token_kind(env))
         when ['GET', '/v1/sessions/current']
           @sessions.current(access_token: token(env, body, 'access_token'))
+        when ['GET', '/v1/profile']
+          @profiles.current(user_id: authenticated_user(env))
+        when ['PUT', '/v1/profile']
+          @profiles.set_alias(user_id: authenticated_user(env), public_alias: body.fetch('alias'))
         else
           raise ValidationError, 'not found'
         end
@@ -776,6 +929,14 @@ module DungeonCritters
 
       def token_kind(env)
         env['HTTP_AUTHORIZATION'].to_s.start_with?('Bearer ') ? :access : :refresh
+      end
+
+      def authenticated_user(env)
+        authorization = env['HTTP_AUTHORIZATION'].to_s
+        access_token = authorization.delete_prefix('Bearer ').strip
+        raise AuthenticationError, 'authentication required' if access_token.empty?
+
+        @sessions.current(access_token: access_token).fetch('user_id')
       end
 
       def parse_body(env)

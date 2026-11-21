@@ -7,6 +7,9 @@ class ServerMigrationTest < Minitest::Test
   def setup
     @migration = File.read(File.expand_path('../server/db/001_sessions.sql', __dir__))
     @retry_migration = File.read(File.expand_path('../server/db/002_outbox_retry_state.sql', __dir__))
+    @profile_migration = File.read(
+      File.expand_path('../server/db/20261120_25_public_profiles.sql', __dir__)
+    )
   end
 
   def test_schema_creation_is_idempotent
@@ -72,5 +75,29 @@ class ServerMigrationTest < Minitest::Test
     end
 
     assert_includes error.message, 'missing tables'
+  end
+
+  def test_public_profile_migration_has_case_insensitive_identity_fields
+    migration = @profile_migration
+
+    assert_includes migration, 'CREATE TABLE IF NOT EXISTS public_profiles'
+    assert_includes migration, 'alias_normalized text NOT NULL UNIQUE'
+    assert_includes migration, 'CREATE TABLE IF NOT EXISTS public_alias_reservations'
+    assert_includes migration, 'released_at timestamptz NOT NULL'
+    assert_includes migration, 'alias_normalized text PRIMARY KEY'
+    refute_match(/public_alias_reservations[\s\S]*REFERENCES users/, migration)
+  end
+
+  def test_profile_migration_is_applied_after_sessions
+    migration_names = Dir[File.expand_path('../server/db/*.sql', __dir__)].map { |path| File.basename(path) }.sort
+
+    assert_equal(
+      %w[001_sessions.sql 002_outbox_retry_state.sql 20261120_25_public_profiles.sql],
+      migration_names
+    )
+    assert_operator migration_names.index('001_sessions.sql'), :<,
+                     migration_names.index('002_outbox_retry_state.sql')
+    assert_operator migration_names.index('002_outbox_retry_state.sql'), :<,
+                     migration_names.index('20261120_25_public_profiles.sql')
   end
 end

@@ -8,6 +8,7 @@ require_relative '../server/lib/dungeon_critters_server'
 class ServerPostgresIntegrationTest < Minitest::Test
   MIGRATION_PATH = File.expand_path('../server/db/001_sessions.sql', __dir__)
   RETRY_MIGRATION_PATH = File.expand_path('../server/db/002_outbox_retry_state.sql', __dir__)
+  PROFILE_MIGRATION_PATH = File.expand_path('../server/db/20261120_25_public_profiles.sql', __dir__)
   TEST_DATABASE_NAME = 'dungeon_critters_test'
   TEST_DATABASE_HOSTS = %w[localhost 127.0.0.1 ::1].freeze
   NOW = Time.utc(2026, 1, 1, 12, 0, 0)
@@ -96,6 +97,116 @@ class ServerPostgresIntegrationTest < Minitest::Test
     assert_equal %w[attempts claimed_at claim_token created_at email expires_at id key_version next_attempt_at nonce
                     sent_at terminal_at token_digest user_id].sort,
                  row.keys.sort
+  end
+
+  def test_profile_reservation_persists_and_concurrent_claim_has_one_winner
+    apply_migration
+    user_ids = [
+      '00000000-0000-0000-0000-000000000010',
+      '00000000-0000-0000-0000-000000000011'
+    ]
+    user_ids.each_with_index do |user_id, index|
+      @connection.exec_params(
+        'INSERT INTO users (id, email, password_digest, created_at) VALUES ($1, $2, $3, $4)',
+        [user_id, "profile-#{index}@example.test", 'synthetic-password-digest', NOW]
+      )
+    end
+
+    now = NOW
+    first_store = new_store
+    first_service = DungeonCritters::Server::ProfileService.new(store: first_store, clock: -> { now })
+    first_service.set_alias(user_id: user_ids[0], public_alias: 'FirstAlias')
+    now += DungeonCritters::Server::ALIAS_CHANGE_INTERVAL
+    first_service.set_alias(user_id: user_ids[0], public_alias: 'SecondAlias')
+
+    reservation = @connection.exec(
+      'SELECT user_id, released_at FROM public_alias_reservations WHERE alias_normalized = $1',
+      ['firstalias']
+    ).first
+    assert_equal user_ids[0], reservation.fetch('user_id')
+    assert_equal now, Time.parse(reservation.fetch('released_at'))
+
+    ready = Queue.new
+    start = Queue.new
+    services = user_ids.map do
+      store = new_store
+      DungeonCritters::Server::ProfileService.new(store: store, clock: -> { now })
+    end
+    results = services.each_with_index.map do |service, index|
+      Thread.new do
+        ready << true
+        start.pop
+        service.set_alias(user_id: user_ids[index], public_alias: 'Concurrent')
+        :claimed
+      rescue DungeonCritters::Server::ConflictError
+        :conflict
+      end
+    end
+
+    2.times { ready.pop }
+    2.times { start << true }
+
+    assert_equal %i[claimed conflict], results.map(&:value).sort
+    assert_equal 1, @connection.exec(
+      'SELECT 1 FROM public_profiles WHERE alias_normalized = $1',
+      ['concurrent']
+    ).ntuples
+  end
+
+  def test_expired_alias_reservation_can_be_reused_and_released_again
+    apply_migration
+    user_ids = [
+      '00000000-0000-0000-0000-000000000020',
+      '00000000-0000-0000-0000-000000000021',
+      '00000000-0000-0000-0000-000000000022'
+    ]
+    user_ids.each_with_index do |user_id, index|
+      @connection.exec_params(
+        'INSERT INTO users (id, email, password_digest, created_at) VALUES ($1, $2, $3, $4)',
+        [user_id, "reservation-#{index}@example.test", 'synthetic-password-digest', NOW]
+      )
+    end
+
+    now = NOW
+    first_service = DungeonCritters::Server::ProfileService.new(
+      store: new_store, clock: -> { now }
+    )
+    first_service.set_alias(user_id: user_ids[0], public_alias: 'ReservedAlias')
+    now += DungeonCritters::Server::ALIAS_CHANGE_INTERVAL
+    first_service.set_alias(user_id: user_ids[0], public_alias: 'Replacement')
+    first_release_at = now
+
+    now += DungeonCritters::Server::ALIAS_RESERVATION_TTL
+    second_service = DungeonCritters::Server::ProfileService.new(
+      store: new_store, clock: -> { now }
+    )
+    second_service.set_alias(user_id: user_ids[1], public_alias: 'reservedalias')
+    now += DungeonCritters::Server::ALIAS_CHANGE_INTERVAL
+    second_service.set_alias(user_id: user_ids[1], public_alias: 'AnotherAlias')
+    second_release_at = now
+
+    reservation = @connection.exec(
+      'SELECT user_id, released_at FROM public_alias_reservations WHERE alias_normalized = $1',
+      ['reservedalias']
+    ).first
+    assert_equal user_ids[1], reservation.fetch('user_id')
+    assert_equal second_release_at, Time.parse(reservation.fetch('released_at'))
+    assert_operator second_release_at, :>, first_release_at
+
+    now = second_release_at + DungeonCritters::Server::ALIAS_RESERVATION_TTL - 1
+    third_service = DungeonCritters::Server::ProfileService.new(
+      store: new_store, clock: -> { now }
+    )
+    assert_raises(DungeonCritters::Server::ConflictError) do
+      third_service.set_alias(user_id: user_ids[2], public_alias: 'reservedalias')
+    end
+
+    now += 1
+    third_service.set_alias(user_id: user_ids[2], public_alias: 'reservedalias')
+    assert_equal user_ids[2], @connection.exec(
+      'SELECT user_id FROM public_profiles WHERE alias_normalized = $1',
+      ['reservedalias']
+    ).first.fetch('user_id')
   end
 
   def test_retry_migration_is_idempotent_and_adds_persistent_state
@@ -418,12 +529,16 @@ class ServerPostgresIntegrationTest < Minitest::Test
   end
 
   def reset_database
-    @connection.exec('DROP TABLE IF EXISTS email_outbox, email_verifications, sessions, users CASCADE')
+    @connection.exec(
+      'DROP TABLE IF EXISTS public_alias_reservations, public_profiles, email_outbox, ' \
+      'email_verifications, sessions, users CASCADE'
+    )
   end
 
   def apply_migration
     @connection.exec(File.read(MIGRATION_PATH))
     apply_retry_migration
+    @connection.exec(File.read(PROFILE_MIGRATION_PATH))
   end
 
   def apply_retry_migration
@@ -456,6 +571,20 @@ class ServerPostgresIntegrationTest < Minitest::Test
         refresh_expires_at timestamptz NOT NULL,
         revoked_at timestamptz,
         created_at timestamptz NOT NULL DEFAULT now()
+      );
+
+      CREATE TABLE public_profiles (
+        user_id uuid PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+        public_alias text NOT NULL,
+        alias_normalized text NOT NULL UNIQUE,
+        alias_changed_at timestamptz NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT now()
+      );
+
+      CREATE TABLE public_alias_reservations (
+        alias_normalized text PRIMARY KEY,
+        user_id uuid NOT NULL,
+        released_at timestamptz NOT NULL
       );
     SQL
   end
