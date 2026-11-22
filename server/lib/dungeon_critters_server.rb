@@ -230,8 +230,9 @@ module DungeonCritters
             snapshot = Marshal.dump([@users, @sessions, @verifications, @outbox, @profiles,
                                      @alias_reservations, @loaded_alias_reservation_keys])
             begin
-              yield self
+              result = yield self
               persist
+              result
             rescue StandardError
               @users, @sessions, @verifications, @outbox, @profiles, @alias_reservations,
                 @loaded_alias_reservation_keys = Marshal.load(snapshot)
@@ -918,8 +919,7 @@ module DungeonCritters
       rescue KeyError
         problem(400, 'invalid_request', request_id)
       rescue StandardError => error
-        warn("internal error request_id=#{request_id} class=#{error.class} message=#{error.message}")
-        warn(error.backtrace.first(8).join("\n")) if ENV['DEBUG_SERVER_ERRORS'] == '1'
+        warn("internal error request_id=#{request_id} class=#{error.class}")
         problem(500, 'internal_error', request_id)
       end
 
