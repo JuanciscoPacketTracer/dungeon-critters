@@ -1,0 +1,47 @@
+name: PostgreSQL save store
+
+on:
+  push:
+    branches:
+      - issue-34-save-upload
+      - test/profile-postgres16-current
+  pull_request:
+
+jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: dungeon_critters_issue34_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test -d dungeon_critters_issue34_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      - run: bundle exec ruby test/server_postgres_save_store_test.rb
+        env:
+          POSTGRES_TEST_DATABASE_URL: postgres://test:test@localhost:5432/dungeon_critters_issue34_test
+      - run: bundle exec ruby test/server_postgres_rack_integration_test.rb
+        env:
+          POSTGRES_TEST_DATABASE_URL: postgres://test:test@localhost:5432/dungeon_critters_issue34_test
+      - run: bundle exec ruby test/server_postgres_schema_guard_test.rb
+        env:
+          POSTGRES_TEST_DATABASE_URL: postgres://test:test@localhost:5432/dungeon_critters_issue34_test
+      - run: bundle exec ruby -Itest test/server_profile_migration_test.rb
+      - run: bundle exec ruby -Itest test/server/profile_test.rb
+      - run: bundle exec ruby -Itest test/server_rack_save_upload_test.rb
+      - run: bundle exec ruby test/server_auth_test.rb
+      - run: bundle exec ruby test/server_outbox_worker_test.rb
+      - run: bundle exec ruby test/server_rack_test.rb

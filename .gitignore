@@ -1,2 +1,5 @@
 audio/
 lib/
+!server/
+!server/lib/
+!server/lib/**

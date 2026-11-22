@@ -139,3 +139,18 @@ La decisión del responsable es que el código del servidor vive en este reposit
 - Verificar que `argon2id` y la gema `resend` conviven en esa versión; el SDK exige Ruby 3.2 o superior.
 - Medir en Render el tiempo de cálculo de un hash con `m=19456`, `t=2`, `p=1` y registrarlo.
 - Confirmar el parche exacto de Ruby 3.3 disponible en Render, o justificar otra versión.
+
+
+## Concurrencia de `PostgresStore`
+
+`PostgresStore#read` y `PostgresStore#transaction` abren una transacción PostgreSQL y
+adquieren el mismo `pg_advisory_xact_lock(23)` antes de leer o persistir el estado.
+Esto es necesario porque `load_rows` ejecuta varias consultas: el mutex Ruby solo
+coordina llamadas dentro de una instancia y no evita que otra conexión confirme una
+escritura entre dos `SELECT`. El advisory lock transaccional mantiene la lectura
+completa frente a una escritura de otra instancia.
+
+El orden de adquisición es fijo: mutex Ruby, transacción PostgreSQL y luego el
+advisory lock. La aplicación no toma otros locks PostgreSQL mientras espera ese
+advisory lock, por lo que las rutas de lectura y escritura no forman un ciclo de
+interbloqueo. El lock se libera automáticamente al terminar la transacción.
