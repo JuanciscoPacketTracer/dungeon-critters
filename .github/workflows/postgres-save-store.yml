@@ -42,3 +42,6 @@ jobs:
       - run: bundle exec ruby -Itest test/server_profile_migration_test.rb
       - run: bundle exec ruby -Itest test/server/profile_test.rb
       - run: bundle exec ruby -Itest test/server_rack_save_upload_test.rb
+      - run: bundle exec ruby test/server_auth_test.rb
+      - run: bundle exec ruby test/server_outbox_worker_test.rb
+      - run: bundle exec ruby test/server_rack_test.rb

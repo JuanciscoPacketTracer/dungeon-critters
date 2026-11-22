@@ -11,26 +11,14 @@ require_relative '../server/lib/save_upload'
 
 class ServerRackSaveUploadTest < Minitest::Test
   def setup
-    @store = DungeonCritters::Server::InMemorySaveStore.new
-    @session_service = Class.new do
-      def current(access_token:)
-        raise DungeonCritters::Server::AuthenticationError unless access_token == 'access-token'
-
-        { 'user_id' => 'account-a' }
-      end
-    end.new
-    session_service = @session_service
-    @app_constructor = DungeonCritters::Server::App.method(:new)
-    profile_app = DungeonCritters::Server::App.new(
-      account_service: Object.new,
-      session_service: session_service
-    )
-    DungeonCritters::Server::App.define_singleton_method(:new) do
-      profile_app
-    end
+    @session_store = DungeonCritters::Server::InMemoryStore.new
+    @save_store = DungeonCritters::Server::InMemorySaveStore.new
+    session_store = @session_store
+    @postgres_store_constructor = DungeonCritters::Server::PostgresStore.method(:new)
+    DungeonCritters::Server::PostgresStore.define_singleton_method(:new) { |_url| session_store }
     @save_store_constructor = DungeonCritters::Server::PostgresSaveStore.method(:new)
-    store = @store
-    DungeonCritters::Server::PostgresSaveStore.define_singleton_method(:new) { store }
+    save_store = @save_store
+    DungeonCritters::Server::PostgresSaveStore.define_singleton_method(:new) { save_store }
     @previous_database_url = ENV['DATABASE_URL']
     @previous_catalog = ENV['SAVE_REFERENCE_CATALOG_JSON']
     ENV['DATABASE_URL'] = 'test-only'
@@ -41,12 +29,18 @@ class ServerRackSaveUploadTest < Minitest::Test
       'items' => ['poke_ball'],
       'abilities' => ['run_away']
     )
+    @hasher = DungeonCritters::Server::PasswordHasher.new
+    @session_service = DungeonCritters::Server::SessionService.new(
+      store: @session_store, hasher: @hasher, clock: -> { Time.now.utc }
+    )
+    add_verified_user('account-a', 'player-a@example.com', 'account-a-password')
+    add_verified_user('account-b', 'player-b@example.com', 'account-b-password')
     @app, = Rack::Builder.parse_file(File.expand_path('../server/config.ru', __dir__))
     @request = Rack::MockRequest.new(@app)
   end
 
   def teardown
-    DungeonCritters::Server::App.define_singleton_method(:new, &@app_constructor)
+    DungeonCritters::Server::PostgresStore.define_singleton_method(:new, &@postgres_store_constructor)
     DungeonCritters::Server::PostgresSaveStore.define_singleton_method(:new, &@save_store_constructor)
     ENV['DATABASE_URL'] = @previous_database_url
     ENV['SAVE_REFERENCE_CATALOG_JSON'] = @previous_catalog
@@ -58,23 +52,23 @@ class ServerRackSaveUploadTest < Minitest::Test
 
     first = @request.post(
       '/v1/saves/1/versions',
-      headers.merge('HTTP_AUTHORIZATION' => 'Bearer access-token', input: payload)
+      headers.merge('HTTP_AUTHORIZATION' => bearer_token('account-a'), input: payload)
     )
     second = @request.post(
       '/v1/saves/1/versions',
-      headers.merge('HTTP_AUTHORIZATION' => 'Bearer access-token', input: payload)
+      headers.merge('HTTP_AUTHORIZATION' => bearer_token('account-a'), input: payload)
     )
 
     assert_equal 200, first.status
     assert_equal JSON.parse(first.body), JSON.parse(second.body)
-    assert_equal 1, @store.versions.length
+    assert_equal 1, @save_store.versions.length
   end
 
   def test_same_roda_app_serves_profile_and_upload_for_authenticated_account
     profile = @request.put(
       '/v1/profile',
       'CONTENT_TYPE' => 'application/json',
-      'HTTP_AUTHORIZATION' => 'Bearer access-token',
+      'HTTP_AUTHORIZATION' => bearer_token('account-a'),
       input: JSON.generate('alias' => 'Synthetic_Player')
     )
 
@@ -85,13 +79,13 @@ class ServerRackSaveUploadTest < Minitest::Test
     upload = @request.post(
       '/v1/saves/1/versions',
       upload_headers(payload).merge(
-        'HTTP_AUTHORIZATION' => 'Bearer access-token',
+        'HTTP_AUTHORIZATION' => bearer_token('account-a'),
         input: payload
       )
     )
 
     assert_equal 200, upload.status
-    assert_equal 1, @store.versions.length
+    assert_equal 1, @save_store.versions.length
   end
 
   def test_real_roda_mount_rejects_missing_authentication_without_persisting
@@ -102,10 +96,90 @@ class ServerRackSaveUploadTest < Minitest::Test
     )
 
     assert_equal 401, response.status
-    assert_empty @store.versions
+    assert_empty_save_store
+  end
+
+  def test_real_roda_mount_rejects_invalid_authentication_without_persisting
+    payload = valid_payload
+    response = @request.post(
+      '/v1/saves/1/versions',
+      upload_headers(payload).merge(
+        'HTTP_AUTHORIZATION' => 'Bearer invalid-access-token',
+        input: payload
+      )
+    )
+
+    assert_equal 401, response.status
+    assert_empty_save_store
+  end
+
+  def test_upload_uses_the_authenticated_session_identity
+    payload = valid_payload
+    response = @request.post(
+      '/v1/saves/1/versions',
+      upload_headers(payload).merge(
+        'HTTP_AUTHORIZATION' => bearer_token('account-b'),
+        input: payload
+      )
+    )
+
+    assert_equal 200, response.status
+    assert_equal 'account-b', @save_store.versions.values.first.account_id
+    assert_equal 'account-b', @save_store.slots.values.first.account_id
+  end
+
+  def test_account_cannot_upload_with_another_accounts_parent_version
+    payload = valid_payload
+    first = @request.post(
+      '/v1/saves/1/versions',
+      upload_headers(payload).merge(
+        'HTTP_AUTHORIZATION' => bearer_token('account-a'),
+        input: payload
+      )
+    )
+    parent_version_id = JSON.parse(first.body).fetch('version_id')
+
+    response = @request.post(
+      '/v1/saves/1/versions',
+      upload_headers(payload).merge(
+        'HTTP_AUTHORIZATION' => bearer_token('account-b'),
+        'HTTP_UPLOAD_ID' => 'upload-from-account-b',
+        'HTTP_PARENT_VERSION_ID' => parent_version_id,
+        input: payload
+      )
+    )
+
+    assert_equal 422, response.status
+    assert_equal 1, @save_store.versions.length
+    assert_equal 1, @save_store.slots.length
+    assert_empty @save_store.uploads.values.reject { |version| version.account_id == 'account-a' }
   end
 
   private
+
+  def add_verified_user(id, email, password)
+    @session_store.users[id] = DungeonCritters::Server::User.new(
+      id: id,
+      email: email,
+      password_digest: @hasher.digest(password),
+      verified_at: Time.utc(2026, 1, 1),
+      created_at: Time.utc(2026, 1, 1)
+    )
+  end
+
+  def bearer_token(account_id)
+    credentials = {
+      'account-a' => ['player-a@example.com', 'account-a-password'],
+      'account-b' => ['player-b@example.com', 'account-b-password']
+    }.fetch(account_id)
+    "Bearer #{@session_service.login(email: credentials[0], password: credentials[1])['access_token']}"
+  end
+
+  def assert_empty_save_store
+    assert_empty @save_store.slots
+    assert_empty @save_store.versions
+    assert_empty @save_store.uploads
+  end
 
   def valid_payload
     JSON.generate(
