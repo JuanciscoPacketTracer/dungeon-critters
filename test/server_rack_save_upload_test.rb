@@ -21,8 +21,12 @@ class ServerRackSaveUploadTest < Minitest::Test
     end.new
     session_service = @session_service
     @app_constructor = DungeonCritters::Server::App.method(:new)
+    profile_app = DungeonCritters::Server::App.new(
+      account_service: Object.new,
+      session_service: session_service
+    )
     DungeonCritters::Server::App.define_singleton_method(:new) do
-      Struct.new(:session_service).new(session_service)
+      profile_app
     end
     @save_store_constructor = DungeonCritters::Server::PostgresSaveStore.method(:new)
     store = @store
@@ -63,6 +67,30 @@ class ServerRackSaveUploadTest < Minitest::Test
 
     assert_equal 200, first.status
     assert_equal JSON.parse(first.body), JSON.parse(second.body)
+    assert_equal 1, @store.versions.length
+  end
+
+  def test_same_roda_app_serves_profile_and_upload_for_authenticated_account
+    profile = @request.put(
+      '/v1/profile',
+      'CONTENT_TYPE' => 'application/json',
+      'HTTP_AUTHORIZATION' => 'Bearer access-token',
+      input: JSON.generate('alias' => 'Synthetic_Player')
+    )
+
+    assert_equal 200, profile.status
+    assert_equal({ 'alias' => 'synthetic_player' }, JSON.parse(profile.body))
+
+    payload = valid_payload
+    upload = @request.post(
+      '/v1/saves/1/versions',
+      upload_headers(payload).merge(
+        'HTTP_AUTHORIZATION' => 'Bearer access-token',
+        input: payload
+      )
+    )
+
+    assert_equal 200, upload.status
     assert_equal 1, @store.versions.length
   end
 

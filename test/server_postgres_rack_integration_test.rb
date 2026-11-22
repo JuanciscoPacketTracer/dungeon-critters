@@ -80,13 +80,81 @@ class ServerPostgresRackIntegrationTest < Minitest::Test
     assert_equal 1, scalar('SELECT count(*) FROM cloud_slots')
   end
 
+  def test_same_authenticated_app_serves_profile_and_upload
+    profile = @request.put(
+      '/v1/profile',
+      {
+        'CONTENT_TYPE' => 'application/json',
+        'HTTP_AUTHORIZATION' => "Bearer #{ACCESS_TOKEN}",
+        input: JSON.generate('alias' => 'Public_Name')
+      }
+    )
+
+    assert_equal 200, profile.status
+    assert_equal({ 'alias' => 'public_name' }, JSON.parse(profile.body))
+    assert_equal 1, scalar('SELECT count(*) FROM public_profiles')
+
+    payload = valid_payload
+    upload = @request.post(
+      '/v1/saves/1/versions',
+      upload_headers(payload, upload_id: 'profile-upload-1').merge(
+        'HTTP_AUTHORIZATION' => "Bearer #{ACCESS_TOKEN}",
+        input: payload
+      )
+    )
+
+    assert_equal 200, upload.status
+    assert_equal 1, scalar('SELECT count(*) FROM save_versions')
+  end
+
+  def test_reusing_an_expired_alias_deletes_its_postgres_reservation
+    first = @request.put(
+      '/v1/profile',
+      {
+        'CONTENT_TYPE' => 'application/json',
+        'HTTP_AUTHORIZATION' => "Bearer #{ACCESS_TOKEN}",
+        input: JSON.generate('alias' => 'FirstAlias')
+      }
+    )
+    assert_equal 200, first.status
+
+    @connection.exec("UPDATE public_profiles SET alias_changed_at = now() - interval '31 days'")
+    second = @request.put(
+      '/v1/profile',
+      {
+        'CONTENT_TYPE' => 'application/json',
+        'HTTP_AUTHORIZATION' => "Bearer #{ACCESS_TOKEN}",
+        input: JSON.generate('alias' => 'SecondAlias')
+      }
+    )
+    assert_equal 200, second.status
+    assert_equal 1, scalar('SELECT count(*) FROM public_alias_reservations WHERE alias_normalized = $1',
+                           ['firstalias'])
+
+    @connection.exec("UPDATE public_alias_reservations SET released_at = now() - interval '91 days'")
+    @connection.exec("UPDATE public_profiles SET alias_changed_at = now() - interval '31 days'")
+    reused = @request.put(
+      '/v1/profile',
+      {
+        'CONTENT_TYPE' => 'application/json',
+        'HTTP_AUTHORIZATION' => "Bearer #{ACCESS_TOKEN}",
+        input: JSON.generate('alias' => 'FirstAlias')
+      }
+    )
+
+    assert_equal 200, reused.status
+    assert_equal 0, scalar('SELECT count(*) FROM public_alias_reservations WHERE alias_normalized = $1',
+                           ['firstalias'])
+  end
+
   private
 
   def apply_schema
     [
       File.expand_path('../server/db/001_sessions.sql', __dir__),
       File.expand_path('../server/db/002_outbox_retry_state.sql', __dir__),
-      File.expand_path('../server/db/20261119_34_cloud_save_versions.sql', __dir__)
+      File.expand_path('../server/db/20261119_34_cloud_save_versions.sql', __dir__),
+      File.expand_path('../server/db/20261120_25_public_profiles.sql', __dir__)
     ].each { |path| @connection.exec(File.read(path)) }
   end
 
