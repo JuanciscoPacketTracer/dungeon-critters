@@ -227,7 +227,7 @@ class ServerPostgresRackIntegrationTest < Minitest::Test
 
   def database_url_for_schema
     uri = URI.parse(DATABASE_URL)
-    options = URI.encode_www_form('options' => "-c search_path=#{@schema}")
+    options = "options=-c%20search_path%3D#{URI.encode_www_form_component(@schema)}"
     uri.query = [uri.query, options].compact.join('&')
     uri.to_s
   end
