@@ -7,6 +7,7 @@ require 'pg'
 require 'rack'
 require 'rack/mock'
 require 'securerandom'
+require 'timeout'
 require 'uri'
 
 require_relative '../server/lib/dungeon_critters_server'
@@ -145,6 +146,71 @@ class ServerPostgresRackIntegrationTest < Minitest::Test
     assert_equal 200, reused.status
     assert_equal 0, scalar('SELECT count(*) FROM public_alias_reservations WHERE alias_normalized = $1',
                            ['firstalias'])
+  end
+
+  def test_postgres_read_observes_one_snapshot_while_another_connection_writes
+    user_id = @connection.exec('SELECT user_id FROM sessions LIMIT 1').getvalue(0, 0)
+    now = Time.now.utc
+    @connection.exec_params(
+      'INSERT INTO public_profiles (user_id, public_alias, alias_normalized, alias_changed_at, created_at)
+       VALUES ($1, $2, $3, $4, $5)',
+      [user_id, 'old_alias', 'old_alias', now, now]
+    )
+
+    writer = PG.connect(DATABASE_URL)
+    writer.exec("SET search_path TO #{@connection.quote_ident(@schema)}")
+    store = DungeonCritters::Server::PostgresStore.new(DATABASE_URL)
+    writer_ready = Queue.new
+    reader_started = Queue.new
+    release_writer = Queue.new
+    observed = Queue.new
+
+    writer_thread = Thread.new do
+      writer.transaction do
+        writer.exec('SELECT pg_advisory_xact_lock(23)')
+        writer.exec_params('UPDATE users SET email = $1 WHERE id = $2', ['new@example.test', user_id])
+        writer.exec('LOCK TABLE public_profiles IN ACCESS EXCLUSIVE MODE')
+        writer.exec_params(
+          'UPDATE public_profiles SET public_alias = $1, alias_normalized = $2 WHERE user_id = $3',
+          ['new_alias', 'new_alias', user_id]
+        )
+        writer_ready << true
+        release_writer.pop
+      end
+    end
+    writer_ready.pop
+
+    reader_thread = Thread.new do
+      reader_started << true
+      observed << store.read do
+        [store.users.fetch(user_id).email, store.profiles.fetch(user_id).public_alias]
+      end
+    end
+    reader_started.pop
+
+    reader_pid = store.instance_variable_get(:@connection).backend_pid
+    Timeout.timeout(5) do
+      loop do
+        waiting = @connection.exec_params(
+          'SELECT wait_event_type FROM pg_stat_activity WHERE pid = $1',
+          [reader_pid]
+        ).values.dig(0, 0)
+        break if waiting == 'Lock'
+
+        sleep 0.01
+      end
+    end
+
+    release_writer << true
+    writer_thread.join
+    assert_equal ['new@example.test', 'new_alias'], observed.pop
+    reader_thread.join
+  ensure
+    release_writer << true if release_writer
+    writer_thread&.join
+    reader_thread&.join
+    writer&.close
+    store&.instance_variable_get(:@connection)&.close
   end
 
   private

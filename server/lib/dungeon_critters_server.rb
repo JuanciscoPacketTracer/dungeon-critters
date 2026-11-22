@@ -244,6 +244,9 @@ module DungeonCritters
       def read
         @mutex.synchronize do
           @connection.transaction do
+            # Reads acquire the same lock as writes before load_rows, so its
+            # multiple SELECTs cannot straddle another connection's commit.
+            @connection.exec('SELECT pg_advisory_xact_lock(23)')
             load_rows
             yield self
           end
