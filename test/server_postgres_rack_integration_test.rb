@@ -33,8 +33,9 @@ class ServerPostgresRackIntegrationTest < Minitest::Test
     @previous_database_url = ENV['DATABASE_URL']
     @previous_catalog = ENV['SAVE_REFERENCE_CATALOG_JSON']
     @previous_pgoptions = ENV['PGOPTIONS']
-    ENV['DATABASE_URL'] = DATABASE_URL
-    ENV['PGOPTIONS'] = "-c search_path=#{@schema}"
+    @database_url = database_url_for_schema
+    ENV['DATABASE_URL'] = @database_url
+    ENV['PGOPTIONS'] = nil
     ENV['SAVE_REFERENCE_CATALOG_JSON'] = JSON.generate(reference_catalog)
     @app, = Rack::Builder.parse_file(File.expand_path('../server/config.ru', __dir__))
     @request = Rack::MockRequest.new(@app)
@@ -157,9 +158,9 @@ class ServerPostgresRackIntegrationTest < Minitest::Test
       [user_id, 'old_alias', 'old_alias', now, now]
     )
 
-    writer = PG.connect(DATABASE_URL)
+    writer = PG.connect(@database_url)
     writer.exec("SET search_path TO #{@connection.quote_ident(@schema)}")
-    store = DungeonCritters::Server::PostgresStore.new(DATABASE_URL)
+    store = DungeonCritters::Server::PostgresStore.new(@database_url)
     writer_ready = Queue.new
     reader_started = Queue.new
     release_writer = Queue.new
@@ -222,6 +223,13 @@ class ServerPostgresRackIntegrationTest < Minitest::Test
       File.expand_path('../server/db/20261119_34_cloud_save_versions.sql', __dir__),
       File.expand_path('../server/db/20261120_25_public_profiles.sql', __dir__)
     ].each { |path| @connection.exec(File.read(path)) }
+  end
+
+  def database_url_for_schema
+    uri = URI.parse(DATABASE_URL)
+    options = URI.encode_www_form('options' => "-c search_path=#{@schema}")
+    uri.query = [uri.query, options].compact.join('&')
+    uri.to_s
   end
 
   def seed_account_and_session
