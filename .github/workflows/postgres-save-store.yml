@@ -10,6 +10,8 @@ on:
 jobs:
   postgres:
     runs-on: ubuntu-latest
+    env:
+      DEBUG_SERVER_ERRORS: '1'
     services:
       postgres:
         image: postgres:16
