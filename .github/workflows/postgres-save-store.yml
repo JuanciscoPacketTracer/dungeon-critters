@@ -73,7 +73,12 @@ jobs:
             printf "\nssl = on\nssl_cert_file = '\''server.crt'\''\nssl_key_file = '\''server.key'\''\n" >> "$PGDATA/postgresql.conf"
           '
           docker exec "$postgres_container" su postgres -c \
-            "pg_ctl -D \"\$PGDATA\" -m fast restart"
+            "pg_ctl -D \"\$PGDATA\" reload"
+          test "$(docker exec "$postgres_container" \
+            psql -U test -d postgres -Atc 'SHOW ssl')" = "on"
+          test "$(docker exec "$postgres_container" \
+            env PGSSLMODE=require psql -h localhost -U test -d postgres -Atc \
+            "SELECT ssl FROM pg_stat_ssl WHERE pid = pg_backend_pid()")" = "t"
           docker exec "$postgres_container" \
             psql -U test -d postgres -v ON_ERROR_STOP=1 \
             -c 'CREATE DATABASE dungeon_critters_tls_test'
