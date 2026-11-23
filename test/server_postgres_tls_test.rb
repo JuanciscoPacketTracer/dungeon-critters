@@ -83,13 +83,24 @@ class ServerPostgresTlsRealTest < Minitest::Test
   WRONG_HOST_URL = ENV['POSTGRES_TLS_TEST_WRONG_HOST_URL']
 
   def setup
-    skip 'real PostgreSQL TLS test variables are not configured' unless
-      [DATABASE_URL, CA_CERT, WRONG_CA_CERT, WRONG_HOST_URL].all? { |value| value && !value.empty? }
+    values = [DATABASE_URL, CA_CERT, WRONG_CA_CERT, WRONG_HOST_URL]
+    unless values.all? { |value| value && !value.empty? }
+      message = 'real PostgreSQL TLS test variables are not configured'
+      raise message if ENV['CI'] == 'true'
+
+      skip message
+    end
 
     urls = [DATABASE_URL, WRONG_HOST_URL].map { |url| URI.parse(url) }
-    skip 'real PostgreSQL TLS tests require local disposable databases' unless
+    valid_disposable_urls =
       urls.all? { |url| %w[localhost 127.0.0.1 ::1].include?(url.host) } &&
       urls.map { |url| url.path.delete_prefix('/') }.uniq == ['dungeon_critters_tls_test']
+    unless valid_disposable_urls
+      message = 'real PostgreSQL TLS tests require local disposable databases'
+      raise message if ENV['CI'] == 'true'
+
+      skip message
+    end
   end
 
   def test_valid_certificate_and_hostname_complete_a_real_tls_query

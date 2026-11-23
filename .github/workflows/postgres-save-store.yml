@@ -30,9 +30,64 @@ jobs:
         with:
           ruby-version: '3.4'
           bundler-cache: true
+      - name: Configure disposable PostgreSQL TLS fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          tls_dir="$RUNNER_TEMP/postgres-tls"
+          mkdir -p "$tls_dir"
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
+            -subj "/CN=Dungeon Critters test CA" \
+            -addext "basicConstraints=critical,CA:TRUE" \
+            -addext "keyUsage=critical,keyCertSign,cRLSign" \
+            -keyout "$tls_dir/ca.key" -out "$tls_dir/ca.crt"
+          openssl req -new -newkey rsa:2048 -nodes \
+            -subj "/CN=localhost" \
+            -keyout "$tls_dir/server.key" -out "$tls_dir/server.csr"
+          cat > "$tls_dir/server.ext" <<'EOF'
+          subjectAltName=DNS:localhost
+          basicConstraints=CA:FALSE
+          keyUsage=digitalSignature,keyEncipherment
+          extendedKeyUsage=serverAuth
+          EOF
+          openssl x509 -req -days 1 \
+            -in "$tls_dir/server.csr" \
+            -CA "$tls_dir/ca.crt" -CAkey "$tls_dir/ca.key" -CAcreateserial \
+            -extfile "$tls_dir/server.ext" \
+            -out "$tls_dir/server.crt"
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
+            -subj "/CN=Wrong test CA" \
+            -keyout "$tls_dir/wrong-ca.key" -out "$tls_dir/wrong-ca.crt"
+
+          postgres_container="$(
+            docker ps --filter 'ancestor=postgres:16' --format '{{.ID}}' | head -n 1
+          )"
+          test -n "$postgres_container"
+          docker cp "$tls_dir/server.crt" "$postgres_container:/tmp/server.crt"
+          docker cp "$tls_dir/server.key" "$postgres_container:/tmp/server.key"
+          docker exec "$postgres_container" bash -euc '
+            cp /tmp/server.crt "$PGDATA/server.crt"
+            cp /tmp/server.key "$PGDATA/server.key"
+            chown postgres:postgres "$PGDATA/server.crt" "$PGDATA/server.key"
+            chmod 600 "$PGDATA/server.key"
+            printf "\nssl = on\nssl_cert_file = '\''server.crt'\''\nssl_key_file = '\''server.key'\''\n" >> "$PGDATA/postgresql.conf"
+          '
+          docker exec "$postgres_container" su postgres -c \
+            "pg_ctl -D \"\$PGDATA\" -m fast restart"
+          docker exec "$postgres_container" \
+            psql -U test -d postgres -v ON_ERROR_STOP=1 \
+            -c 'CREATE DATABASE dungeon_critters_tls_test'
+          {
+            echo "POSTGRES_TLS_TEST_URL=postgresql://test:test@localhost:5432/dungeon_critters_tls_test?sslmode=verify-full"
+            echo "POSTGRES_TLS_TEST_CA=$tls_dir/ca.crt"
+            echo "POSTGRES_TLS_TEST_WRONG_CA=$tls_dir/wrong-ca.crt"
+            echo "POSTGRES_TLS_TEST_WRONG_HOST_URL=postgresql://test:test@127.0.0.1:5432/dungeon_critters_tls_test?sslmode=verify-full"
+          } >> "$GITHUB_ENV"
       - run: bundle exec ruby test/server_postgres_save_store_test.rb
         env:
           POSTGRES_TEST_DATABASE_URL: postgres://test:test@localhost:5432/dungeon_critters_issue34_test
+      - run: bundle exec ruby -Itest test/server_postgres_tls_test.rb
+      - run: bundle exec ruby test/server_postgres_save_store_load_test.rb
       - run: bundle exec ruby test/server_postgres_rack_integration_test.rb
         env:
           POSTGRES_TEST_DATABASE_URL: postgres://test:test@localhost:5432/dungeon_critters_issue34_test
