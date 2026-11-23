@@ -41,7 +41,7 @@ class PersistentStateInventoryTest < Minitest::Test
     'nuzlocke-state' => 'Reject until an adapter defines its supported fields',
     'berry-state' => 'Reject until an adapter defines the supported berry keys and values',
     'game-troop' => 'Do not serialize a live battle troop',
-    'tint-time-set' => 'Allow only a boolean value'
+    'tint-time-set' => 'Allow only a Symbol or nil'
   }.freeze
 
   def inventory
