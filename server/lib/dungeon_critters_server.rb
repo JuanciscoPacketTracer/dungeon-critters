@@ -7,6 +7,7 @@ require 'openssl'
 require 'securerandom'
 require 'time'
 require 'uri'
+require_relative 'postgres_tls'
 
 module DungeonCritters
   module Server
@@ -213,13 +214,14 @@ module DungeonCritters
       end
 
       def initialize(url)
-        require 'pg'
-        @connection = PG.connect(url)
+        @connection = PostgresTls.connect(url)
         super()
         validate_outbox_schema
         load_rows
       rescue LoadError => e
         raise ConfigurationError, "pg is required: #{e.message}"
+      rescue PostgresTls::ConfigurationError => e
+        raise ConfigurationError, e.message
       end
 
       def transaction

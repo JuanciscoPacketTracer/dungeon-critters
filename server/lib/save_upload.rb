@@ -2,9 +2,11 @@
 
 require 'digest'
 require 'json'
+require 'pg'
 require 'securerandom'
 require 'time'
 require_relative '../../scripts/00001 LocalSave/00001 TrainerCodec'
+require_relative 'postgres_tls'
 
 module DungeonCritters
   module Server
@@ -158,12 +160,13 @@ module DungeonCritters
       }.freeze
 
       def initialize(connection: nil, url: ENV['DATABASE_URL'])
-        require 'pg'
-        @connection = connection || PG.connect(url.to_s)
+        @connection = connection || PostgresTls.connect(url.to_s)
         @bytea_decoder = PG::TextDecoder::Bytea.new
         validate_save_schema
       rescue LoadError => error
         raise SaveUploadError, "pg is required: #{error.message}"
+      rescue PostgresTls::ConfigurationError => error
+        raise SaveUploadError, error.message
       end
 
       def self.validate_save_schema(table_names:, columns_by_table:, constraints_by_table:)
